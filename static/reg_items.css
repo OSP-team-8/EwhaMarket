@@ -1,0 +1,105 @@
+:root{
+  --green:#00462A;
+  --green-2:#00642A;
+  --border:#00642A;
+  --white:#fff;
+  --label-w:120px;       /* 라벨 width */
+  --label-gap:10px;      /* 라벨-필드 사이 간격(.row의 gap) */
+}
+
+/* 제목: 라벨 왼쪽선과 정렬 */
+.page-title{
+  margin: 16px 0 14px;
+  font-size: 22px;
+  font-weight: 700;
+  /* 라벨 폭 + 라벨/필드 간격만큼 밀어 정렬 */
+  margin-left: calc(var(--label-w) + var(--label-gap));
+}
+
+/* 폼 */
+.reg-form{
+  max-width: 1120px;
+  margin: 0 auto 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.row{ display:flex; align-items:center; gap: var(--label-gap); }
+
+/* 라벨 */
+.label-box{
+  width: var(--label-w);
+  height: 50px;
+  flex-shrink: 0;
+  background: var(--green);
+  color: var(--white);
+  display:flex; align-items:center; justify-content:center;
+  border-radius: 2px;
+  font-weight: 600;
+}
+
+/* 입력 공통 */
+.field-box{
+  width: 530px;
+  height: 50px;
+  flex-shrink: 0;
+  border: 1px solid var(--border);
+  background: #fff;
+  padding: 0 12px;
+  font-size: 16px;
+}
+
+.textarea{ height:120px; padding:10px 12px; resize:vertical; }
+.select{ appearance:auto; }
+
+/* 지역: 드롭다운 + 주소 */
+.flex{ display:flex; align-items:center; gap:10px; }
+.select-region{ width:180px; }
+.addr{ width:340px; }
+
+/* 상태 드롭다운도 지역 드롭다운과 동일 폭 */
+.select-status{ width:180px; }
+
+/* 파일 업로드 */
+.btn-file{
+  width:120px; height:50px;
+  border: 2px solid var(--green-2);
+  background:#fff; color:var(--green);
+  display:flex; align-items:center; justify-content:center;
+  border-radius: 4px; cursor:pointer; user-select:none; font-weight:600;
+  position:relative;
+}
+.btn-file input[type="file"]{ position:absolute; inset:0; opacity:0; cursor:pointer; }
+.file-name{ color:#888; font-size:14px; }
+
+/* 버튼 영역 */
+.actions{ display:flex; justify-content:flex-end; gap:12px; margin-top:8px; }
+.btn{
+  width:100px; height:40px;
+  border-radius:0;                 /* 둥근 모서리 제거 */
+  font-weight:700; cursor:pointer;
+  border:0;
+}
+.submit{ background:var(--green); color:#fff; }
+/* 취소: 흰 배경 + 초록 테두리/글자 */
+.cancel{
+  background:#fff;
+  color:var(--green);
+  border:2px solid var(--green);
+}
+
+/* 반응형 */
+@media (max-width: 980px){
+  .reg-form{ padding:0 12px; }
+  .field-box{ width:100%; }
+  .select-region{ width:40%; min-width:150px; }
+  .addr{ width:60%; }
+  .actions{ justify-content:center; }
+  .page-title{ margin-left: 0; }   /* 모바일에서는 기본 정렬 */
+}
+
+/* (선택) 혹시 남아있는 placeholder를 화면에서 숨기고 싶다면 주석 해제
+::placeholder{ color: transparent; }
+textarea::placeholder{ color: transparent; }
+*/
