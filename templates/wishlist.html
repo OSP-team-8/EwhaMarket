@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <title>찜 | 이화 마켓</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<section class="wishlist-wrap">
+
+  <h2 class="wishlist-title">나의 찜</h2>
+
+  <table class="wishlist-table">
+    <thead>
+      <tr>
+        <th></th>
+        <th>상품 사진</th>
+        <th>상품 이름</th>
+        <th>가격</th>
+        <th>행동</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <!-- Example item row -->
+      <tr>
+        <td>1</td>
+        <td><img src="{{ url_for('static', filename='images/hello.png') }}" class="wishlist-img"></td>
+        <td>파우치</td>
+        <td>KRW 20,000</td>
+        <td class="wishlist-actions">
+          <button class="btn-ewha small-btn">장바구니 담기</button>
+          <button class="btn-ewha small-btn">친구 보내기</button>
+        </td>
+      </tr>
+
+      <tr>
+        <td>2</td>
+        <td><img src="{{ url_for('static', filename='images/airpodsmax.png') }}" class="wishlist-img"></td>
+        <td>에어팟맥스</td>
+        <td>KRW 780,000</td>
+        <td class="wishlist-actions">
+          <button class="btn-ewha small-btn">장바구니 담기</button>
+          <button class="btn-ewha small-btn">친구 보내기</button>
+        </td>
+      </tr>
+
+    </tbody>
+  </table>
+
+  <div class="wishlist-page">
+    <a href="#">&lt; 이전</a>
+    <a href="#" class="page active">1</a>
+    <a href="#" class="page">2</a>
+    <a href="#" class="page">3</a>
+    <a href="#" class="page">4</a>
+    <a href="#" class="page">5</a>
+    <a href="#" class="page">6</a>
+    <a href="#">다음 &gt;</a>
+  </div>
+
+</section>
+
+</body>
+</html>
