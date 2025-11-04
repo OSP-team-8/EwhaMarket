@@ -1,0 +1,57 @@
+{% extends "index.html" %}
+{% block section %}
+<link rel="stylesheet" href="{{ url_for('static', filename='review.css') }}">
+
+<form method="post" enctype="multipart/form-data">
+    <div class="first_line">
+        <label id="review_all">상품 리뷰 | 128개</label>
+
+        <div class="search_group">
+            <label for="search">검색 | </label>
+            <input type="search" name="검색" id="search" placeholder="검색어를 입력하세요">   
+        </div>
+        
+        <a id="latest">최신순</a>
+    </div>
+
+    <div class="review_container">   
+        <div class="review_set">
+            <label class="review_title">공기청정기 그냥 그렇네요</label>
+            <img src="{{ url_for('static', filename='images/공기청정기.png') }}">
+        </div>
+        <div class="review_set">
+            <label class="review_title">드라이기 최고!</label>
+            <img src="{{ url_for('static', filename='images/드라이기.png') }}">
+        </div>
+        <div class="review_set">
+            <label class="review_title">가방 샀어요</label>
+            <img src="{{ url_for('static', filename='images/가방.png') }}">
+        </div>
+        <div class="review_set">
+            <label class="review_title">아이가 너무 좋아하네요~</label>
+            <img src="{{ url_for('static', filename='images/필통.png') }}">
+        </div>
+        <div class="review_set">
+            <label class="review_title">코딩 마스터!</label>
+            <img src="{{ url_for('static', filename='images/책.png') }}">
+        </div>
+        <div class="review_set">
+            <label class="review_title">잘 쓰고 있습니다~</label>
+            <img src="{{ url_for('static', filename='images/헤드셋.png') }}">
+        </div>
+    </div>
+    
+        <div class="page_change">
+        <a>&lt; 이전</a>
+        <a href="#" class="active">1</a>
+        <a href="#">2</a>
+        <a href="#">3</a>
+        <a href="#">4</a>
+        <a href="#">5</a>
+        <a href="#">6</a>
+        <a>다음 &gt;</a>
+    </div>
+
+</form>
+
+{% endblock section %}
