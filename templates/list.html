@@ -1,0 +1,76 @@
+{% extends "index.html" %}
+
+{% block head %}
+  <title>상품 조회 | 이화 마켓</title>
+  <!-- list 전용 CSS (static/list.css 위치) -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='list.css') }}">
+{% endblock head %}
+
+{% block section %}
+<div class="container">
+
+  <!-- 상단: 제목/개수 + 검색 + 최신순 -->
+  <header class="product-header">
+    <h2 class="product-header__title">
+      상품 조회 | {{ products|length }}개
+    </h2>
+
+    <form class="search" method="get" action="{{ url_for('view_list') }}">
+      <input
+        class="search__bar"
+        type="text"
+        name="q"
+        placeholder="검색어를 입력하세요"
+        value="{{ request.args.get('q','') }}"
+        aria-label="검색어"
+      />
+      <button class="search__btn" type="submit" aria-label="검색">⌕</button>
+      <span class="search__sort">최신순</span>
+    </form>
+  </header>
+
+  <!-- 상품 카드 그리드 -->
+  <section class="product-grid">
+    {% if products %}
+      {% for p in products %}
+        <article class="card" data-pid="{{ p.id }}">
+          <div class="card__namebar">
+            <span class="card__name" title="{{ p.name }}">{{ p.name }}</span>
+            <!-- data-liked는 초기 상태 표시용(로컬스토리지로 최종 반영) -->
+            <button
+              class="card__heart"
+              type="button"
+              aria-label="찜하기"
+              data-pid="{{ p.id }}"
+              data-liked="false">♡</button>
+          </div>
+
+          <a class="card__imageLink" href="{{ url_for('product_detail', pid=p.id) }}">
+            {% if p.thumb %}
+              <div class="card__image"
+                  style="background-image:url('{{ url_for('static', filename=p.thumb) }}');">
+              </div>
+            {% else %}
+              <div class="card__image card__image--empty">이미지 없음</div>
+            {% endif %}
+          </a>
+        </article>
+      {% endfor %}
+    {% else %}
+      <p class="empty">등록된 상품이 없습니다.</p>
+    {% endif %}
+  </section>
+
+  <!-- (데모) 페이지 네비게이션 - 아직 서버 페이징 전이라 링크는 # -->
+  <nav class="pagination" aria-label="페이지네비게이션">
+    <a class="page-btn" href="#">〈 이전</a>
+    <a class="page is-active" href="#">1</a>
+    <a class="page" href="#">2</a>
+    <a class="page" href="#">3</a>
+    <a class="page-btn" href="#">다음 〉</a>
+  </nav>
+</div>
+
+<!-- list 전용 JS (하트 토글: localStorage로 유지) -->
+<script defer src="{{ url_for('static', filename='product.js') }}"></script>
+{% endblock section %}

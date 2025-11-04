@@ -1,7 +1,31 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, abort
 import sys
 
 application = Flask(__name__)
+
+# DB 대신 임시 상품 데이터
+MOCK_PRODUCTS = [
+    {"id": "p1001", "name": "뽀로로 인형 세트", "thumb": "images/뽀로로인형세트.PNG"},
+    {"id": "p1002", "name": "수달 인형",   "thumb": "images/수달인형.PNG"},
+    {"id": "p1003", "name": "책 세트",   "thumb": "images/책세트.PNG"},
+    {"id": "p1004", "name": "테스트 주도 개발 시작하기",       "thumb": "images/테스트주도개발시작하기.PNG"},
+    {"id": "p1005", "name": "서랍장",   "thumb": "images/서랍장.PNG"},
+    {"id": "p1006", "name": "팔찌",       "thumb": "images/팔찌.PNG"},
+]
+
+
+def find_product(pid):
+    for p in MOCK_PRODUCTS:
+        if p["id"] == pid:
+            p = p.copy()
+            p.setdefault("price", 0)
+            p.setdefault("status", "")
+            p.setdefault("desc", "")
+            p.setdefault("seller", "")
+            p.setdefault("phone", "")
+            p.setdefault("region", "")
+            return p
+    return None
 
 @application.route("/")
 def hello():
@@ -9,7 +33,18 @@ def hello():
 
 @application.route("/list")
 def view_list():
-    return render_template("list.html")
+    q = request.args.get("q", "").strip()
+    products = MOCK_PRODUCTS
+    if q:
+        products = [p for p in MOCK_PRODUCTS if q in p["name"]]
+    return render_template("list.html", products=products)
+
+@application.route("/detail/<pid>")
+def product_detail(pid):
+    product = find_product(pid)
+    if not product:
+        abort(404)
+    return render_template("product_detail.html", product=product)
 
 @application.route("/review")
 def view_review():
@@ -45,7 +80,7 @@ def reg_item_submit():
     print("===================================")
     
     return render_template("submit_item_result.html", data = data,
-                           img_path = "static/images/{}".format(image_file.filename))
+                        img_path = "static/images/{}".format(image_file.filename))
 
 if __name__ == "__main__":
     application.run(host="0.0.0.0")

@@ -1,0 +1,95 @@
+/* ===== PAGE: product_detail ===== */
+:root{
+  --green:#00462A;
+  --green-2:#00642A;
+
+  --label-w:120px;
+  --gap:10px;
+  --value-w:530px;
+
+  /* 좌측 '대표사진' 라벨 높이+간격 */
+  --photo-label-h:50px;
+  --photo-label-gap:12px;
+}
+
+/* 레이아웃(상세 페이지 전용) */
+.detail{
+  display:grid;
+  grid-template-columns:466px 1fr;
+  gap:32px;
+  align-items:start;
+  max-width:1100px;
+  margin:0 auto;
+  padding:0 16px;
+}
+
+.page-title{
+  margin:16px auto 14px;
+  padding:0 16px;
+  max-width:1100px;
+  font-size:22px;
+  font-weight:700;
+}
+
+/* 공통 행/박스(상세 페이지에서만 조금 더 구체적으로 지정해 덮어쓰기 방지) */
+.detail .row{ display:flex; align-items:flex-start; gap:var(--gap); margin-bottom:10px; }
+.detail .label-box{
+  width:var(--label-w); height:50px; flex-shrink:0;
+  background:var(--green); color:#fff;
+  display:flex; align-items:center; justify-content:center; border-radius:2px;
+}
+.detail .value-box{
+  width:var(--value-w); height:50px; flex-shrink:0;
+  border:1px solid var(--green-2); background:#fff;
+  display:flex; align-items:center; padding:0 12px;
+}
+
+/* 이미지 영역 */
+.label-photo{ margin-bottom:12px; }
+.detail__img{
+  width:466px; height:399px; flex-shrink:0;
+  border:1px solid #000; object-fit:cover; background:#fff;
+}
+.detail__img--empty{
+  display:flex; align-items:center; justify-content:center; color:#777; font-size:14px;
+  width:466px; height:399px; border:1px solid #000; background:#fff;
+}
+
+/* 오른쪽 박스를 이미지 상단 높이에 맞춰 아래로 */
+.detail__right{ margin-top: calc(var(--photo-label-h) + var(--photo-label-gap)); }
+
+/* 상단 찜하기 바 */
+.detail__right .right-bar{
+  margin-left: calc(var(--label-w) + var(--gap));
+  width: var(--value-w);
+  display:flex; justify-content:flex-end; align-items:center;
+  transform: translateY(-6px);   /* 필요시 -8px, -10px로 조정 */
+  margin-bottom: 8px;
+}
+.wish{ display:flex; align-items:center; gap:8px; white-space:nowrap; font-size:18px; line-height:1; }
+.heart{ background:transparent; border:0; cursor:pointer; font-size:26px; color:red; line-height:1; }
+
+/* 목록 버튼: 값박스 오른쪽 끝에 정렬 */
+.actions.actions--align{
+  margin-left: calc(var(--label-w) + var(--gap));
+  width: var(--value-w);
+  display:flex; justify-content:flex-end; margin-top:12px;
+}
+.back-btn{
+  display:inline-flex; align-items:center; justify-content:center;
+  width:269px; height:50px; flex-shrink:0;
+  border:2px solid var(--green-2); background:#FFF; color:var(--green);
+  text-decoration:none; font-weight:600; border-radius:4px;
+}
+.back-btn:hover{ filter:brightness(0.95); }
+
+/* 반응형 */
+@media (max-width:980px){
+  .detail{ grid-template-columns:1fr; }
+  .detail__img{ width:100%; height:auto; max-height:420px; }
+  .detail__img--empty{ width:100%; height:260px; }
+  .detail .value-box{ width:100%; }
+  .detail__right{ margin-top:0; }
+  .detail__right .right-bar{ margin-left:0; width:100%; transform:none; }
+  .actions.actions--align{ margin-left:0; width:100%; justify-content:flex-end; }
+}

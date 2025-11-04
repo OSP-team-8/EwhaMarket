@@ -1,0 +1,85 @@
+{% extends "index.html" %}
+
+{% block head %}
+  <title>상품 조회 상세 | 이화 마켓</title>
+  <link rel="stylesheet"
+        href="{{ url_for('static', filename='product_detail.css') }}?v={{ range(1,999999)|random }}">
+{% endblock head %}
+
+{% block section %}
+<h2 class="page-title">상품 조회 상세</h2>
+
+<div class="detail">
+  <!-- 좌측: 대표사진 -->
+  <div class="detail__left">
+    <div class="label-box label-photo">대표사진</div>
+
+    {% if product.thumb %}
+      <img class="detail__img"
+          src="{{ url_for('static', filename=product.thumb) }}"
+          alt="{{ product.name }}">
+    {% else %}
+      <div class="detail__img detail__img--empty">이미지 없음</div>
+    {% endif %}
+  </div>
+
+  <!-- 우측: 정보 -->
+  <div class="detail__right">
+    <!-- 상품명 행 + 찜하기 -->
+    <div class="right-bar">
+      <div class="wish">
+        <span>찜하기</span> |
+        <button class="heart" type="button" aria-label="찜하기" data-pid="{{ product.id }}">♡</button>
+      </div>
+    </div>
+
+  <!-- 상품명 행 (value-box 안에 wish 없음!) -->
+    <div class="row row--name">
+      <div class="label-box">상품명</div>
+      <div class="value-box">
+        {{ product.name }}
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="label-box">가격</div>
+      <div class="value-box">
+        {{ "{:,}".format(product.price) }}원
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="label-box">상태</div>
+      <div class="value-box">{{ product.status or "-" }}</div>
+    </div>
+
+    <div class="row">
+      <div class="label-box">설명</div>
+      <div class="value-box">{{ product.desc or "-" }}</div>
+    </div>
+
+    <div class="row">
+      <div class="label-box">판매자 ID</div>
+      <div class="value-box">{{ product.seller or "-" }}</div>
+    </div>
+
+    <div class="row">
+      <div class="label-box">판매자 전화번호</div>
+      <div class="value-box">{{ product.phone or "-" }}</div>
+    </div>
+
+    <div class="row">
+      <div class="label-box">지역</div>
+      <div class="value-box">{{ product.region or "-" }}</div>
+    </div>
+  </div>
+
+  <!-- 하단 우측: 목록으로 -->
+  <div class="actions actions--align">
+    <a class="back-btn" href="{{ url_for('view_list') }}">목록으로 돌아가기</a>
+  </div>
+</div>
+
+<!-- 상세 페이지용 하트 동기화 -->
+<script defer src="{{ url_for('static', filename='product.js') }}"></script>
+{% endblock section %}

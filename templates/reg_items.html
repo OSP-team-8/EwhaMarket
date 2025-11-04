@@ -1,0 +1,113 @@
+{% extends "index.html" %}
+
+{% block head %}
+  <title>상품 등록 | 이화 마켓</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='reg_items.css') }}">
+{% endblock head %}
+
+{% block section %}
+<h2 class="page-title">상품 등록</h2>
+
+<form class="reg-form" method="post" enctype="multipart/form-data" action="/submit_item">
+  <!-- 상품명 -->
+  <div class="row">
+    <div class="label-box">상품명</div>
+    <input class="field-box" type="text" name="name" id="name" required>
+  </div>
+
+  <!-- 가격 -->
+  <div class="row">
+    <div class="label-box">가격</div>
+    <input class="field-box" type="text" name="price" id="price" required>
+  </div>
+
+  <!-- 상태 (드롭다운) -->
+  <div class="row">
+    <div class="label-box">상태</div>
+    <select class="field-box select select-status" id="status" name="status" required>
+      <option value="new" selected>새 상품</option>
+      <option value="lnew">양호</option>
+      <option value="used">중고</option>
+    </select>
+  </div>
+
+  <!-- 지역 (드롭다운 + 상세주소) -->
+  <div class="row">
+    <div class="label-box">지역</div>
+    <div class="flex">
+      <select class="field-box select select-region" id="region" name="region" required>
+        <option value="서울특별시" selected>서울특별시</option>
+        <option value="경기도">경기도</option>
+        <option value="인천광역시">인천광역시</option>
+        <option value="부산광역시">부산광역시</option>
+        <option value="대구광역시">대구광역시</option>
+        <option value="광주광역시">광주광역시</option>
+        <option value="대전광역시">대전광역시</option>
+        <option value="울산광역시">울산광역시</option>
+        <option value="세종특별자치시">세종특별자치시</option>
+        <option value="강원특별자치도">강원특별자치도</option>
+        <option value="충청북도">충청북도</option>
+        <option value="충청남도">충청남도</option>
+        <option value="전라북도">전라북도</option>
+        <option value="전라남도">전라남도</option>
+        <option value="경상북도">경상북도</option>
+        <option value="경상남도">경상남도</option>
+        <option value="제주특별자치도">제주특별자치도</option>
+      </select>
+      <input class="field-box addr" type="text" name="addr" id="addr">
+    </div>
+  </div>
+
+  <!-- 설명 -->
+  <div class="row">
+    <div class="label-box">설명</div>
+    <textarea class="field-box textarea" name="desc" id="desc" rows="5"></textarea>
+  </div>
+
+  <!-- 판매자 ID -->
+  <div class="row">
+    <div class="label-box">판매자 ID</div>
+    <input class="field-box" type="text" name="seller" id="seller" required>
+  </div>
+
+  <!-- 전화번호 -->
+  <div class="row">
+    <div class="label-box">전화번호</div>
+    <input class="field-box" type="text" name="phone" id="phone">
+  </div>
+
+  <!-- 사진 업로드 -->
+  <div class="row">
+    <div class="label-box">사진</div>
+    <div class="flex">
+      <label class="btn-file">
+        사진 선택
+        <input type="file" name="file" id="file" accept="image/*">
+      </label>
+      <span class="file-name" id="fileName"></span>
+    </div>
+  </div>
+
+  <!-- 제출/취소 -->
+  <div class="actions">
+    <button class="btn submit" type="submit">등록</button>
+    <button class="btn cancel" type="button" onclick="history.back()">취소</button>
+  </div>
+
+  <input type="hidden" name="category" value="ETC">
+  <input type="hidden" name="card" value="Y">
+</form>
+{% endblock section %}
+
+{% block extra_js %}
+<script>
+  // 파일명 표시
+  const fileInput = document.getElementById('file');
+  const fileName  = document.getElementById('fileName');
+  if (fileInput && fileName) {
+    fileInput.addEventListener('change', () => {
+      fileName.textContent = fileInput.files?.[0]?.name || '';
+    });
+  }
+</script>
+{% endblock extra_js %}
