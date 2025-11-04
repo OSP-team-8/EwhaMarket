@@ -1,4 +1,4 @@
-/* ===== PAGE: product_detail ===== */
+/* ===== PAGE: product_detail (1200px 통일 버전) ===== */
 :root{
   --green:#00462A;
   --green-2:#00642A;
@@ -7,70 +7,80 @@
   --gap:10px;
   --value-w:530px;
 
-  /* 좌측 '대표사진' 라벨 높이+간격 */
   --photo-label-h:50px;
-  --photo-label-gap:12px;
-}
-
-/* 레이아웃(상세 페이지 전용) */
-.detail{
-  display:grid;
-  grid-template-columns:466px 1fr;
-  gap:32px;
-  align-items:start;
-  max-width:1100px;
-  margin:0 auto;
-  padding:0 16px;
 }
 
 .page-title{
   margin:16px auto 14px;
   padding:0 16px;
-  max-width:1100px;
+  max-width:1200px;
   font-size:22px;
   font-weight:700;
 }
 
-/* 공통 행/박스(상세 페이지에서만 조금 더 구체적으로 지정해 덮어쓰기 방지) */
-.detail .row{ display:flex; align-items:flex-start; gap:var(--gap); margin-bottom:10px; }
+/* 레이아웃: 좌/우 2박스 상단 정렬 */
+.detail{
+  display:grid;
+  grid-template-columns:466px 1fr; /* 좌측 이미지 너비 기준 */
+  gap:32px;
+  align-items:start;              /* ← 두 박스 top 정렬 */
+  max-width:1200px;
+  margin:0 auto;
+  padding:0 16px;
+}
+
+/* 공통 박스 래퍼 */
+.detail__box{ display:flex; flex-direction:column; }
+
+/* 공통 행/박스 */
+.detail .row{
+  display:flex; align-items:flex-start; gap:var(--gap); margin-bottom:10px;
+}
 .detail .label-box{
   width:var(--label-w); height:50px; flex-shrink:0;
   background:var(--green); color:#fff;
-  display:flex; align-items:center; justify-content:center; border-radius:2px;
+  display:flex; align-items:center; justify-content:center;
+  border-radius:10px; font-weight:700;
 }
 .detail .value-box{
   width:var(--value-w); height:50px; flex-shrink:0;
   border:1px solid var(--green-2); background:#fff;
   display:flex; align-items:center; padding:0 12px;
+  border-radius:10px;
 }
 
-/* 이미지 영역 */
-.label-photo{ margin-bottom:12px; }
+/* [LEFT] 대표사진 */
+.label-photo{
+  height:var(--photo-label-h);
+  display:flex; align-items:center; justify-content:center;
+  margin-bottom:10px;
+}
 .detail__img{
   width:466px; height:399px; flex-shrink:0;
   border:1px solid #000; object-fit:cover; background:#fff;
+  border-radius:10px;
 }
 .detail__img--empty{
   display:flex; align-items:center; justify-content:center; color:#777; font-size:14px;
   width:466px; height:399px; border:1px solid #000; background:#fff;
+  border-radius:10px;
 }
 
-/* 오른쪽 박스를 이미지 상단 높이에 맞춰 아래로 */
-.detail__right{ margin-top: calc(var(--photo-label-h) + var(--photo-label-gap)); }
-
-/* 상단 찜하기 바 */
-.detail__right .right-bar{
+/* [RIGHT] 상단 찜하기 바: 라벨 폭만큼 들여쓰기 */
+.detail__box--right{ /* 이전의 margin-top 보정 삭제! */ }
+.detail__box--right .right-bar{
   margin-left: calc(var(--label-w) + var(--gap));
   width: var(--value-w);
   display:flex; justify-content:flex-end; align-items:center;
-  transform: translateY(-6px);   /* 필요시 -8px, -10px로 조정 */
-  margin-bottom: 8px;
+  margin-bottom:8px;
 }
+
+/* 찜하기 버튼 */
 .wish{ display:flex; align-items:center; gap:8px; white-space:nowrap; font-size:18px; line-height:1; }
 .heart{ background:transparent; border:0; cursor:pointer; font-size:26px; color:red; line-height:1; }
 
-/* 목록 버튼: 값박스 오른쪽 끝에 정렬 */
-.actions.actions--align{
+/* [RIGHT] 목록으로 버튼 */
+.actions{
   margin-left: calc(var(--label-w) + var(--gap));
   width: var(--value-w);
   display:flex; justify-content:flex-end; margin-top:12px;
@@ -79,7 +89,7 @@
   display:inline-flex; align-items:center; justify-content:center;
   width:269px; height:50px; flex-shrink:0;
   border:2px solid var(--green-2); background:#FFF; color:var(--green);
-  text-decoration:none; font-weight:600; border-radius:4px;
+  text-decoration:none; font-weight:600; border-radius:10px;
 }
 .back-btn:hover{ filter:brightness(0.95); }
 
@@ -89,7 +99,6 @@
   .detail__img{ width:100%; height:auto; max-height:420px; }
   .detail__img--empty{ width:100%; height:260px; }
   .detail .value-box{ width:100%; }
-  .detail__right{ margin-top:0; }
-  .detail__right .right-bar{ margin-left:0; width:100%; transform:none; }
-  .actions.actions--align{ margin-left:0; width:100%; justify-content:flex-end; }
+  .detail__box--right .right-bar{ margin-left:0; width:100%; }
+  .actions{ margin-left:0; width:100%; justify-content:flex-end; }
 }
