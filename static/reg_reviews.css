@@ -29,6 +29,7 @@ form {
     justify-content: center;
     margin-right: 20px;
     align-items: center;
+    border-radius: 10px;
 }
 
 .text_block {
@@ -43,6 +44,7 @@ form {
     width: 1000px;
     box-sizing: border-box;
     padding: 10px 10px;
+    border-radius: 10px;
 }
 
 .form_line {
