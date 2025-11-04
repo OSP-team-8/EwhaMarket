@@ -45,6 +45,7 @@ form {
     box-sizing: border-box;
     padding: 10px 10px;
     border-radius: 10px;
+    border-radius: 10px;
 }
 
 .form_line {
@@ -78,6 +79,7 @@ textarea {
     height: 50px;
     font-size: 25px;
     box-sizing: border-box;
+    border-radius: 10px;
 }
 
 .button {
@@ -88,6 +90,7 @@ textarea {
     margin-top: 20px;
     margin-left: 140px;
     width: 1000px;
+    border-radius: 10px;
 }
 
 #submit {
@@ -162,7 +165,7 @@ textarea {
     width:min(260px, 86vw);
     gap:8px;
     background: rgba(0, 100, 42, .9);
-    border-radius:12px;
+    border-radius:10px;
     box-shadow:0 8px 10px rgba(0,0,0,.12);
   }
   .navbar__menu.active{ display:flex; }
