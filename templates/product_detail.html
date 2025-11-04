@@ -2,7 +2,8 @@
 
 {% block head %}
   <title>상품 조회 상세 | 이화 마켓</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='product_detail.css') }}">
+  <link rel="stylesheet"
+        href="{{ url_for('static', filename='product_detail.css') }}?v={{ range(1,999999)|random }}">
 {% endblock head %}
 
 {% block section %}
@@ -26,19 +27,19 @@
   <div class="detail__right">
     <!-- 상품명 행 + 찜하기 -->
     <div class="right-bar">
-    <div class="wish">
-      <span>찜하기</span> |
-      <button class="heart" type="button" aria-label="찜하기" data-pid="{{ product.id }}">♡</button>
+      <div class="wish">
+        <span>찜하기</span> |
+        <button class="heart" type="button" aria-label="찜하기" data-pid="{{ product.id }}">♡</button>
+      </div>
     </div>
-  </div>
 
   <!-- 상품명 행 (value-box 안에 wish 없음!) -->
-  <div class="row row--name">
-    <div class="label-box">상품명</div>
-    <div class="value-box">
-      {{ product.name }}
+    <div class="row row--name">
+      <div class="label-box">상품명</div>
+      <div class="value-box">
+        {{ product.name }}
+      </div>
     </div>
-  </div>
 
     <div class="row">
       <div class="label-box">가격</div>
@@ -74,7 +75,7 @@
   </div>
 
   <!-- 하단 우측: 목록으로 -->
-  <div class="actions">
+  <div class="actions actions--align">
     <a class="back-btn" href="{{ url_for('view_list') }}">목록으로 돌아가기</a>
   </div>
 </div>

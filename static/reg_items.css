@@ -98,8 +98,3 @@
   .actions{ justify-content:center; }
   .page-title{ margin-left: 0; }   /* 모바일에서는 기본 정렬 */
 }
-
-/* (선택) 혹시 남아있는 placeholder를 화면에서 숨기고 싶다면 주석 해제
-::placeholder{ color: transparent; }
-textarea::placeholder{ color: transparent; }
-*/
