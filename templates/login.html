@@ -1,14 +1,11 @@
-<!doctype html>
-<html lang="ko">
-<head>
-  <meta charset="utf-8">
+{% extends "index.html" %}
+
+{% block head %}
   <title>로그인 | 이화 마켓</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-</head>
-<body>
+{% endblock head %}
 
-
+{% block section %}
   <section>
     <div class="login-wrap">
       <div class="login-title-bar">이화 마켓 로그인</div>
@@ -27,6 +24,4 @@
       <button type="button" class="btn btn-ewha login-email-btn">이메일 가입</button>
     </div>
   </section>
-
-</body>
-</html>
+{% endblock section %}
