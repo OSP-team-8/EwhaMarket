@@ -2,54 +2,53 @@
 
 {% block head %}
   <title>상품 조회 | 이화 마켓</title>
-  <!-- list 전용 CSS (static/list.css 위치) -->
+  <!-- list 전용 CSS -->
   <link rel="stylesheet" href="{{ url_for('static', filename='list.css') }}">
 {% endblock head %}
 
 {% block section %}
 <div class="container">
 
-  <!-- 상단: 제목/개수 + 검색 + 최신순 -->
-  <header class="product-header">
-    <h2 class="product-header__title">
-      상품 조회 | {{ products|length }}개
-    </h2>
+  <!-- 리뷰와 동일한 상단 라인 구조/클래스 -->
+  <div class="first_line">
+    <label id="review_all">상품 조회 | {{ products|length }}개</label>
 
-    <form class="search" method="get" action="{{ url_for('view_list') }}">
+    <form class="search_group" method="get" action="{{ url_for('view_list') }}">
+      <label for="search">검색 | </label>
       <input
-        class="search__bar"
-        type="text"
+        id="search"
+        type="search"
         name="q"
         placeholder="검색어를 입력하세요"
         value="{{ request.args.get('q','') }}"
         aria-label="검색어"
       />
       <button class="search__btn" type="submit" aria-label="검색">⌕</button>
-      <span class="search__sort">최신순</span>
     </form>
-  </header>
+
+    <a id="latest">최신순</a>
+  </div>
 
   <!-- 상품 카드 그리드 -->
-  <section class="product-grid">
+  <section class="review_container">
     {% if products %}
       {% for p in products %}
-        <article class="card" data-pid="{{ p.id }}">
-          <div class="card__namebar">
-            <span class="card__name" title="{{ p.name }}">{{ p.name }}</span>
-            <!-- data-liked는 초기 상태 표시용(로컬스토리지로 최종 반영) -->
+        <article class="review_set" data-pid="{{ p.id }}">
+          <label class="review_title" title="{{ p.name }}">
+            <!-- 우측 하트 -->
             <button
               class="card__heart"
               type="button"
               aria-label="찜하기"
               data-pid="{{ p.id }}"
               data-liked="false">♡</button>
-          </div>
+          </label>
 
-          <a class="card__imageLink" href="{{ url_for('product_detail', pid=p.id) }}">
+          <a class="review_link" href="{{ url_for('product_detail', pid=p.id) }}"><!-- ✅ 이미지 감싸는 링크 클래스 통일 -->
             {% if p.thumb %}
-              <div class="card__image"
-                  style="background-image:url('{{ url_for('static', filename=p.thumb) }}');">
-              </div>
+              <img
+                src="{{ url_for('static', filename=p.thumb) }}"
+                alt="{{ p.name }}">
             {% else %}
               <div class="card__image card__image--empty">이미지 없음</div>
             {% endif %}
@@ -61,7 +60,7 @@
     {% endif %}
   </section>
 
-  <!-- (데모) 페이지 네비게이션 - 아직 서버 페이징 전이라 링크는 # -->
+  <!-- 페이지 네비게이션 (리뷰와 동일) -->
   <nav class="pagination" aria-label="페이지네비게이션">
     <a class="page-btn" href="#">〈 이전</a>
     <a class="page is-active" href="#">1</a>
@@ -71,6 +70,40 @@
   </nav>
 </div>
 
-<!-- list 전용 JS (하트 토글: localStorage로 유지) -->
-<script defer src="{{ url_for('static', filename='product.js') }}"></script>
+<!-- 하트 토글 JS (동일) -->
+<script>
+  // 키 생성 헬퍼: 상품별로 wish 상태를 저장
+  const keyOf = (pid) => `wish:${pid}`;
+
+  // 초기화: 저장된 상태대로 하트 모양/색을 맞춤
+  function initHearts() {
+    document.querySelectorAll('.card__heart').forEach(btn => {
+      const pid = btn.dataset.pid;
+      const liked = localStorage.getItem(keyOf(pid)) === '1';
+      applyHeartState(btn, liked);
+      // 접근성: 스크린리더에 토글 상태 알려주기
+      btn.setAttribute('aria-pressed', liked ? 'true' : 'false');
+      // 클릭 핸들러
+      btn.addEventListener('click', () => {
+        const newLiked = !(btn.dataset.liked === 'true');
+        applyHeartState(btn, newLiked);
+        btn.setAttribute('aria-pressed', newLiked ? 'true' : 'false');
+        // 저장(새로고침/재방문 유지)
+        if (newLiked) localStorage.setItem(keyOf(pid), '1');
+        else localStorage.removeItem(keyOf(pid));
+      });
+    });
+  }
+
+  // 버튼에 시각 상태 반영(클래스/텍스트/데이터속성)
+  function applyHeartState(btn, liked) {
+    btn.dataset.liked = liked ? 'true' : 'false';
+    btn.classList.toggle('is-liked', liked);
+    btn.textContent = liked ? '♥' : '♡';
+  }
+
+  // DOM 준비되면 실행
+  document.addEventListener('DOMContentLoaded', initHearts);
+</script>
+
 {% endblock section %}

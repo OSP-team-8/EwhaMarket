@@ -6,25 +6,26 @@
 {% endblock head %}
 
 {% block section %}
-<h2 class="page-title">상품 등록</h2>
-
 <form class="reg-form" method="post" enctype="multipart/form-data" action="/submit_item">
+  
+  <label id="register_review">상품 등록</label><br><br>
+
   <!-- 상품명 -->
-  <div class="row">
-    <div class="label-box">상품명</div>
-    <input class="field-box" type="text" name="name" id="name" required>
+  <div class="form_line">
+    <label for="name" class="label_name">상품명</label>
+    <input type="text" name="name" id="name" class="text_block" required>
   </div>
 
   <!-- 가격 -->
-  <div class="row">
-    <div class="label-box">가격</div>
-    <input class="field-box" type="text" name="price" id="price" required>
+  <div class="form_line">
+    <label for="price" class="label_name">가격</label>
+    <input type="text" name="price" id="price" class="text_block" required>
   </div>
 
   <!-- 상태 (드롭다운) -->
-  <div class="row">
-    <div class="label-box">상태</div>
-    <select class="field-box select select-status" id="status" name="status" required>
+  <div class="form_line">
+    <label for="status" class="label_name">상태</label>
+    <select id="status" name="status" class="text_block select-short" required>
       <option value="new" selected>새 상품</option>
       <option value="lnew">양호</option>
       <option value="used">중고</option>
@@ -32,11 +33,11 @@
   </div>
 
   <!-- 지역 (드롭다운 + 상세주소) -->
-  <div class="row">
-    <div class="label-box">지역</div>
-    <div class="flex">
-      <select class="field-box select select-region" id="region" name="region" required>
-        <option value="서울특별시" selected>서울특별시</option>
+  <div class="form_line">
+    <label for="region" class="label_name">지역</label>
+    <div class="inline_group">
+      <select id="region" name="region" class="text_block select-short" required>
+        <option value="서울특별시" selected>서울특별자치시</option>
         <option value="경기도">경기도</option>
         <option value="인천광역시">인천광역시</option>
         <option value="부산광역시">부산광역시</option>
@@ -54,60 +55,46 @@
         <option value="경상남도">경상남도</option>
         <option value="제주특별자치도">제주특별자치도</option>
       </select>
-      <input class="field-box addr" type="text" name="addr" id="addr">
+      <input type="text" name="addr" id="addr" class="text_block addr-flex" placeholder="상세 주소">
     </div>
   </div>
 
   <!-- 설명 -->
-  <div class="row">
-    <div class="label-box">설명</div>
-    <textarea class="field-box textarea" name="desc" id="desc" rows="5"></textarea>
+  <div class="form_line align_top">
+    <label for="desc" class="label_name">설명</label>
+    <textarea name="desc" id="desc" required></textarea>
   </div>
 
   <!-- 판매자 ID -->
-  <div class="row">
-    <div class="label-box">판매자 ID</div>
-    <input class="field-box" type="text" name="seller" id="seller" required>
+  <div class="form_line">
+    <label for="seller" class="label_name">판매자</label>
+    <input type="text" name="seller" id="seller" class="text_block" required>
   </div>
 
   <!-- 전화번호 -->
-  <div class="row">
-    <div class="label-box">전화번호</div>
-    <input class="field-box" type="text" name="phone" id="phone">
+  <div class="form_line">
+    <label for="phone" class="label_name">전화</label>
+    <input type="text" name="phone" id="phone" class="text_block">
   </div>
 
   <!-- 사진 업로드 -->
-  <div class="row">
-    <div class="label-box">사진</div>
-    <div class="flex">
-      <label class="btn-file">
-        사진 선택
-        <input type="file" name="file" id="file" accept="image/*">
-      </label>
-      <span class="file-name" id="fileName"></span>
-    </div>
+  <div class="form_line">
+    <label for="image_file" class="label_name">사진</label>
+    <input type="file" id="image_file" name="file"><br>
   </div>
 
-  <!-- 제출/취소 -->
-  <div class="actions">
-    <button class="btn submit" type="submit">등록</button>
-    <button class="btn cancel" type="button" onclick="history.back()">취소</button>
+  <div class="button">
+    <button type="submit" id="submit">등록</button>
+    <button type="button" id="cancel" onclick="history.back()">취소</button>
   </div>
 
+  <!-- 기존 hidden 유지 -->
   <input type="hidden" name="category" value="ETC">
   <input type="hidden" name="card" value="Y">
 </form>
 {% endblock section %}
 
-{% block extra_js %}
-<script>
-  // 파일명 표시
-  const fileInput = document.getElementById('file');
-  const fileName  = document.getElementById('fileName');
-  if (fileInput && fileName) {
-    fileInput.addEventListener('change', () => {
-      fileName.textContent = fileInput.files?.[0]?.name || '';
-    });
-  }
-</script>
-{% endblock extra_js %}
+
+
+
+
