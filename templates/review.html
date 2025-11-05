@@ -8,22 +8,24 @@
 
         <div class="search_group">
             <label for="search">검색 | </label>
-            <input type="search" name="검색" id="search" placeholder="검색어를 입력하세요">   
+            <input type="search" name="검색" id="search" placeholder="검색어를 입력하세요">
+            <button class="search__btn" type="submit" aria-label="검색">⌕</button>
         </div>
-        
+
         <a id="latest">최신순</a>
     </div>
 
-    <div class="review_container"> 
+        <div class="review_container"> 
 
-        <a href="/review_detail" class="review_link">
             <div class="review_set">
-                    <label class="review_title">공기청정기 그냥 그렇네요</label>
+                <label class="review_title">공기청정기 그냥 그렇네요</label>
+                <a href="/review_detail" class="review_link">
                     <img src="{{ url_for('static', filename='images/공기청정기.png') }}">
+                </a>
             </div>
         </a>
         <a href="#">
-            <div class="review_set">
+             <div class="review_set">
                 <label class="review_title">드라이기 최고!</label>
                 <img src="{{ url_for('static', filename='images/드라이기.png') }}">
             </div>
@@ -53,17 +55,14 @@
             </div>
         </a>
     </div>
-    
-        <div class="page_change">
-        <a>&lt; 이전</a>
-        <a href="#" class="active">1</a>
-        <a href="#">2</a>
-        <a href="#">3</a>
-        <a href="#">4</a>
-        <a href="#">5</a>
-        <a href="#">6</a>
-        <a>다음 &gt;</a>
-    </div>
+
+    <nav class="pagination" aria-label="페이지네비게이션">
+        <a class="page-btn" href="#">〈 이전</a>
+        <a class="page is-active" href="#">1</a>
+        <a class="page" href="#">2</a>
+        <a class="page" href="#">3</a>
+        <a class="page-btn" href="#">다음 〉</a>
+    </nav>
 
 </form>
 
