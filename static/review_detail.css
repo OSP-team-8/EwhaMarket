@@ -1,39 +1,44 @@
 .review_container {
     max-width: 1200px;
-    font-size: 25px;
+    font-size: 20px;
     font-family: Inter;
     font-weight: 400;
     width: 100%;
     margin: 30px auto;
     display: flex;
     flex-direction: column;
-    align-items: center;
+    padding: 0 16px;
+    box-sizing: border-box;
 }
 
 #page_title {
     font-size: 25px;
-    font-weight: 600;
+    font-weight: 700;
     color: black;
-
     align-self: flex-start;
+    margin-bottom: 18px;
 }
 
 .review_img {
     display: flex;
     justify-content: center;
-    align-items: flex-start;
-    width: 450px;
-    height: 300px;
-    border: 1px solid black;
+    align-items: center;
+    width: 400px;
+    aspect-ratio: 4 / 3;
     flex-shrink: 0;
     border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid black;
+    background: white;
 }
 
 .review_img img {
     width: 100%;
-    height: auto;
-    object-fit: contain;
+    object-fit: cover;
+    object-position: center;
+    transform: scale(1.15);
     display: block;
+    border: none;
 }
 
 .review_top {
@@ -53,7 +58,7 @@
 
 .label_name {
     color: white;
-    font-size: 25px;
+    font-size: 20px;
     font-family: Inter;
     font-weight: 700;
     word-wrap: break-word;
@@ -70,14 +75,14 @@
 
 .text_block {
     color: black;
-    font-size: 25px;
+    font-size: 20px;
     font-family: Inter;
     font-weight: 400;
     word-wrap: break-word;
     background: white;
     border: 2px #00642A solid;
     height: 50px;
-    width: 600px;
+    flex: 1;
     box-sizing: border-box;
     padding: 10px 10px;
     border-radius: 10px;
@@ -95,7 +100,7 @@
 
 #review_content {
     color: rgb(89, 51, 51);
-    font-size: 25px;
+    font-size: 20px;
     font-family: Inter;
     font-weight: 400;
     word-wrap: break-word;
@@ -111,7 +116,7 @@
 
 #back {
     color: #04620A;
-    font-size: 25px;
+    font-size: 20px;
     font-family: Inter;
     font-weight: 700;
     word-wrap: break-word;
@@ -121,10 +126,25 @@
     box-sizing: border-box;
     border: 2px solid #00462A;
     border-radius: 10px;
-    justify-content: right;
 }
+
+#back a {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    text-decoration: none;
+    color: #00462A;
+    font-size: 20px;
+    font-weight: 700;
+    font-family: Inter;
+}
+
 #back:hover {
-    background: #006c3a;
+    background: #00462A;
+}
+
+#back:hover a {
     color: white;
 }
 
@@ -158,7 +178,7 @@
 
 #star_score {
     color: #000000;
-    font-size: 25px;
+    font-size: 20px;
     margin-left: 10px;
 }
 
@@ -166,24 +186,42 @@
     display: flex;
     justify-content: flex-end;
     width: 100%;
+    margin-top: 20px;
 }
 
 
 /* ====== 반응형 (모바일 메뉴) ====== */
-@media (max-width: 768px){
-  .navbar__menu{
-    position:absolute;
-    right:16px;
-    top:58px;
-    display:none;
-    flex-direction:column;
-    align-items: center;
-    width:min(260px, 86vw);
-    gap:8px;
-    background: rgba(0, 100, 42, .9);
-    border-radius:10px;
-    box-shadow:0 8px 10px rgba(0,0,0,.12);
-  }
-  .navbar__menu.active{ display:flex; }
-  .navbar__toogleBtn{ display:block; }
+@media (max-width: 768px) {
+    .review_top {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 15px;
+    }
+
+    .review_img {
+        width: 100%;
+    }
+
+    .form_line {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+    }
+
+    .label_name {
+        width: 100%;
+        margin-right: 0;
+    }
+
+    #review_content {
+        width: 100%;
+    }
+
+    .btn_box {
+        justify-content: stretch;
+    }
+
+    #back {
+        width: 100%;
+    }
 }

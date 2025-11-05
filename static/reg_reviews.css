@@ -5,14 +5,18 @@ form {
     width: 100%;
     margin: 30px auto;
     max-width: 1200px;
+    padding: 0 16px;
+    box-sizing: border-box;
 }
 
 #register_review {
     color: black;
     font-size: 25px;
     font-family: Inter;
-    font-weight: 400;
+    font-weight: 700;
     word-wrap: break-word;
+    display: block;
+    margin-bottom: 18px;
 }
 
 .label_name {
