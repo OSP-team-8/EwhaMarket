@@ -22,7 +22,8 @@
             <li><a href="/reg_items" class="{{ 'active' if request.path == '/reg_items' else ''}}">상품등록</a></li>
             <li><a href="/review" class="{{ 'active' if request.path == '/review' else ''}}">리뷰조회</a></li>
             <li><a href="/reg_reviews" class="{{ 'active' if request.path == '/reg_reviews' else ''}}">리뷰등록</a></li>
-            <li><a href="/favorites" id="user" class="{{ 'active' if request.path == '/favorites' else ''}}">김이화_님</a></li>
+            <li><a id="user">김이화_님</a></li>
+            <li><a href="/wishlist" class="{{ 'active' if request.path == '/wishlist' else ''}}">찜</a></li>
             <li><a href="/logout" class="{{ 'active' if request.path == '/logout' else ''}}">로그아웃</a></li>
         </ul>
         <a href="#" class="navbar__toogleBtn">
