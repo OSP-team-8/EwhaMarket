@@ -46,9 +46,17 @@ def product_detail(pid):
         abort(404)
     return render_template("product_detail.html", product=product)
 
+@application.route("/product_detail")
+def view_product_detail():
+    return render_template("product_detail.html")
+
 @application.route("/review")
 def view_review():
     return render_template("review.html")
+
+@application.route("/review_detail")
+def view_review_detail():
+    return render_template("review_detail.html")
 
 @application.route("/reg_items")
 def reg_item():
@@ -58,6 +66,13 @@ def reg_item():
 def reg_review():
     return render_template("reg_reviews.html")
 
+@application.route("/login")
+def view_login():
+    return render_template("login.html")
+
+@application.route("/signup")
+def view_signup():
+    return render_template("signup.html")
 
 @application.route("/submit_item", methods=['POST'])
 def reg_item_submit():
