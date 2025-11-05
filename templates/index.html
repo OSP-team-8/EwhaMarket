@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">
+    <script src="{{ url_for('static', filename='main.js') }}" defer></script>
     
     {% block head%}
     <title>Home</title>
@@ -24,6 +25,9 @@
             <li><a href="/favorites" id="user" class="{{ 'active' if request.path == '/favorites' else ''}}">김이화_님</a></li>
             <li><a href="/logout" class="{{ 'active' if request.path == '/logout' else ''}}">로그아웃</a></li>
         </ul>
+        <a href="#" class="navbar__toogleBtn">
+            <i class="fas fa-bars"></i>
+        </a>
     </nav>
 <section>
     {% block section %}

@@ -1,39 +1,153 @@
+/* ===== 공통 토큰 (reg_reviews.css 스타일에 맞춤) ===== */
 :root{
   --green:#00462A;
   --green-2:#00642A;
   --border:#00642A;
   --white:#fff;
-  --label-w:120px;       /* 라벨 width */
-  --label-gap:10px;      /* 라벨-필드 사이 간격(.row의 gap) */
+  --label-w:120px;          /* 라벨 width */
+  --label-gap:20px;         /* 라벨-필드 간 간격 */
 }
 
-/* 제목: 라벨 왼쪽선과 정렬 */
+/* 제목: 라벨선에 정렬 (reg_reviews의 #register_review 톤) */
 .page-title{
+  display:block;
   margin: 16px 0 14px;
-  font-size: 22px;
-  font-weight: 700;
-  /* 라벨 폭 + 라벨/필드 간격만큼 밀어 정렬 */
-  margin-left: calc(var(--label-w) + var(--label-gap));
+  font-size: 30px;          /* reg_reviews 기준 */
+  font-weight: 400;
+  margin-left: calc(var(--label-w) + var(--label-gap)); /* 120 + 20 = 140px */
 }
 
-/* 폼 */
-.reg-form{
-  max-width: 1120px;
-  margin: 0 auto 40px;
+/* 폼 래퍼 (reg_reviews의 form 레이아웃) */
+.reg-form {
+  font-size: 25px;
+  font-family: Inter, system-ui, -apple-system, "Noto Sans KR", Arial, sans-serif;
+  font-weight: 400;
+  width: 100%;
+  margin: 30px auto 40px;
+  max-width: 1200px;
   display: flex;
   flex-direction: column;
   gap: 12px;
+
+  
 }
 
-.row{ display:flex; align-items:center; gap: var(--label-gap); }
+/* 한 줄 레이아웃 */
+.row{
+  display:flex;
+  align-items:center;
+  gap: var(--label-gap);
+  margin-bottom: 10px;
+}
 
-/* 라벨 */
+/* 라벨 박스 (reg_reviews의 .label_name 룩) */
 .label-box{
   width: var(--label-w);
   height: 50px;
   flex-shrink: 0;
+  display:flex; align-items:center; justify-content:center;
+  color: var(--white);
+  background: var(--green);
+  font-weight: 700;
+  font-size: 25px;
+  box-sizing: border-box;
+  border-radius: 10px;     
+}
+
+/* 입력 공통 (reg_reviews의 .text_block/textarea 룩) */
+.field-box{
+  color: #000;
+  font-size: 25px;
+  font-family: inherit;
+  font-weight: 400;
+  background: #fff;
+  border: 2px var(--border) solid;
+  height: 50px;
+  width: 1000px;
+  box-sizing: border-box;
+  padding: 10px 10px;
+  outline: none;
+  border-radius: 10px;     
+}
+
+/* 드롭다운 */
+.select{
+  appearance:auto;
+}
+.select-status{ width: 180px; height: 50px; } /* 상태 셀렉트 */
+
+.select-status:focus {
+  outline: none;               /* 기본 파란 하이라이트 제거 */
+  border: 1px solid #000;      /* 클릭 시 검은색 1px 테두리 */
+  box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1); /* 살짝 강조 효과 (선택사항) */
+}
+
+
+.select-region{ width: 180px; height: 50px; } /* 지역 셀렉트 */
+.addr{ width: 800px; }                         /* 상세 주소 */
+
+/* 텍스트영역 */
+.textarea{
+  height: 200px;
+  width: 1000px;
+  padding: 10px 10px;
+  resize: vertical;
+}
+
+/* 파일 업로드 (reg_reviews의 #image_file 느낌으로) */
+.flex{ display:flex; align-items:center; gap: 10px; }
+
+.btn-file{
+  width: 320px;
+  height: 50px;
+  display:flex; align-items:center; justify-content:center;
+  font-size: 25px;
+  background-color:#F2F2F2;
+  color:#000;
+  border: 4px solid var(--border);
+  border-radius: 0;
+  cursor:pointer;
+  position: relative;
+  box-sizing: border-box;
+  user-select:none;
+  font-weight: 700;
+}
+.btn-file input[type="file"]{
+  position:absolute; inset:0; opacity:0; cursor:pointer;
+}
+.file-name{ color:#666; font-size: 16px; }
+
+/* 버튼 영역 (reg_reviews의 .button 정렬) */
+.actions{
+  display:flex;
+  justify-content:flex-end;
+  align-items:center;
+  gap: 20px;
+  margin-top: 20px;
+  /* 라벨 폭만큼 들여쓰기 + 필드폭 정렬 */
+  margin-left: calc(var(--label-w) + var(--label-gap)); /* 140px */
+  width: 1000px; /* 필드와 동일 폭 */
+}
+
+/* 버튼 룩 (submit/cancel) */
+.btn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width: 120px;
+  height: 50px;
+  font-size: 25px;
+  font-family: inherit;
+  font-weight: 700;
+  box-sizing: border-box;
+  border-radius: 10px;
+  cursor: pointer;
+  border: 0;
+}
+.submit{
   background: var(--green);
   color: var(--white);
+<<<<<<< HEAD
   display:flex; align-items:center; justify-content:center;
   border-radius: 10px;
   font-weight: 600;
@@ -83,18 +197,28 @@
 }
 .submit{ background:var(--green); color:#fff; }
 /* 취소: 흰 배경 + 초록 테두리/글자 */
+=======
+}
+>>>>>>> cc2f72185aafaa61be04af97e3face02e4bef723
 .cancel{
-  background:#fff;
-  color:var(--green);
-  border:2px solid var(--green);
+  background: #fff;
+  color: var(--green);
+  border: 2px solid var(--green);
 }
 
-/* 반응형 */
+/* 반응형 (reg_reviews 논리와 동일) */
 @media (max-width: 980px){
-  .reg-form{ padding:0 12px; }
-  .field-box{ width:100%; }
-  .select-region{ width:40%; min-width:150px; }
-  .addr{ width:60%; }
-  .actions{ justify-content:center; }
-  .page-title{ margin-left: 0; }   /* 모바일에서는 기본 정렬 */
+  .reg-form{ padding: 0 12px; }
+  .row{ flex-wrap: wrap; }
+  .field-box,
+  .textarea{ width: 100%; }
+  .select-region{ width: 40%; min-width: 150px; }
+  .addr{ width: 60%; min-width: 180px; }
+  .page-title{ margin-left: 0; font-size: 24px; }
+  .actions{
+    width: 100%;
+    margin-left: 0;
+    justify-content: center;
+  }
 }
+
