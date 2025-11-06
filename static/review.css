@@ -8,9 +8,10 @@
 
 form {
     width: 100%;
-    margin: 24px auto 60px;
+    margin: 30px auto;
     max-width: 1200px;
     padding: 0 16px;
+    box-sizing: border-box;
 }
 
 #review_all {

@@ -5,6 +5,8 @@ form {
     width: 100%;
     margin: 30px auto;
     max-width: 1200px;
+    padding: 0 16px;
+    box-sizing: border-box;
 }
 
 #register_review {
@@ -13,6 +15,8 @@ form {
     font-family: Inter;
     font-weight: 700;
     word-wrap: break-word;
+    display: block;
+    margin-bottom: 18px;
 }
 
 .label_name {
