@@ -141,7 +141,7 @@
 }
 
 #back:hover {
-    background: #00462A;
+    filter:brightness(0.95);
 }
 
 #back:hover a {
