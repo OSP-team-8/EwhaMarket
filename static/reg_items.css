@@ -15,11 +15,11 @@ form {
   max-width: 1200px;
 }
 
-#register_review {
+#register_items{
   color: black;
   font-size: 25px;
   font-family: Inter;
-  font-weight: 400;
+  font-weight: 700;
   word-wrap: break-word;
 }
 

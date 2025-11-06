@@ -11,7 +11,7 @@
 
   <!-- 리뷰와 동일한 상단 라인 구조/클래스 -->
   <div class="first_line">
-    <label id="review_all">상품 조회 | {{ products|length }}개</label>
+    <label id="items_all">상품 조회 | {{ products|length }}개</label>
 
     <form class="search_group" method="get" action="{{ url_for('view_list') }}">
       <label for="search">검색 | </label>
@@ -35,7 +35,8 @@
       {% for p in products %}
         <article class="review_set" data-pid="{{ p.id }}">
           <label class="review_title" title="{{ p.name }}">
-            <!-- 우측 하트 -->
+            <span class="review_title__name">{{ p.name }}</span>
+
             <button
               class="card__heart"
               type="button"
@@ -44,7 +45,7 @@
               data-liked="false">♡</button>
           </label>
 
-          <a class="review_link" href="{{ url_for('product_detail', pid=p.id) }}"><!-- ✅ 이미지 감싸는 링크 클래스 통일 -->
+          <a class="review_link" href="{{ url_for('product_detail', pid=p.id) }}"><!--  이미지 감싸는 링크 클래스 통일 -->
             {% if p.thumb %}
               <img
                 src="{{ url_for('static', filename=p.thumb) }}"

@@ -29,7 +29,7 @@ def find_product(pid):
 
 @application.route("/")
 def hello():
-    return render_template("index.html") #index.html을 홈화면에 연결
+    return render_template("login.html") #index.html을 홈화면에 연결
 
 @application.route("/list")
 def view_list():

@@ -18,7 +18,7 @@ html, body { margin: 0; padding: 0; font-family: Inter, sans-serif; }
 }
 
 /* 상단 라인 */
-#review_all {
+#items_all {
   font-weight: 700;
 }
 
@@ -92,6 +92,7 @@ html, body { margin: 0; padding: 0; font-family: Inter, sans-serif; }
 
 .review_set {
   width: 100%;
+  /* (참고) 기존 코드 유지: flex-direction/align-items 사용 중이지만 display 지정 없음 */
   flex-direction: column;
   align-items: center;
   border-radius: 10px;
@@ -112,14 +113,24 @@ html, body { margin: 0; padding: 0; font-family: Inter, sans-serif; }
   height: 40px;
   display: flex;
   box-sizing: border-box;
-  justify-content: space-between; 
+  justify-content: flex-start;   /* ← 왼쪽 정렬 */
   align-items: center;
   padding: 0 15px;
-  gap: 10px;
+  gap: 0;                        /* ← 요청: 0 */
 }
 
-/* 하트 버튼 */
+
+.review_title__name {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+
 .card__heart {
+  margin-left: auto;             /* ← 오른쪽 끝 배치 */
   background: transparent;
   border: 0;
   cursor: pointer;
