@@ -30,7 +30,7 @@
   </div>
 
   <!-- 상품 카드 그리드 -->
-  <section class="review_container">
+  <div class="review_container">
     {% if products %}
       {% for p in products %}
         <article class="review_set" data-pid="{{ p.id }}">
@@ -59,7 +59,7 @@
     {% else %}
       <p class="empty">등록된 상품이 없습니다.</p>
     {% endif %}
-  </section>
+  </div>
 
   <!-- 페이지 네비게이션 (리뷰와 동일) -->
   <nav class="pagination" aria-label="페이지네비게이션">

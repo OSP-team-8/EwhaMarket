@@ -8,7 +8,7 @@
 
 form {
     width: 100%;
-    margin: 30px auto;
+    margin: 24px auto 60px;
     max-width: 1200px;
     padding: 0 16px;
     box-sizing: border-box;
@@ -90,7 +90,6 @@ form {
 }
 
 .pagination {
-  margin-top: 26px;
   display: flex;
   justify-content: center;
   align-items: center;

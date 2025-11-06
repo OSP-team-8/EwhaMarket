@@ -169,7 +169,7 @@ html, body { margin: 0; padding: 0; font-family: Inter, sans-serif; }
 }
 
 /* 페이지 네비게이션*/
-.pagination {
+.container .pagination {
   margin-top: 26px;
   display: flex;
   justify-content: center;
