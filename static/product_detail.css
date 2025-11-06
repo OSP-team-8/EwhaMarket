@@ -20,8 +20,8 @@
   margin-bottom: 18px;
   max-width: 1200px;
   align-items: start;
-  padding:0 16px;
-  
+  padding: 0 16px;
+  margin: 30px auto;
 }
 
 /* 레이아웃: 좌/우 2박스 상단 정렬 */
@@ -82,36 +82,33 @@
 }
 
 /* 찜하기 버튼 */
-.wish{ display:flex; align-items:center; gap:8px; white-space:nowrap; font-size:18px; line-height:1; }
+.wish{ display:flex; justify-content: flex-end; align-items: center; gap:8px; white-space:nowrap; font-size:18px; line-height:1; }
 .heart{ background:transparent; border:0; cursor:pointer; font-size:26px; color:red; line-height:1; }
 
 /* [RIGHT] 목록으로 버튼 */
-.actions{
-  max-width: 1200px;
-  color: #04620A;
-  font-size: 20px;
-  font-family: Inter;
-  font-weight: 700;
-  word-wrap: break-word;
-  background: white;
-  width: 250px;
-  height: 50px;
-  box-sizing: border-box;
-  border: 2px solid #00462A;
-  border-radius: 10px;
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  max-width: 1200px;       
+  padding: 0 16px;           
 }
-.back-btn{
+
+.back-btn {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100%;
-  text-decoration: none;
+  width: 250px;
+  height: 50px;
+  background: white;
+  border: 2px solid #00462A;
+  border-radius: 10px;
   color: #00462A;
   font-size: 20px;
   font-weight: 700;
   font-family: Inter;
+  text-decoration: none;
 }
-
 
 .back-btn:hover{ filter:brightness(0.95); }
 

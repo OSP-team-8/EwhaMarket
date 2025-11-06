@@ -145,15 +145,15 @@
 }
 
 #back:hover a {
-    color: white;
+    color: #00462A;
 }
 
 .star_rating {
     display: flex;
     font-size: 30px;
     gap: 6px;
-    margin-right: 14px;
-    align-items: center;
+    margin-right: 5px;
+    align-items: flex-start;
     border: none;
     border-radius: 10px;
     width: 300px;
@@ -179,7 +179,7 @@
 #star_score {
     color: #000000;
     font-size: 20px;
-    margin-left: 10px;
+    margin-left: 0;
 }
 
 .btn_box {
