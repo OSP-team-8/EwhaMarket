@@ -141,11 +141,11 @@
 }
 
 #back:hover {
-    background: #00462A;
+    filter:brightness(0.95);
 }
 
 #back:hover a {
-    color: white;
+    color: #00462A;
 }
 
 .star_rating {
@@ -153,10 +153,9 @@
     font-size: 30px;
     gap: 6px;
     margin-right: 14px;
-    align-items: center;
+    align-items: flex-start;
     border: none;
     border-radius: 10px;
-    width: 300px;
     cursor: pointer;
 }
 

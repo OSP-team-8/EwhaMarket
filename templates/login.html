@@ -1,32 +1,25 @@
-<!doctype html>
-<html lang="ko">
-<head>
-  <meta charset="utf-8">
+{% extends "index.html" %}
+
+{% block head %}
   <title>로그인 | 이화 마켓</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-</head>
-<body>
+{% endblock head %}
 
-
+{% block section %}
   <section>
     <div class="login-wrap">
       <div class="login-title-bar">이화 마켓 로그인</div>
 
-      <form method="POST" action="/login" class="login-form">
-        <input type="email" name="email" class="login-input" placeholder="이메일 입력" required>
-        <input type="password" name="password" class="login-input" placeholder="비밀번호 입력" required>
+      <form method="POST" action="/login" class="login-form" novalidate>
+        <input type="email" name="email" class="login-input" placeholder="이메일 입력" aria-label="이메일" required>
+        <input type="password" name="password" class="login-input" placeholder="비밀번호 입력" aria-label="비밀번호" required>
 
         <button type="submit" class="btn btn-ewha login-btn">로그인</button>
       </form>
 
-      <a href="#" class="login-link-small">비밀번호 찾기</a>
-
       <div class="login-divider"><span>회원가입</span></div>
 
-      <button type="button" class="btn btn-ewha login-email-btn">이메일 가입</button>
+      <a href="{{ url_for('view_signup') }}" class="btn btn-ewha login-email-btn">이메일 가입</a>
     </div>
   </section>
-
-</body>
-</html>
+{% endblock section %}

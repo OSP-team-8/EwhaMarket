@@ -29,7 +29,7 @@ def find_product(pid):
 
 @application.route("/")
 def hello():
-    return render_template("index.html") #index.html을 홈화면에 연결
+    return render_template("login.html") #index.html을 홈화면에 연결
 
 @application.route("/list")
 def view_list():
@@ -73,6 +73,10 @@ def view_login():
 @application.route("/signup")
 def view_signup():
     return render_template("signup.html")
+
+@application.route("/wishlist")
+def view_wishlist():
+    return render_template("wishlist.html")
 
 @application.route("/submit_item", methods=['POST'])
 def reg_item_submit():

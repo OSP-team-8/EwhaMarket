@@ -1,11 +1,12 @@
 /* ====== 기본 셋업 ====== */
 :root{
-  --ewha-green: #136c3a;      /* 이화 그린 */
-  --ewha-green-dark:#0f5a31;
-  --ewha-green-soft:#e7f3ec;
+  --ewha-green: #00462A;          /* 메인 그린 통일 */
+  --ewha-green-dark:#003a22;      /* 메인 그린의 어둡게 */
+  --ewha-green-soft:#e7f3ec;      /* 연한 톤은 유지 */
   --text:#222;
   --muted:#666;
   --white:#fff;
+  --radius: 10px;                 /* 둥근 모서리 통일 */
 }
 
 *{ box-sizing:border-box; }
@@ -29,6 +30,7 @@ body{
   background:var(--ewha-green);
   color:var(--white);
   box-shadow:0 2px 6px rgba(0,0,0,.08);
+  border-radius: 0; /* 상단 바는 직선 유지 */
 }
 
 .navbar a{ color:var(--white); text-decoration:none; }
@@ -48,18 +50,20 @@ body{
 
 .navbar__menu a{
   padding:8px 10px;
-  border-radius:8px;
+  border-radius: var(--radius);
   transition: background .2s ease;
 }
 .navbar__menu a:hover{
   background:rgba(255,255,255,.15);
 }
 
-.navbar__toogleBtn{
+/* 오타 보완: 프로젝트에 toogleBtn 으로 쓰였기에 둘 다 지원 */
+.navbar__toogleBtn,
+.navbar__toggleBtn{
   display:none;          /* 데스크탑에선 숨김 */
   font-size:22px;
   padding:6px 10px;
-  border-radius:8px;
+  border-radius: var(--radius);
   background:rgba(255,255,255,.15);
   cursor:pointer;
   user-select:none;
@@ -76,7 +80,7 @@ section{
 .card{
   background:#fff;
   border:1px solid #eee;
-  border-radius:14px;
+  border-radius: var(--radius);
   padding:18px 16px;
   box-shadow:0 2px 10px rgba(0,0,0,.04);
 }
@@ -85,21 +89,27 @@ section{
 form{
   background: var(--ewha-green-soft);
   border:1px solid #d7e9df;
-  border-radius:14px;
+  border-radius: var(--radius);
   padding:20px;
 }
 
-label{ display:inline-block; min-width:130px; color:var(--ewha-green-dark); }
+label{
+  display:inline-block;
+  min-width:130px;
+  color:var(--ewha-green-dark);
+}
+
 input[type="text"], select, input[type="file"]{
   width: clamp(240px, 60%, 520px);
   padding:10px 12px;
   border:1px solid #d0d7de;
-  border-radius:10px;
+  border-radius: var(--radius);
   outline:none;
+  background:#fff;
 }
 input[type="text"]:focus, select:focus{
   border-color: var(--ewha-green);
-  box-shadow: 0 0 0 3px rgba(19,108,58,.12);
+  box-shadow: 0 0 0 3px rgba(0,70,42,.12);
 }
 
 input[type="submit"], .btn{
@@ -108,7 +118,7 @@ input[type="submit"], .btn{
   background:var(--ewha-green);
   color:var(--white);
   border:none;
-  border-radius:10px;
+  border-radius: var(--radius);
   cursor:pointer;
   font-weight:600;
 }
@@ -116,8 +126,19 @@ input[type="submit"]:hover, .btn:hover{
   background:var(--ewha-green-dark);
 }
 
+/* 공통 버튼 유틸 */
+.btn-ewha{
+  background: var(--ewha-green);
+  color: var(--white);
+  border: none;
+  border-radius: var(--radius);
+  cursor: pointer;
+  font-weight: 600;
+}
+.btn-ewha:hover{ background: var(--ewha-green-dark); }
+
 /* ====== 이미지 응답형 ====== */
-img{ max-width:100%; height:auto; border-radius:12px; }
+img{ max-width:100%; height:auto; border-radius: var(--radius); }
 
 /* ====== 푸터(필요 시) ====== */
 footer{
@@ -138,65 +159,92 @@ footer{
     gap:8px;
     background:var(--ewha-green);
     padding:12px;
-    border-radius:12px;
+    border-radius: var(--radius);
     box-shadow:0 8px 20px rgba(0,0,0,.12);
   }
   .navbar__menu.active{ display:flex; }
-  .navbar__toogleBtn{ display:block; }
+  .navbar__toogleBtn,
+  .navbar__toggleBtn{ display:block; }
 }
 
-.login-wrap{
+/* =========================================================
+   AUTH 통일(로그인/회원가입 공통 규칙 → 스타일 일관성 확보)
+   ========================================================= */
+
+/* 래퍼 폭 통일: 로그인/회원가입 둘 다 460px */
+.login-wrap,
+.signup-wrap{
   width: 100%;
-  max-width: 360px;
-  margin: 80px auto 120px;
+  max-width: 460px;
+  margin: 80px auto;
   text-align: center;
 }
 
-
-.login-title-bar{
+/* 타이틀 바 통일 */
+.login-title-bar,
+.signup-title-bar{
   background: var(--ewha-green);
   color: var(--white);
-  font-size: 16px;
   font-weight: 700;
   padding: 10px 0;
-  margin-bottom: 20px;
+  margin-bottom: 24px;
+  font-size: 16px;
+  border-radius: var(--radius);
 }
 
-
-.login-form{
+/* 폼 컨테이너 통일(회색 카드 배경 제거) */
+.login-form,
+.signup-form{
   background: transparent !important;
   border: none !important;
   padding: 0 !important;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 12px;
 }
 
-
-.login-input{
+/* 인풋 통일 */
+.login-input,
+.signup-input{
   width: 100%;
-  background: #e6e6e6;           
-  border: none;
-  padding: 12px 14px;
-  font-size: 14px;
+  background:#e6e6e6;
+  border:1px solid #d0d7de;
+  padding:12px;
+  font-size:14px;
+  border-radius: var(--radius);
   outline: none;
 }
-
-
-.btn-ewha{
-  background: var(--ewha-green);
-  color: var(--white);
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-weight: 600;
+.login-input:focus,
+.signup-input:focus{
+  border-color: var(--ewha-green);
+  box-shadow: 0 0 0 3px rgba(0,70,42,.12);
 }
-.btn-ewha:hover{ background: var(--ewha-green-dark); }
 
-.login-btn{ width: 100%; padding: 10px; margin-top: 6px; }
-.login-email-btn{ width: 100%; padding: 10px; margin-top: 8px; }
+/* 버튼 통일 */
+.login-btn,
+.signup-btn{
+  width: 100%;
+  padding: 12px;
+  margin-top: 10px;
+  border-radius: var(--radius);
+}
 
+/* 로그인 전용 추가 버튼도 동일 느낌 */
+.login-email-btn{
+  width: 100%;
+  padding: 12px;
+  margin-top: 8px;
+  border-radius: var(--radius);
+}
 
+/* 이름/성 두 칸 레이아웃 유지 */
+.signup-name-row{
+  display:flex;
+  gap:10px;
+}
+.signup-input.half{ width:100%; }
+
+/* 로그인: 링크/구분선 */
 .login-link-small{
   display: inline-block;
   margin: 10px 0 8px;
@@ -205,9 +253,10 @@ footer{
   text-decoration: none;
 }
 
-
 .login-divider{
-  display: flex; align-items: center; justify-content: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   margin: 14px 0 10px;
 }
 .login-divider::before,
@@ -220,89 +269,13 @@ footer{
   margin: 0 10px;
   font-size: 14px;
   color: var(--text);
+  background:#fff;
+  padding:0 6px;
+  border-radius: var(--radius);
 }
 
-/* ====== SIGNUP PAGE ====== */
-.signup-wrap{
-  width: 100%;
-  max-width: 460px;
-  margin: 80px auto;
-  text-align: center;
-}
-
-.signup-title-bar{
-  background: var(--ewha-green);
-  color: var(--white);
-  font-weight: 700;
-  padding: 10px 0;
-  margin-bottom: 24px;
-  font-size: 16px;
-}
-
-/* Steps */
-.signup-steps{
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  gap:12px;
-  margin-bottom:32px;
-}
-
-.step{
-  width:32px; height:32px;
-  border-radius:50%;
-  background:#dedede;
-  color:#555;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  font-weight:600;
-}
-
-.step.active{
-  background:var(--ewha-green);
-  color:white;
-}
-
-.step-line{
-  width:40px;
-  height:2px;
-  background:#ccc;
-}
-
-/* Form matching Figma style */
-.signup-form{
-  background:transparent !important;
-  border:none !important;
-  padding:0 !important;
-  display:flex;
-  flex-direction:column;
-  gap:12px;
-}
-
-.signup-input{
-  background:#e6e6e6;
-  border:none;
-  padding:12px;
-  font-size:14px;
-}
-
-.signup-name-row{
-  display:flex;
-  gap:10px;
-}
-.signup-input.half{
-  width:100%;
-}
-
-.signup-btn{
-  width:100%;
-  padding:10px;
-  margin-top:10px;
-}
 
 /* ====== WISHLIST PAGE ====== */
-
 .wishlist-wrap{
   max-width: 1000px;
   margin: 60px auto;
@@ -317,6 +290,7 @@ footer{
   font-size: 17px;
   font-weight: 700;
   margin-bottom: 20px;
+  border-radius: var(--radius);
 }
 
 .wishlist-table{
@@ -325,6 +299,8 @@ footer{
   border-collapse: collapse;
   margin-bottom: 30px;
   background: #f0f0f0;
+  border-radius: var(--radius);
+  overflow: hidden; /* radius 보이게 */
 }
 
 .wishlist-table th,
@@ -337,7 +313,7 @@ footer{
 .wishlist-img{
   width: 120px;
   border: 1px solid #aaa;
-  border-radius: 6px;
+  border-radius: var(--radius);
 }
 
 .wishlist-actions{
@@ -351,6 +327,13 @@ footer{
   font-size: 13px;
   width: 120px;
   margin: 0 auto;
+  border-radius: var(--radius);
+  background: var(--ewha-green);
+  color: #fff;
+  border: none;
+}
+.small-btn:hover{
+  background: var(--ewha-green-dark);
 }
 
 .wishlist-page{
@@ -361,14 +344,21 @@ footer{
   align-items:center;
 }
 
+/* 잘려 있던 rule 정상화 & 가독성 향상 */
 .wishlist-page .page{
-  padding: 3px 10px;
-  border-radius: 4px;
-  color: var(--ewha-green-dark);
-  text-decoration:none;
+  padding: 6px 12px;
+  border-radius: var(--radius);
+  color: var(--ewha-green);
+  border: 1px solid var(--ewha-green);
+  background: #fff;
+  cursor: pointer;
+  font-weight: 600;
 }
-
+.wishlist-page .page:hover{
+  background: var(--ewha-green-soft);
+}
 .wishlist-page .page.active{
   background: var(--ewha-green);
-  color:white;
+  color: #fff;
+  border-color: var(--ewha-green);
 }

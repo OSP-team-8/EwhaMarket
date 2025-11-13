@@ -18,19 +18,13 @@
             <a>이화 마켓</a>
         </div> 
         <ul class="navbar__menu">
-            <li><a href="/list" class="{{ 'active' if request.path == '/list' else '' }}">상품조회</a></li>
-            <li><a href="/reg_items" class="{{ 'active' if request.path == '/reg_items' else '' }}">상품등록</a></li>
-            <li><a href="/review" class="{{ 'active' if request.path == '/review' else '' }}">리뷰조회</a></li>
-            <li><a href="/reg_reviews" class="{{ 'active' if request.path == '/reg_reviews' else '' }}">리뷰등록</a></li>
-            <li><a href="/wishlist" class="{{ 'active' if request.path == '/wishlist' else '' }}">찜</a></li>
-
-            {# ===== 로그인 상태에 따른 네비게이션 변경 ===== #}
-            {% if False %}  {# 로그인 상태일 때 #}
-                <li><a id="user">김이화_님</a></li>
-                <li><a href="/logout" class="{{ 'active' if request.path == '/logout' else '' }}">로그아웃</a></li>
-            {% else %}       {# 비로그인 상태일 때 #}
-                <li><a href="/login" class="{{ 'active' if request.path == '/login' else '' }}">로그인</a></li>
-            {% endif %}
+            <li><a href="{{ url_for('view_list') }}" class="{{ 'active' if request.endpoint in ['view_list','product_detail'] else '' }}">상품조회</a></li>
+            <li><a href="/reg_items" class="{{ 'active' if request.path == '/reg_items' else ''}}">상품등록</a></li>
+            <li><a href="/review"class="{{ 'active' if request.path.startswith('/review') or request.path.startswith('/review_detail') else '' }}">리뷰조회</a></li>
+            <li><a href="/reg_reviews" class="{{ 'active' if request.path == '/reg_reviews' else ''}}">리뷰등록</a></li>
+            <li><a id="user">김이화_님</a></li>
+            <li><a href="/wishlist" class="{{ 'active' if request.path == '/wishlist' else ''}}">북마크</a></li>
+            <li><a href="/logout" class="{{ 'active' if request.path == '/logout' else ''}}">로그아웃</a></li>
         </ul>
         <a href="#" class="navbar__toogleBtn">
             <i class="fas fa-bars"></i>
