@@ -74,6 +74,10 @@ def view_login():
 def view_signup():
     return render_template("signup.html")
 
+@application.route("/wishlist")
+def view_wishlist():
+    return render_template("wishlist.html")
+
 @application.route("/submit_item", methods=['POST'])
 def reg_item_submit():
 
