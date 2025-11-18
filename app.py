@@ -1,20 +1,18 @@
-from flask import Flask, render_template, request, abort
+from flask import Flask, render_template, request, abort, flash, redirect, url_for, session
+from database import DBhandler
+import hashlib
 import sys
 
 application = Flask(__name__)
+application.config["SECRET_KEY"] = "helloosp"
+DB = DBhandler()
 
-# DB 대신 임시 상품 데이터
-MOCK_PRODUCTS = [
-    {"id": "p1001", "name": "뽀로로 인형 세트", "thumb": "images/뽀로로인형세트.PNG"},
-    {"id": "p1002", "name": "수달 인형",   "thumb": "images/수달인형.PNG"},
-    {"id": "p1003", "name": "책 세트",   "thumb": "images/책세트.PNG"},
-    {"id": "p1004", "name": "테스트 주도 개발 시작하기",       "thumb": "images/테스트주도개발시작하기.PNG"},
-    {"id": "p1005", "name": "서랍장",   "thumb": "images/서랍장.PNG"},
-    {"id": "p1006", "name": "팔찌",       "thumb": "images/팔찌.PNG"},
-]
+@application.route("/")
+def hello():
+    return render_template("login.html") #index.html을 홈화면에 연결
 
 
-def find_product(pid):
+def find_product(pid): #
     for p in MOCK_PRODUCTS:
         if p["id"] == pid:
             p = p.copy()
@@ -27,17 +25,11 @@ def find_product(pid):
             return p
     return None
 
-@application.route("/")
-def hello():
-    return render_template("login.html") #index.html을 홈화면에 연결
 
 @application.route("/list")
 def view_list():
-    q = request.args.get("q", "").strip()
-    products = MOCK_PRODUCTS
-    if q:
-        products = [p for p in MOCK_PRODUCTS if q in p["name"]]
-    return render_template("list.html", products=products)
+    # MOCK 함수 오류나서 일단 뺌. 이후 수정 필요
+    return render_template("list.html")
 
 @application.route("/detail/<pid>")
 def product_detail(pid):
@@ -70,9 +62,52 @@ def reg_review():
 def view_login():
     return render_template("login.html")
 
+@application.route("/login_confirm", methods=['POST'])
+def login_user():
+    id_=request.form['id']
+    pw=request.form['pw']
+    pw_hash = hashlib.sha256(pw.encode('utf-8')).hexdigest()
+    if DB.find_user(id_,pw_hash):
+        session['id']=id_
+        return redirect(url_for('view_list'))
+    else:
+        flash("Wrong ID or PW!")
+        return render_template("login.html")
+    
+@application.route("/logout")
+def logout_user():
+    session.clear()
+    return redirect(url_for('view_list'))
+
 @application.route("/signup")
 def view_signup():
     return render_template("signup.html")
+
+@application.route("/signup_post", methods=['POST'])
+def register_user():
+    data = request.form
+
+    # 비밀번호
+    pw = request.form['pw']
+    pw2 = request.form.get('pw2')
+
+    # 비밀번호 확인 체크 (폼에 pw2 인풋 있다고 가정)
+    if pw2 is not None and pw != pw2:
+        flash("비밀번호 확인이 일치하지 않습니다.")
+        return render_template("signup.html")
+
+    # 비밀번호 해시
+    pw_hash = hashlib.sha256(pw.encode('utf-8')).hexdigest()
+
+    # DB에 사용자 정보 저장 시도
+    if DB.insert_user(data, pw_hash):
+        # 가입 성공하면 로그인 화면으로
+        flash("회원가입이 완료되었습니다. 로그인해 주세요.")
+        return render_template("login.html")
+    else:
+        # 아이디 중복인 경우
+        flash("이미 존재하는 아이디입니다.")
+        return render_template("signup.html")
 
 @application.route("/wishlist")
 def view_wishlist():
@@ -84,6 +119,8 @@ def reg_item_submit():
     image_file = request.files["file"]
     image_file.save("static/images/{}".format(image_file.filename))
     data = request.form
+
+    DB.insert_item(data['name'], data, image_file.filename)
 
     #결과 화면 로그 생성
     print("====== 상품 등록 데이터 수신 ======")
