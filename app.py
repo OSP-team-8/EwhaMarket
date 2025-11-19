@@ -1,17 +1,21 @@
-from flask import Flask, render_template, request, abort
+from flask import Flask, render_template, request, abort, redirect, url_for, flash
+from database import DBhandler
 import sys
 
 application = Flask(__name__)
+application.secret_key = "ewhamarket8"
 
-# DB 대신 임시 상품 데이터
-MOCK_PRODUCTS = [
-    {"id": "p1001", "name": "뽀로로 인형 세트", "thumb": "images/뽀로로인형세트.PNG"},
-    {"id": "p1002", "name": "수달 인형",   "thumb": "images/수달인형.PNG"},
-    {"id": "p1003", "name": "책 세트",   "thumb": "images/책세트.PNG"},
-    {"id": "p1004", "name": "테스트 주도 개발 시작하기",       "thumb": "images/테스트주도개발시작하기.PNG"},
-    {"id": "p1005", "name": "서랍장",   "thumb": "images/서랍장.PNG"},
-    {"id": "p1006", "name": "팔찌",       "thumb": "images/팔찌.PNG"},
-]
+DB = DBhandler()
+
+# # DB 대신 임시 상품 데이터
+# MOCK_PRODUCTS = [
+#     {"id": "p1001", "name": "뽀로로 인형 세트", "thumb": "images/뽀로로인형세트.PNG"},
+#     {"id": "p1002", "name": "수달 인형", "thumb": "images/수달인형.PNG"},
+#     {"id": "p1003", "name": "책 세트", "thumb": "images/책세트.PNG"},
+#     {"id": "p1004", "name": "테스트 주도 개발 시작하기",       "thumb": "images/테스트주도개발시작하기.PNG"},
+#     {"id": "p1005", "name": "서랍장", "thumb": "images/서랍장.PNG"},
+#     {"id": "p1006", "name": "팔찌", "thumb": "images/팔찌.PNG"},
+# ]
 
 
 def find_product(pid):
@@ -31,18 +35,17 @@ def find_product(pid):
 def hello():
     return render_template("login.html") #index.html을 홈화면에 연결
 
-@application.route("/list")
+@application.route("/items", methods = ["GET"])
 def view_list():
     q = request.args.get("q", "").strip()
-    products = MOCK_PRODUCTS
-    if q:
-        products = [p for p in MOCK_PRODUCTS if q in p["name"]]
-    return render_template("list.html", products=products)
+    products = DB.get_item_list(q if q else None)
 
-@application.route("/detail/<pid>")
+    return render_template("list.html", products = products)
+
+@application.route("/items/<pid>", methods = ["GET"])
 def product_detail(pid):
-    product = find_product(pid)
-    if not product:
+    product = DB.get_item(pid)
+    if product is None:
         abort(404)
     return render_template("product_detail.html", product=product)
 
@@ -81,9 +84,21 @@ def view_wishlist():
 @application.route("/submit_item", methods=['POST'])
 def reg_item_submit():
 
-    image_file = request.files["file"]
-    image_file.save("static/images/{}".format(image_file.filename))
-    data = request.form
+    image_file = request.files.get("file")
+    img_filename = None
+    img_path = None
+
+    if image_file and image_file.filename != "":
+        filename = image_file.filename
+        img_path = f"static/images/{filename}"
+        image_file.save(img_path)
+        img_filename = filename
+    
+    form_data = request.form
+
+    DB.insert_item(form_data["name"], form_data, img_filename)
+
+    return redirect(url_for("view_list"))
 
     #결과 화면 로그 생성
     print("====== 상품 등록 데이터 수신 ======")

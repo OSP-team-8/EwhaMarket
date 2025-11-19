@@ -39,9 +39,19 @@
       <div class="value-box">{{ product.name }}</div>
     </div>
 
-    <div class="row">
-      <div class="label-box">가격</div>
-      <div class="value-box">{{ "{:,}".format(product.price) }}원</div>
+     <div class="row">
+      <div class="label-box">상태</div>
+      <div class="value-box">
+        {% if product.status == 'new' %}
+          새 상품
+        {% elif product.status == 'lnew' %}
+          양호
+        {% elif product.status == 'used' %}
+          중고
+        {% else %}
+          -
+        {% endif %}
+      </div>
     </div>
 
     <div class="row">
@@ -66,12 +76,18 @@
 
     <div class="row">
       <div class="label-box">지역</div>
-      <div class="value-box">{{ product.region or "-" }}</div>
+      <div class="value-box">
+        {% if product.region or product.addr %}
+          {{ product.region or "" }} {{ product.addr or "" }}
+        {% else %}
+          -
+        {% endif %}
+      </div>
     </div>
 
     <!-- 목록으로 버튼 (오른쪽 박스 하단 정렬) -->
     <div class="actions">
-      <a class="back-btn" href="/list">목록으로 돌아가기</a>
+      <a class="back-btn" href="{{ url_for('view_list') }}">목록으로 돌아가기</a>
     </div>
   </section>
 </div>
