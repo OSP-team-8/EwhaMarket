@@ -11,16 +11,16 @@
 
       <div class="signup-title-bar">회원가입</div>
 
-    <form method="POST" action="/signup" class="signup-form">
+    <form method="POST" action="/signup_post" class="signup-form">
       
       <div class="signup-name-row">
         <input type="text" name="first_name" class="signup-input half" placeholder="이름" required>
         <input type="text" name="last_name" class="signup-input half" placeholder="성" required>
       </div>
 
-      <input type="email" name="email" class="signup-input" placeholder="이메일 입력" required>
-      <input type="password" name="password" class="signup-input" placeholder="비밀번호 입력" required>
-      <input type="password" name="password2" class="signup-input" placeholder="비밀번호 다시 입력" required>
+      <input type="email" name="id" class="signup-input" placeholder="이메일 입력" required>
+      <input type="password" name="pw" class="signup-input" placeholder="비밀번호 입력" required>
+      <input type="password" name="pw2" class="signup-input" placeholder="비밀번호 다시 입력" required>
 
       <button type="submit" class="btn-ewha signup-btn">가입</button>
     </form>

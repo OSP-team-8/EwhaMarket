@@ -44,19 +44,78 @@ def view_product_detail():
 
 @application.route("/review")
 def view_review():
-    return render_template("review.html")
+    # 페이지 번호 (사용자에게는 1페이지부터 보이도록)
+    page = request.args.get("page", 1, type=int)
 
-@application.route("/review_detail")
-def view_review_detail():
-    return render_template("review_detail.html")
+    per_page = 6      # 한 페이지에 보여줄 리뷰 수
+
+    data = DB.get_reviews() or {}   # dict: {제목: 리뷰정보}
+    items = list(data.items())      # [(key, info), ...]
+    total = len(items)
+
+    # 페이지 슬라이스
+    start_idx = (page - 1) * per_page
+    end_idx = start_idx + per_page
+    page_items = items[start_idx:end_idx]
+
+    # 템플릿에서 쓰기 쉽게 리스트로 변환
+    reviews = []
+    for key, info in page_items:
+        obj = info.copy()
+        obj['id'] = key   # 필요하면 상세조회에 쓸 수 있음
+        reviews.append(obj)
+
+    # 총 페이지 수
+    page_count = (total + per_page - 1) // per_page if total > 0 else 1
+
+    return render_template(
+        "review.html",
+        reviews=reviews,
+        page=page,
+        page_count=page_count,
+        total=total
+    )
+
+@application.route("/review_detail/<review_id>")
+def review_detail(review_id):
+    review = DB.get_review(review_id)
+    if not review:
+        abort(404)
+    return render_template("review_detail.html", review=review)
 
 @application.route("/reg_items")
 def reg_item():
     return render_template("reg_items.html")
 
 @application.route("/reg_reviews")
+def reg_reviews_legacy():
+    # 예전 주소(/reg_reviews)로 들어와도 새 라우트로 보내기
+    return redirect(url_for('reg_review_init'))
+
+
+# 리뷰 작성 화면 진입 (상품 상세에서 넘어올 때만 name 파라미터 채워짐)
+@application.route("/reg_review_init/", defaults={'name': None})
+@application.route("/reg_review_init/<name>/")
+def reg_review_init(name):
+    # name: 상품 이름 (상품 상세에서 넘어올 때만 채워짐)
+    return render_template("reg_reviews.html", name=name)
+
+# 리뷰 등록 처리
+@application.route("/reg_review", methods=['POST'])
 def reg_review():
-    return render_template("reg_reviews.html")
+    data = request.form              # review_item, review_title, rating, review_content
+    image_file = request.files.get("file")
+
+    img_filename = ""
+    if image_file and image_file.filename != "":
+        img_filename = image_file.filename
+        image_file.save(f"static/images/{img_filename}")
+
+    # DB에 리뷰 저장
+    DB.reg_review(data, img_filename)
+
+    # 저장 후 전체 리뷰 화면으로 이동 
+    return redirect(url_for('view_review'))
 
 @application.route("/login")
 def view_login():

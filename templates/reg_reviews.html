@@ -5,12 +5,13 @@
 {% endblock head %}
 
 {% block section %}
-<form method="post" enctype="multipart/form-data">
+<form method="post" enctype="multipart/form-data" action="{{ url_for('reg_review') }}">  // 추가
     <label id="register_review">상품 리뷰 작성</label><br><br>
     <div class="form_line">
         <label for="review_item" class="label_name">상품명</label>
-        <input type="text" name="review_item" class="text_block" id="review_item" required>
-    </div>
+        <input type="text" name="review_item" class="text_block" id="review_item" value="{{ name or '' }}" 
+        required> <!-- 이유진 수정 => 상품 상세에서 넘어올 때 name 변수 채워지도록 -->
+    </div> 
     <div class="form_line">
         <label for="review_title" class="label_name">제목</label>
         <input type="text" name="review_title" class="text_block" id="review_title" required>
@@ -43,7 +44,7 @@
     </div>
     <div class="button">
         <button type="submit"id="submit">등록</button>
-        <button id="cancel">취소</button>
+        <button type="button" id="cancel">취소</button>  <!--이유진 수정 => 버튼 type 추가 -->
     </div>
 </form>
 

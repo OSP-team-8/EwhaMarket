@@ -4,7 +4,7 @@
 
 <form method="post" enctype="multipart/form-data">
     <div class="first_line">
-        <label id="review_all">상품 리뷰 | 128개</label>
+        <label id="review_all">상품 리뷰 | {{ total }}개</label>
 
         <div class="search_group">
             <label for="search">검색 | </label>
@@ -15,53 +15,49 @@
         <a id="latest">최신순</a>
     </div>
 
-    <div class="review_container"> 
+    <!-- ✅ 실제 리뷰 카드들 -->
+    <div class="review_container">
+        {% if reviews|length == 0 %}
+            <p>등록된 리뷰가 없습니다.</p>
+        {% endif %}
 
+        {% for r in reviews %}
         <div class="review_set">
-            <label class="review_title">공기청정기 그냥 그렇네요</label>
-            <a href="/review_detail" class="review_link">
-                <img src="{{ url_for('static', filename='images/공기청정기.png') }}">
+            <label class="review_title">{{ r.title }}</label>
+              <a href="{{ url_for('review_detail', review_id=r.id) }}" class="review_link">
+                {% if r.img_path %}
+                    <img src="{{ url_for('static', filename='images/' ~ r.img_path) }}">
+                {% else %}
+                    <!-- 이미지 없을 때 기본 이미지 쓰고 싶으면 여기 수정 -->
+                    <img src="{{ url_for('static', filename='images/공기청정기.png') }}">
+                {% endif %}
             </a>
         </div>
-        <div class="review_set">
-            <label class="review_title">드라이기 최고!</label>
-            <a href="#" class="review_link">
-                <img src="{{ url_for('static', filename='images/드라이기.png') }}">
-            </a>
-        </div>
-        <div class="review_set">
-            <label class="review_title">가방 샀어요</label>
-            <a href="#" class="review_link">
-                <img src="{{ url_for('static', filename='images/가방.png') }}">
-            </a>
-        </div>
-        <div class="review_set">
-            <label class="review_title">아이가 너무 좋아하네요~</label>
-            <a href="#" class="review_link">
-                <img src="{{ url_for('static', filename='images/필통.png') }}">
-            </a>
-        </div>
-        <div class="review_set">
-            <label class="review_title">코딩 마스터!</label>
-            <a href="#" class="review_link">
-                <img src="{{ url_for('static', filename='images/책.png') }}">
-            </a>
-        </div>
-        <div class="review_set">
-            <label class="review_title">잘 쓰고 있습니다~</label>
-            <a href="#" class="review_link">
-                <img src="{{ url_for('static', filename='images/헤드셋.png') }}">
-        </div>
+        {% endfor %}
     </div>
 
+    <!-- ✅ 페이지네이션 -->
     <nav class="pagination" aria-label="페이지네비게이션">
-        <a class="page-btn" href="#">〈 이전</a>
-        <a class="page is-active" href="#">1</a>
-        <a class="page" href="#">2</a>
-        <a class="page" href="#">3</a>
-        <a class="page-btn" href="#">다음 〉</a>
+        {% if page > 1 %}
+            <a class="page-btn" href="{{ url_for('view_review', page=page-1) }}">〈 이전</a>
+        {% else %}
+            <span class="page-btn">〈 이전</span>
+        {% endif %}
+
+        {% for p in range(1, page_count + 1) %}
+            {% if p == page %}
+                <span class="page is-active">{{ p }}</span>
+            {% else %}
+                <a class="page" href="{{ url_for('view_review', page=p) }}">{{ p }}</a>
+            {% endif %}
+        {% endfor %}
+
+        {% if page < page_count %}
+            <a class="page-btn" href="{{ url_for('view_review', page=page+1) }}">다음 〉</a>
+        {% else %}
+            <span class="page-btn">다음 〉</span>
+        {% endif %}
     </nav>
 
 </form>
-
 {% endblock section %}

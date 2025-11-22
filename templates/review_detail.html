@@ -10,42 +10,49 @@
 
     <div class="review_top">
         <div class="review_img">
-            <img src="{{ url_for('static', filename='images/공기청정기.png') }}">
+            {% if review.img_path %}
+                <img src="{{ url_for('static', filename='images/' ~ review.img_path) }}">
+            {% else %}
+                <img src="{{ url_for('static', filename='images/공기청정기.png') }}">
+            {% endif %}
         </div>
         <div class="review_info">
             <div class="form_line">
                 <div class="label_name">상품명</div>
-                <div class="text_block">공기청정기</div>
+                <div class="text_block">{{ review.item }}</div>
             </div>
             <div class="form_line">
                 <div class="label_name">제목</div>
-                <div class="text_block">공기청정기 그냥 그렇네요</div>
+                <div class="text_block">{{ review.title }}</div>
             </div>
             <div class="form_line">
                 <div class="label_name">작성자</div>
-                <div class="text_block">소플맘</div>
+                <!-- 아직 작성자 정보는 안 저장하니까 임시로 익명 -->
+                <div class="text_block">익명</div>
             </div>
             <div class="form_line">
                 <div class="label_name">별점</div>
+                {% set rating = review.rate|default(0)|int %}
                 <div class="star_rating">
-                    <span class="star filled">★</span>
-                    <span class="star filled">★</span>
-                    <span class="star filled">★</span>
-                    <span class="star empty">☆</span>
-                    <span class="star empty">☆</span>
+                    {% for i in range(rating) %}
+                        <span class="star filled">★</span>
+                    {% endfor %}
+                    {% for i in range(5 - rating) %}
+                        <span class="star empty">☆</span>
+                    {% endfor %}
                 </div>
-                <div id="star_score">3 / 5 점</div>
-            </div>
+                <div id="star_score">{{ rating }} / 5 점</div>
+            </div>  
         </div>
     </div>
 
     <div class="form_line align_top">
         <div class="label_name">내용</div>
-        <div id="review_content">저는 오늘 이 상품을 구매했습니다. 공기청정기는 처음 사보네요. 크기도 적당하고 배송도 빨리 왔어요. 근데 집 공기가 달라졌는지는 잘 모르겠어요. 가격도 조금 비싼 것 같습니다. </div>
+        <div id="review_content">{{ review.review }}</div>
     </div>
 
     <div class="btn_box">
-        <div id="back"><a  href="/review">목록으로 돌아가기</a></div>
+        <div id="back"><a href="{{ url_for('view_review') }}">목록으로 돌아가기</a></div>
     </div>
 </div>
 

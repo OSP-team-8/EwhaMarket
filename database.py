@@ -79,3 +79,40 @@ class DBhandler:
               target_value = res.val()
 
       return target_value
+  
+  def reg_review(self, data, img_path):
+    review_info = {
+        "item": data['review_item'],          # 상품명
+        "title": data['review_title'],        # 리뷰 제목
+        "rate": data.get('rating', ''),       # 별점
+        "review": data['review_content'],     # 내용
+        "img_path": img_path                  # 이미지 파일명
+    }
+    # 제목을 key로 저장 (교수님 예시 스타일)
+    self.db.child("review").child(data['review_title']).set(review_info)
+    return True
+
+  def get_reviews(self):
+    reviews = self.db.child("review").get().val()
+    return reviews
+  
+  def get_review(self, review_id):
+    data = self.db.child("review").child(review_id).get().val()
+
+    # 1) 새 구조: 바로 {item, title, rate, review, img_path} 형태면 그대로 반환
+    if isinstance(data, dict) and ("title" in data or "item" in data):
+        return data
+
+    # 2) 옛날 구조: {"랜덤키": {item, title, rate, review, img_path}} 인 경우
+    if isinstance(data, dict):
+        for _, v in data.items():
+            if isinstance(v, dict):
+                return v
+
+    # 3) 아무 것도 못 찾았으면 None
+    return None
+
+
+  
+  
+
