@@ -7,16 +7,6 @@ application.secret_key = "ewhamarket8"
 
 DB = DBhandler()
 
-# # DB 대신 임시 상품 데이터
-# MOCK_PRODUCTS = [
-#     {"id": "p1001", "name": "뽀로로 인형 세트", "thumb": "images/뽀로로인형세트.PNG"},
-#     {"id": "p1002", "name": "수달 인형", "thumb": "images/수달인형.PNG"},
-#     {"id": "p1003", "name": "책 세트", "thumb": "images/책세트.PNG"},
-#     {"id": "p1004", "name": "테스트 주도 개발 시작하기",       "thumb": "images/테스트주도개발시작하기.PNG"},
-#     {"id": "p1005", "name": "서랍장", "thumb": "images/서랍장.PNG"},
-#     {"id": "p1006", "name": "팔찌", "thumb": "images/팔찌.PNG"},
-# ]
-
 
 def find_product(pid):
     for p in MOCK_PRODUCTS:
@@ -99,22 +89,6 @@ def reg_item_submit():
     DB.insert_item(form_data["name"], form_data, img_filename)
 
     return redirect(url_for("view_list"))
-
-    #결과 화면 로그 생성
-    print("====== 상품 등록 데이터 수신 ======")
-    print(f"Item name: {data.get('name')}")
-    print(f"Seller ID: {data.get('seller')}")
-    print(f"Address: {data.get('addr')}")
-    print(f"Email: {data.get('email')}")
-    print(f"Category: {data.get('category')}")
-    print(f"Credit Card?: {data.get('card')}")
-    print(f"Status: {data.get('status')}")
-    print(f"Phone: {data.get('phone')}")
-    print(f"Image Filename: {image_file.filename}")
-    print("===================================")
-    
-    return render_template("submit_item_result.html", data = data,
-                        img_path = "static/images/{}".format(image_file.filename))
 
 if __name__ == "__main__":
     application.run(host="0.0.0.0")
