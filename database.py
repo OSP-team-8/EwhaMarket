@@ -88,7 +88,7 @@ class DBhandler:
         "review": data['review_content'],     # 내용
         "img_path": img_path                  # 이미지 파일명
     }
-    # 제목을 key로 저장 (교수님 예시 스타일)
+    # 제목을 key로 저장 
     self.db.child("review").child(data['review_title']).set(review_info)
     return True
 
