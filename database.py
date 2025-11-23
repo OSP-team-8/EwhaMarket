@@ -1,5 +1,7 @@
 import pyrebase
 import json 
+import time
+
 
 class DBhandler:
   def __init__(self):
@@ -84,13 +86,15 @@ class DBhandler:
     review_info = {
         "item": data['review_item'],          # 상품명
         "title": data['review_title'],        # 리뷰 제목
-        "rate": data.get('rating', ''),       # 별점
+        "rate": data.get('rating', ''),       # 별점 (문자열일 수도 있음)
         "review": data['review_content'],     # 내용
-        "img_path": img_path                  # 이미지 파일명
+        "img_path": img_path,                 # 이미지 파일명
+        "created_at": time.time(),            # 리뷰 작성 시간(유닉스 타임스탬프)
     }
     # 제목을 key로 저장 
     self.db.child("review").child(data['review_title']).set(review_info)
     return True
+
 
   def get_reviews(self):
     reviews = self.db.child("review").get().val()
@@ -111,6 +115,17 @@ class DBhandler:
 
     # 3) 아무 것도 못 찾았으면 None
     return None
+  
+  def get_user(self, id_):
+    users = self.db.child("user").get()
+
+    for res in users.each():
+        value = res.val()
+        if value['id'] == id_:
+            return value   # {"id":..., "pw":..., "first_name":..., "last_name":...}
+
+    return None
+
 
 
   

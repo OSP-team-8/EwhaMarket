@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, abort, flash, redirect, url_f
 from database import DBhandler
 import hashlib
 import sys
+import math
 
 application = Flask(__name__)
 application.config["SECRET_KEY"] = "helloosp"
@@ -44,28 +45,70 @@ def view_product_detail():
 
 @application.route("/review")
 def view_review():
-    # 페이지 번호 (사용자에게는 1페이지부터 보이도록)
+    # 정렬 기준: ?sort=date(기본값), ?sort=rate
+    sort = request.args.get("sort", "date")
+    # 검색어: ?q=트리
+    q = request.args.get("q", "", type=str).strip()
+
+    # 페이지 번호 (1페이지부터)
     page = request.args.get("page", 1, type=int)
+    if page < 1:
+        page = 1
 
     per_page = 6      # 한 페이지에 보여줄 리뷰 수
 
-    data = DB.get_reviews() or {}   # dict: {제목: 리뷰정보}
-    items = list(data.items())      # [(key, info), ...]
+    # 1) 전체 리뷰 가져오기
+    data = DB.get_reviews() or {}      # dict: {제목: 리뷰정보}
+    items = list(data.items())         # [(key, info), ...]  key == 리뷰 제목
+    total_all = len(items)             # 전체 리뷰 개수 (검색 상관없이)
+
+    # 2) 검색 필터링
+    if q:
+        q_lower = q.lower()
+        def match(info):
+            # 제목, 내용, 상품명 중 하나라도 검색어를 포함하면 매칭
+            title = str(info.get("title", "")).lower()
+            content = str(info.get("review", "")).lower()
+            item_name = str(info.get("item", "")).lower()
+            return (q_lower in title) or (q_lower in content) or (q_lower in item_name)
+
+        items = [(k, v) for (k, v) in items if match(v)]
+
+    # 검색 이후 개수
     total = len(items)
 
-    # 페이지 슬라이스
+    # 3) 정렬 함수들
+    def get_created_at(info):
+        try:
+            return float(info.get("created_at", 0))
+        except (TypeError, ValueError):
+            return 0.0
+
+    def get_rate(info):
+        try:
+            return int(info.get("rate", 0))
+        except (TypeError, ValueError):
+            return 0
+
+    # 4) 정렬 수행
+    if sort == "rate":
+        items.sort(key=lambda kv: get_rate(kv[1]), reverse=True)   # 별점 높은 순
+    else:
+        items.sort(key=lambda kv: get_created_at(kv[1]), reverse=True)  # 최신순
+
+    # 5) 페이지 슬라이스
     start_idx = (page - 1) * per_page
     end_idx = start_idx + per_page
     page_items = items[start_idx:end_idx]
 
-    # 템플릿에서 쓰기 쉽게 리스트로 변환
+    # 6) 템플릿에서 쓰기 쉽게 리스트로 변환
     reviews = []
     for key, info in page_items:
         obj = info.copy()
-        obj['id'] = key   # 필요하면 상세조회에 쓸 수 있음
+        obj['id'] = key   # 상세조회에 사용 가능
         reviews.append(obj)
 
-    # 총 페이지 수
+    # 7) 총 페이지 수 (검색 결과 기준)
     page_count = (total + per_page - 1) // per_page if total > 0 else 1
 
     return render_template(
@@ -73,8 +116,12 @@ def view_review():
         reviews=reviews,
         page=page,
         page_count=page_count,
-        total=total
+        total=total,         # 검색 결과 개수
+        total_all=total_all, # 전체 리뷰 개수(필요하면 헤더에 사용)
+        sort=sort,
+        q=q,                 # 검색창에 기존 검색어 유지용
     )
+
 
 @application.route("/review_detail/<review_id>")
 def review_detail(review_id):
@@ -100,6 +147,7 @@ def reg_review_init(name):
     # name: 상품 이름 (상품 상세에서 넘어올 때만 채워짐)
     return render_template("reg_reviews.html", name=name)
 
+
 # 리뷰 등록 처리
 @application.route("/reg_review", methods=['POST'])
 def reg_review():
@@ -117,26 +165,35 @@ def reg_review():
     # 저장 후 전체 리뷰 화면으로 이동 
     return redirect(url_for('view_review'))
 
+
+
 @application.route("/login")
 def view_login():
     return render_template("login.html")
 
 @application.route("/login_confirm", methods=['POST'])
 def login_user():
-    id_=request.form['id']
-    pw=request.form['pw']
+    id_ = request.form['id']
+    pw = request.form['pw']
     pw_hash = hashlib.sha256(pw.encode('utf-8')).hexdigest()
-    if DB.find_user(id_,pw_hash):
-        session['id']=id_
+
+    if DB.find_user(id_, pw_hash):   # 로그인 성공하면
+        user = DB.get_user(id_)
+        if user:
+            session['id'] = id_
+            session['first_name'] = user['first_name']
+            session['last_name'] = user['last_name']
         return redirect(url_for('view_list'))
     else:
         flash("Wrong ID or PW!")
         return render_template("login.html")
+
     
 @application.route("/logout")
 def logout_user():
     session.clear()
     return redirect(url_for('view_list'))
+
 
 @application.route("/signup")
 def view_signup():
