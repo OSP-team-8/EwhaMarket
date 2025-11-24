@@ -29,7 +29,19 @@
     <div class="right-bar">
       <div class="wish">
         <span>찜하기</span> |
-        <button class="heart" type="button" aria-label="찜하기" data-pid="{{ product.id }}">♡</button>
+
+        <!-- 🔥 찜하기 폼 -->
+        <form method="post"
+              action="{{ url_for('toggle_wish', pid=product.id) }}"
+              style="display:inline;">
+          <button
+            class="heart{% if liked %} is-liked{% endif %}"
+            type="submit"
+            aria-label="찜하기">
+            {{ '♥' if liked else '♡' }}
+          </button>
+        </form>
+
       </div>
     </div>
 

@@ -1,20 +1,24 @@
-<!doctype html>
-<html lang="ko">
-<head>
-  <meta charset="utf-8">
+{% extends "index.html" %}
+
+{% block head %}
   <title>찜 | 이화 마켓</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-</head>
-<body>
+{% endblock head %}
 
+{% block section %}
 <section class="wishlist-wrap">
 
-  <h2 class="wishlist-title">나의 찜</h2>
+  <h2 class="wishlist-title">
+    나의 찜
+    {% if total is defined %}
+      <span style="font-size: 0.9rem; color: #666;"> (총 {{ total }}개)</span>
+    {% endif %}
+  </h2>
 
   <table class="wishlist-table">
     <thead>
       <tr>
-        <th></th>
+        <th>#</th>
         <th>상품 사진</th>
         <th>상품 이름</th>
         <th>가격</th>
@@ -23,44 +27,76 @@
     </thead>
 
     <tbody>
-      <!-- Example item row -->
-      <tr>
-        <td>1</td>
-        <td><img src="{{ url_for('static', filename='images/hello.png') }}" class="wishlist-img"></td>
-        <td>파우치</td>
-        <td>KRW 20,000</td>
-        <td class="wishlist-actions">
-          <button class="btn-ewha small-btn">장바구니 담기</button>
-          <button class="btn-ewha small-btn">친구 보내기</button>
-        </td>
-      </tr>
+      {% if items %}
+        {% for p in items %}
+          <tr>
+            <td>{{ (page - 1) * 6 + loop.index }}</td>  {# 전체 기준 순번 #}
+            <td>
+              {% if p.thumb %}
+                <img src="{{ url_for('static', filename=p.thumb) }}" class="wishlist-img">
+              {% else %}
+                <span style="color:#999;">이미지 없음</span>
+              {% endif %}
+            </td>
+            <td>
+              <a href="{{ url_for('product_detail', pid=p.id) }}">
+                {{ p.name }}
+              </a>
+            </td>
+            <td>KRW {{ "{:,}".format(p.price) }}</td>
+            <td class="wishlist-actions">
+              <button class="btn-ewha small-btn" type="button">장바구니 담기</button>
 
-      <tr>
-        <td>2</td>
-        <td><img src="{{ url_for('static', filename='images/airpodsmax.png') }}" class="wishlist-img"></td>
-        <td>에어팟맥스</td>
-        <td>KRW 780,000</td>
-        <td class="wishlist-actions">
-          <button class="btn-ewha small-btn">찜 취소</button>
-          <button class="btn-ewha small-btn">리뷰 조회</button>
-        </td>
-      </tr>
+              <form method="post"
+                    action="{{ url_for('toggle_wish', pid=p.id) }}"
+                    style="display:inline;">
+                <button class="btn-ewha small-btn" type="submit">찜 취소</button>
+              </form>
 
+              <a class="btn-ewha small-btn"
+                 href="{{ url_for('view_review', q=p.name) }}">
+                리뷰 조회
+              </a>
+            </td>
+          </tr>
+        {% endfor %}
+      {% else %}
+        <tr>
+          <td colspan="5" style="text-align:center; padding: 2rem 0;">
+            찜한 상품이 없습니다.
+          </td>
+        </tr>
+      {% endif %}
     </tbody>
   </table>
 
-  <div class="wishlist-page">
-    <a href="#">&lt; 이전</a>
-    <a href="#" class="page active">1</a>
-    <a href="#" class="page">2</a>
-    <a href="#" class="page">3</a>
-    <a href="#" class="page">4</a>
-    <a href="#" class="page">5</a>
-    <a href="#" class="page">6</a>
-    <a href="#">다음 &gt;</a>
-  </div>
+  {# 🔹 페이징 네비게이션 #}
+  {% if page_count and page_count > 1 %}
+  <nav class="wishlist-page" aria-label="페이지 네비게이션">
+    {# 이전 버튼 #}
+    {% if page > 1 %}
+      <a href="{{ url_for('view_wishlist', page=page-1) }}">&lt; 이전</a>
+    {% else %}
+      <span class="page disabled">&lt; 이전</span>
+    {% endif %}
+
+    {# 페이지 번호들 #}
+    {% for p in range(1, page_count + 1) %}
+      {% if p == page %}
+        <a href="{{ url_for('view_wishlist', page=p) }}" class="page active">{{ p }}</a>
+      {% else %}
+        <a href="{{ url_for('view_wishlist', page=p) }}" class="page">{{ p }}</a>
+      {% endif %}
+    {% endfor %}
+
+    {# 다음 버튼 #}
+    {% if page < page_count %}
+      <a href="{{ url_for('view_wishlist', page=page+1) }}">다음 &gt;</a>
+    {% else %}
+      <span class="page disabled">다음 &gt;</span>
+    {% endif %}
+  </nav>
+  {% endif %}
 
 </section>
-
-</body>
-</html>
+{% endblock section %}

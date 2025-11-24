@@ -37,12 +37,16 @@
           <label class="review_title" title="{{ p.name }}">
             <span class="review_title__name">{{ p.name }}</span>
 
-            <button
-              class="card__heart"
-              type="button"
-              aria-label="찜하기"
-              data-pid="{{ p.id }}"
-              data-liked="false">♡</button>
+            <form method="post"
+                  action="{{ url_for('toggle_wish', pid=p.id) }}"
+                  style="display:inline;">
+              <button
+                class="card__heart{% if p.liked %} is-liked{% endif %}"
+                type="submit"
+                aria-label="찜하기">
+                {{ '♥' if p.liked else '♡' }}
+              </button>
+            </form>
           </label>
 
           <a class="review_link" href="{{ url_for('product_detail', pid=p.id) }}"><!--  이미지 감싸는 링크 클래스 통일 -->
@@ -70,41 +74,5 @@
     <a class="page-btn" href="#">다음 〉</a>
   </nav>
 </div>
-
-<!-- 하트 토글 JS (동일) -->
-<script>
-  // 키 생성 헬퍼: 상품별로 wish 상태를 저장
-  const keyOf = (pid) => `wish:${pid}`;
-
-  // 초기화: 저장된 상태대로 하트 모양/색을 맞춤
-  function initHearts() {
-    document.querySelectorAll('.card__heart').forEach(btn => {
-      const pid = btn.dataset.pid;
-      const liked = localStorage.getItem(keyOf(pid)) === '1';
-      applyHeartState(btn, liked);
-      // 접근성: 스크린리더에 토글 상태 알려주기
-      btn.setAttribute('aria-pressed', liked ? 'true' : 'false');
-      // 클릭 핸들러
-      btn.addEventListener('click', () => {
-        const newLiked = !(btn.dataset.liked === 'true');
-        applyHeartState(btn, newLiked);
-        btn.setAttribute('aria-pressed', newLiked ? 'true' : 'false');
-        // 저장(새로고침/재방문 유지)
-        if (newLiked) localStorage.setItem(keyOf(pid), '1');
-        else localStorage.removeItem(keyOf(pid));
-      });
-    });
-  }
-
-  // 버튼에 시각 상태 반영(클래스/텍스트/데이터속성)
-  function applyHeartState(btn, liked) {
-    btn.dataset.liked = liked ? 'true' : 'false';
-    btn.classList.toggle('is-liked', liked);
-    btn.textContent = liked ? '♥' : '♡';
-  }
-
-  // DOM 준비되면 실행
-  document.addEventListener('DOMContentLoaded', initHearts);
-</script>
 
 {% endblock section %}

@@ -1,133 +1,163 @@
 import pyrebase
-import json 
+import json
 import time
 
 
 class DBhandler:
-  def __init__(self):
-   with open('./authentication/firebase_auth.json') as f:
-     config=json.load(f)
+    def __init__(self):
+        with open('./authentication/firebase_auth.json') as f:
+            config = json.load(f)
 
-   firebase = pyrebase.initialize_app(config)
-   self.db = firebase.database()
+        firebase = pyrebase.initialize_app(config)
+        self.db = firebase.database()
 
-  def insert_item(self, name, data, img_path): #POST방식으로 넘겨받은 상품정보 firebase db 함수에 추가
-   item_info ={
-    "seller": data['seller'],
-    "addr": data['addr'],
-    "email": data['email'],
-    "category": data['category'],
-    "card": data['card'],
-    "status": data['status'],
-    "phone": data['phone'],
-    "img_path": img_path
- }
-   self.db.child("item").child(name).set(item_info)
-   print(data,img_path)
-   return True
-  
-  def insert_user(self, data, pw):  # 회원가입
-    # data: request.form 그대로 넘어온다고 가정
-    user_info = {
-        "id": data['id'],                # 로그인에 사용할 아이디(지금은 이메일 칸)
-        "pw": pw,                        # 해시된 비밀번호
-        "first_name": data['first_name'],# 이름
-        "last_name": data['last_name']   # 성
-    }
+    # -----------------------------
+    # 내부 헬퍼: Firebase key로 쓸 user id 정리
+    # -----------------------------
+    def _user_key(self, user_id: str) -> str:
+        """
+        Firebase RTDB 키로 사용할 수 있도록 user_id를 안전하게 변환
+        - . $ # [ ] / 는 사용할 수 없음
+        - 여기서는 이메일의 '.' 만 간단히 ',' 로 치환
+        """
+        return user_id.replace('.', ',')
 
-    # 아이디 중복 체크
-    if self.user_duplicate_check(str(data['id'])):
-        self.db.child("user").push(user_info)
-        print(data)
+    # -----------------------------
+    # 상품
+    # -----------------------------
+    def insert_item(self, name, data, img_path):
+        region = data.get('region', '')  # 시/도
+        addr = data.get('addr', '')      # 상세 주소
+
+        item_info = {
+            "name": name,
+            "price": data.get('price', ''),
+            "status": data.get('status', ''),
+            "region": region,
+            "addr": addr,
+            "desc": data.get("desc", ""),
+            "seller": data.get("seller", ""),
+            "phone": data.get("phone", ""),
+            "category": data.get("category", "ETC"),
+            "card": data.get("card", "Y"),
+            "img_path": img_path or "",
+            "created_at": time.time(),
+        }
+
+        self.db.child("item").child(name).set(item_info)  # 키 값: name
+        print("insert_item:", item_info)
         return True
-    else:
-        return False
-    
-  def user_duplicate_check(self, id_string): #user노드에 사용자 정보 등록
-    users = self.db.child("user").get()
-    print("users###",users.val()) # 첫 등록 시 중복체크 로직 안타게 변경
-    if str(users.val()) == "None": 
-        return True
-    else:
+
+    def get_items(self):
+        items = self.db.child("item").get().val()
+        return items or {}
+
+    def get_item_byname(self, name):
+        item = self.db.child("item").child(name).get().val()
+        return item
+
+    # -----------------------------
+    # 찜(wishlist)
+    # -----------------------------
+    def add_wish(self, user_id, item_id):
+        key = self._user_key(user_id)
+        self.db.child("wishlist").child(key).child(item_id).set(True)
+
+    def remove_wish(self, user_id, item_id):
+        key = self._user_key(user_id)
+        self.db.child("wishlist").child(key).child(item_id).remove()
+
+    def get_wishlist_ids(self, user_id):
+        key = self._user_key(user_id)
+        data = self.db.child("wishlist").child(key).get().val()
+        if not data:
+            return set()
+        return set(data.keys())
+
+    def get_wishlist_items(self, user_id):
+        ids = self.get_wishlist_ids(user_id)
+        result = []
+        for item_id in ids:
+            item = self.get_item_byname(item_id)
+            if item:
+                result.append((item_id, item))
+        return result
+
+    # -----------------------------
+    # 유저
+    # -----------------------------
+    def insert_user(self, data, pw):  # 회원가입
+        user_info = {
+            "id": data['id'],
+            "pw": pw,
+            "first_name": data['first_name'],
+            "last_name": data['last_name']
+        }
+
+        if self.user_duplicate_check(str(data['id'])):
+            self.db.child("user").push(user_info)
+            print(data)
+            return True
+        else:
+            return False
+
+    def user_duplicate_check(self, id_string):
+        users = self.db.child("user").get()
+        print("users###", users.val())
+        if str(users.val()) == "None":
+            return True
+        else:
+            for res in users.each():
+                value = res.val()
+
+            if value['id'] == id_string:
+                return False
+            return True
+
+    def find_user(self, id_, pw_):
+        users = self.db.child("user").get()
         for res in users.each():
             value = res.val()
+            if value['id'] == id_ and value['pw'] == pw_:
+                return True
+        return False
 
-        if value['id'] == id_string:
-            return False
+    def get_user(self, id_):
+        users = self.db.child("user").get()
+
+        for res in users.each():
+            value = res.val()
+            if value['id'] == id_:
+                return value
+        return None
+
+    # -----------------------------
+    # 리뷰
+    # -----------------------------
+    def reg_review(self, data, img_path):
+        review_info = {
+            "item": data['review_item'],
+            "title": data['review_title'],
+            "rate": data.get('rating', ''),
+            "review": data['review_content'],
+            "img_path": img_path,
+            "created_at": time.time(),
+        }
+        self.db.child("review").child(data['review_title']).set(review_info)
         return True
-    
-  def find_user(self, id_, pw_):
-    users = self.db.child("user").get()
-    target_value=[]
-    for res in users.each():
-        value = res.val()
-        if value['id'] == id_ and value['pw'] == pw_:
-            return True
-    return False
 
-  def get_items(self):
-    items = self.db.child("item").get().val()
-    return items
-  
-  def get_item_byname(self, name):
-      items = self.db.child("item").get()
-      target_value = ""
-      print("##########", name)
+    def get_reviews(self):
+        reviews = self.db.child("review").get().val()
+        return reviews
 
-      for res in items.each():
-          key_value = res.key()
+    def get_review(self, review_id):
+        data = self.db.child("review").child(review_id).get().val()
 
-          if key_value == name:
-              target_value = res.val()
+        if isinstance(data, dict) and ("title" in data or "item" in data):
+            return data
 
-      return target_value
-  
-  def reg_review(self, data, img_path):
-    review_info = {
-        "item": data['review_item'],          # 상품명
-        "title": data['review_title'],        # 리뷰 제목
-        "rate": data.get('rating', ''),       # 별점 (문자열일 수도 있음)
-        "review": data['review_content'],     # 내용
-        "img_path": img_path,                 # 이미지 파일명
-        "created_at": time.time(),            # 리뷰 작성 시간(유닉스 타임스탬프)
-    }
-    # 제목을 key로 저장 
-    self.db.child("review").child(data['review_title']).set(review_info)
-    return True
-
-
-  def get_reviews(self):
-    reviews = self.db.child("review").get().val()
-    return reviews
-  
-  def get_review(self, review_id):
-    data = self.db.child("review").child(review_id).get().val()
-
-    # 1) 새 구조: 바로 {item, title, rate, review, img_path} 형태면 그대로 반환
-    if isinstance(data, dict) and ("title" in data or "item" in data):
-        return data
-
-    # 2) 옛날 구조: {"랜덤키": {item, title, rate, review, img_path}} 인 경우
-    if isinstance(data, dict):
-        for _, v in data.items():
-            if isinstance(v, dict):
-                return v
-
-    # 3) 아무 것도 못 찾았으면 None
-    return None
-  
-  def get_user(self, id_):
-    users = self.db.child("user").get()
-
-    for res in users.each():
-        value = res.val()
-        if value['id'] == id_:
-            return value   # {"id":..., "pw":..., "first_name":..., "last_name":...}
-
-    return None
-
-
-
-  
-  
-
+        if isinstance(data, dict):
+            for _, v in data.items():
+                if isinstance(v, dict):
+                    return v
+        return None
