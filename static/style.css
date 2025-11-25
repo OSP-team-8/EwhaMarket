@@ -362,3 +362,50 @@ footer{
   color: #fff;
   border-color: var(--ewha-green);
 }
+/* === Fix image column alignment === */
+.wishlist-table td:nth-child(2) {
+  text-align: center;
+  width: 160px; /* keeps the table perfectly aligned */
+}
+
+.wishlist-table img {
+  width: 120px;
+  height: auto;
+  border-radius: var(--radius);
+  object-fit: cover;
+}
+
+/* === Pagination buttons match EwhaMarket UI === */
+.wishlist-page a {
+  padding: 8px 14px;
+  border-radius: 10px;
+  border: 2px solid var(--ewha-green);
+  color: var(--ewha-green);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.wishlist-page a:hover {
+  background: var(--ewha-green-soft);
+}
+
+.wishlist-page a.active {
+  background: var(--ewha-green);
+  color: white;
+  border-color: var(--ewha-green);
+}
+/* Remove all row divider lines */
+.wishlist-table td, 
+.wishlist-table th {
+    border-bottom: none !important;
+}
+.wishlist-actions {
+    display: flex;
+    justify-content: center;   /* center horizontally */
+    align-items: center;       /* center vertically */
+    height: 100%;              /* make the cell stretch */
+}
+.wishlist-table td {
+    vertical-align: middle !important;
+}
+
