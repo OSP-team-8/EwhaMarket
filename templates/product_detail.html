@@ -30,7 +30,7 @@
       <div class="wish">
         <span>찜하기</span> |
 
-        <!-- 🔥 찜하기 폼 -->
+        <!-- 찜하기 폼 -->
         <form method="post"
               action="{{ url_for('toggle_wish', pid=product.id) }}"
               style="display:inline;">
@@ -67,7 +67,7 @@
     </div>
 
     <div class="row">
-      <div class="label-box">판매자 ID</div>
+      <div class="label-box">판매자</div>
       <div class="value-box">{{ product.seller or "-" }}</div>
     </div>
 
