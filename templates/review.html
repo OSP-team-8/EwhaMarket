@@ -2,18 +2,26 @@
 {% block section %}
 <link rel="stylesheet" href="{{ url_for('static', filename='review.css') }}">
 
-<form method="get">
+<div class="container">
     <div class="first_line">
-        <label id="review_all">상품 리뷰 | {{ total }}개</label>
-    </div>
+        <label id="reviews_all">상품 리뷰 | {{ reviews|length }}개</label>
 
-    <div class="search_group">
-        <label for="search">검색</label>
-        <input type="search" name="q" id="search" placeholder="검색어를 입력하세요">
-        <button class="search__btn" type="submit">검색</button>
-    </div>
-</form>
+        <form class="search_group" method="get" action="{{ url_for('view_review') }}">
+            <label for="search">검색 | </label>
+            <input
+            id="search"
+            type="search"
+            name="q"
+            placeholder="검색어를 입력하세요"
+            value="{{ request.args.get('q','') }}"
+            aria-label="검색어"
+            />
+            <button class="search__btn" type="submit" aria-label="검색">⌕</button>
+        </form>
 
+        <a class="sort">최신순</a>
+        <a class="sort">오래된순</a>
+</div>
 
     <!-- ✅ 실제 리뷰 카드들 -->
     <div class="review_container">
@@ -58,6 +66,4 @@
             <span class="page-btn">다음 〉</span>
         {% endif %}
     </nav>
-
-</form>
 {% endblock section %}

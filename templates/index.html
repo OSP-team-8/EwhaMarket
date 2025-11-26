@@ -21,16 +21,17 @@
             <li><a href="{{ url_for('view_list') }}" class="{{ 'active' if request.endpoint in ['view_list','product_detail'] else '' }}">상품조회</a></li>
             <li><a href="/reg_items" class="{{ 'active' if request.path == '/reg_items' else ''}}">상품등록</a></li>
             <li><a href="/review"class="{{ 'active' if request.path.startswith('/review') or request.path.startswith('/review_detail') else '' }}">리뷰조회</a></li>
-            <li><a href="/reg_reviews" class="{{ 'active' if request.path == '/reg_reviews' else ''}}">리뷰등록</a></li>
-
+            <li><a href="/reg_reviews" class="{{ 'active' if request.endpoint in ['reg_review_init', 'reg_reviews_legacy'] else '' }}">리뷰등록</a></li>
+            <li><a href="/wishlist" class="{{ 'active' if request.path == '/wishlist' else ''}}">북마크</a></li>
+                        
             {% if session.get('id') %}
-                <li>{{ session.get('first_name','') }}{{ session.get('last_name','') }} 님</li>
+                <li id="login_user">{{ session.get('last_name','') }}{{ session.get('first_name','') }} 님</li>
                 <li><a href="{{ url_for('logout_user') }}">로그아웃</a></li>
             {% else %}
                 <li><a href="{{ url_for('view_login') }}">로그인</a></li>
             {% endif %}
             
-            <li><a href="/wishlist" class="{{ 'active' if request.path == '/wishlist' else ''}}">북마크</a></li>
+
         </ul>
 
         <a href="#" class="navbar__toogleBtn">
