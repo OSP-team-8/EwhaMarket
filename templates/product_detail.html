@@ -81,10 +81,21 @@
       <div class="value-box">{{ product.region or "-" }}</div>
     </div>
 
-    <!-- 목록으로 버튼 (오른쪽 박스 하단 정렬) -->
+        <!-- 목록 / 리뷰 등록 버튼 (오른쪽 정렬) -->
     <div class="actions">
-      <a class="back-btn" href="/list">목록으로 돌아가기</a>
+      <!-- 리뷰 등록 버튼: 현재 상품명을 가지고 리뷰 작성 페이지로 이동 -->
+      <a class="review-btn"
+         href="{{ url_for('reg_review_init', name=product.name) }}">
+        리뷰 등록
+      </a>
+
+      <!-- 목록으로 돌아가기 버튼 -->
+      <a class="back-btn"
+        href="{{ url_for('view_list') }}">
+        목록으로 돌아가기
+      </a>
     </div>
+
   </section>
 </div>
 {% endblock section %}
