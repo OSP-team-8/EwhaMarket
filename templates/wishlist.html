@@ -30,7 +30,7 @@
       {% if items %}
         {% for p in items %}
           <tr>
-            <td>{{ (page - 1) * 6 + loop.index }}</td>  {# 전체 기준 순번 #}
+            <td>{{ (page - 1) * 5 + loop.index }}</td>  {# 전체 기준 순번 #}
             <td>
               {% if p.thumb %}
                 <img src="{{ url_for('static', filename=p.thumb) }}" class="wishlist-img">
@@ -71,7 +71,7 @@
   </table>
 
   {# 🔹 페이징 네비게이션 #}
-  {% if page_count and page_count > 1 %}
+  {% if page_count %}
   <nav class="wishlist-page" aria-label="페이지 네비게이션">
     {# 이전 버튼 #}
     {% if page > 1 %}

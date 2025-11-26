@@ -65,14 +65,47 @@
     {% endif %}
   </div>
 
-  <!-- 페이지 네비게이션 (리뷰와 동일) -->
+    <!-- 페이지 네비게이션 (백엔드 연동 버전) -->
   <nav class="pagination" aria-label="페이지네비게이션">
-    <a class="page-btn" href="#">〈 이전</a>
-    <a class="page is-active" href="#">1</a>
-    <a class="page" href="#">2</a>
-    <a class="page" href="#">3</a>
-    <a class="page-btn" href="#">다음 〉</a>
+    {# 이전 버튼 #}
+    {% if page > 1 %}
+      <a class="page-btn"
+        href="{{ url_for('view_list',
+                          page=page-1,
+                          q=request.args.get('q', '') ) }}">
+        〈 이전
+      </a>
+    {% else %}
+      <span class="page-btn">〈 이전</span>
+    {% endif %}
+
+    {# 페이지 번호들 #}
+    {% for p in range(1, page_count + 1) %}
+      {% if p == page %}
+        <span class="page is-active">{{ p }}</span>
+      {% else %}
+        <a class="page"
+          href="{{ url_for('view_list',
+                            page=p,
+                            q=request.args.get('q', '') ) }}">
+          {{ p }}
+        </a>
+      {% endif %}
+    {% endfor %}
+
+    {# 다음 버튼 #}
+    {% if page < page_count %}
+      <a class="page-btn"
+        href="{{ url_for('view_list',
+                          page=page+1,
+                          q=request.args.get('q', '') ) }}">
+        다음 〉
+      </a>
+    {% else %}
+      <span class="page-btn">다음 〉</span>
+    {% endif %}
   </nav>
+
 </div>
 
 {% endblock section %}
