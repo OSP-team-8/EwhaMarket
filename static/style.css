@@ -138,13 +138,21 @@ footer{
   border-radius: var(--radius);
 }
 
-/* 로그인 전용 추가 버튼도 동일 느낌 */
-.login-email-btn{
-  width: 100%;
-  padding: 12px;
-  margin-top: 8px;
-  border-radius: var(--radius);
+.login-card {
+  padding: 12px 0px;
+  margin-top: 12px;
 }
+
+.login-email-btn {
+  width: 100%;
+  padding: 8px;
+  border-radius: var(--radius);
+  display: block;
+  text-align: center;
+  text-decoration: none;
+  font-size: 14px;
+}
+
 
 /* 이름/성 두 칸 레이아웃 유지 */
 .signup-name-row{
