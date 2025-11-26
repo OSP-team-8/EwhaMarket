@@ -408,4 +408,94 @@ footer{
 .wishlist-table td {
     vertical-align: middle !important;
 }
+/* ====== Pagination (wishlist & review 공통) ====== */
+.pagination {
+  margin-top: 24px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+}
 
+/* number buttons + 이전/다음 공통 스타일 */
+.pagination .page,
+.pagination .page-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 44px;
+  height: 40px;
+  padding: 0 18px;
+  border-radius: 999px;              /* 완전 동그란 pill 모양 */
+  border: 2px solid var(--ewha-green);
+  background: #fff;
+  color: var(--ewha-green);
+  font-weight: 600;
+  text-decoration: none;
+  font-size: 14px;
+  box-sizing: border-box;
+}
+
+/* 기본 a 링크 보라색/밑줄 제거 */
+.pagination a {
+  color: var(--ewha-green);
+  text-decoration: none;
+}
+
+/* hover 효과 (선택 안 된 버튼만) */
+.pagination a:hover:not(.page.is-active) {
+  background: var(--ewha-green-soft);
+}
+
+/* 현재 페이지 (초록색 꽉 찬 버튼) */
+.pagination .page.is-active {
+  background: var(--ewha-green);
+  color: #fff;
+}
+
+/* 비활성 이전/다음 버튼 */
+.pagination .page-btn.disabled {
+  border-color: #d0d7de;
+  color: #b0b0b0;
+  cursor: default;
+  background: #f5f5f5;
+}
+/* ===== MATCH REVIEW PAGE PAGINATION ===== */
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+/* number buttons + 이전/다음 */
+.pagination .page,
+.pagination .page-btn {
+  text-decoration: none;
+  color: var(--ewha-green);           /* Ewha green = review's var(--green) */
+  border: 1px solid var(--ewha-green);
+  padding: 8px 12px;
+  border-radius: 10px;                /* EXACT match */
+  font-size: 14px;
+  font-weight: 600;
+  background: #fff;
+}
+
+/* active page (filled) */
+.pagination .page.is-active {
+  background: var(--ewha-green);
+  color: var(--white);
+}
+
+/* disabled previous/next */
+.pagination .page-btn.disabled {
+  color: #b5b5b5;
+  border-color: #d0d0d0;
+  background: #f3f3f3;
+  cursor: default;
+}
+
+/* hover */
+.pagination a:hover:not(.page.is-active):not(.page-btn.disabled) {
+  background: var(--ewha-green-soft);
+}
