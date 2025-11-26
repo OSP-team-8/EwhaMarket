@@ -38,7 +38,7 @@ html, body { margin: 0; padding: 0; font-family: Inter, sans-serif; }
   margin-bottom: 18px;
 }
 
-#latest {
+#latest, #oldest {
   color: #6D6767;
   margin-left: 6px;
 }
