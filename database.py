@@ -134,15 +134,17 @@ class DBhandler:
     # -----------------------------
     # 리뷰
     # -----------------------------
-    def reg_review(self, data, img_path):
+    def reg_review(self, data, img_path, writer):
         review_info = {
-            "item": data['review_item'],
-            "title": data['review_title'],
-            "rate": data.get('rating', ''),
-            "review": data['review_content'],
-            "img_path": img_path,
-            "created_at": time.time(),
+            "item": data['review_item'],          # 상품명
+            "title": data['review_title'],        # 리뷰 제목
+            "rate": data.get('rating', ''),       # 별점 (문자열일 수도 있음)
+            "review": data['review_content'],     # 내용
+            "img_path": img_path,                 # 이미지 파일명
+            "created_at": time.time(),            # 리뷰 작성 시간
+            "writer": writer,                     # 작성자 이름 (닉네임)
         }
+        # 제목을 key로 저장 
         self.db.child("review").child(data['review_title']).set(review_info)
         return True
 

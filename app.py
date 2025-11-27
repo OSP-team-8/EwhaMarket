@@ -169,9 +169,9 @@ def view_product_detail():
 
 @application.route("/review")
 def view_review():
-    # 정렬 기준: ?sort=date(기본값), ?sort=rate
-    sort = request.args.get("sort", "date")
-    # 검색어: ?q=트리
+    # 정렬 기준: new(최신순, 기본값) / old(오래된순)
+    sort = request.args.get("sort", "new")
+    # 검색어
     q = request.args.get("q", "", type=str).strip()
 
     # 페이지 번호 (1페이지부터)
@@ -179,60 +179,61 @@ def view_review():
     if page < 1:
         page = 1
 
-    per_page = 6      # 한 페이지에 보여줄 리뷰 수
+    per_page = 6  # 한 페이지에 보여줄 리뷰 수
 
     # 1) 전체 리뷰 가져오기
     data = DB.get_reviews() or {}      # dict: {제목: 리뷰정보}
-    items = list(data.items())         # [(key, info), ...]  key == 리뷰 제목
-    total_all = len(items)             # 전체 리뷰 개수 (검색 상관없이)
+    items = list(data.items())         # [(key, info), ...]
+    total_all = len(items)             # 전체 리뷰 개수
 
     # 2) 검색 필터링
     if q:
         q_lower = q.lower()
+
         def match(info):
-            # 제목, 내용, 상품명 중 하나라도 검색어를 포함하면 매칭
             title = str(info.get("title", "")).lower()
             content = str(info.get("review", "")).lower()
             item_name = str(info.get("item", "")).lower()
-            return (q_lower in title) or (q_lower in content) or (q_lower in item_name)
+            writer = str(info.get("writer", "")).lower()   
+            return (
+                q_lower in title
+                or q_lower in content
+                or q_lower in item_name
+                or q_lower in writer
+            )
 
         items = [(k, v) for (k, v) in items if match(v)]
 
     # 검색 이후 개수
     total = len(items)
 
-    # 3) 정렬 함수들
+    # 3) created_at 기준 정렬
     def get_created_at(info):
         try:
             return float(info.get("created_at", 0))
         except (TypeError, ValueError):
             return 0.0
 
-    def get_rate(info):
-        try:
-            return int(info.get("rate", 0))
-        except (TypeError, ValueError):
-            return 0
+    # 최신순(new) = 내림차순, 오래된순(old) = 오름차순
+    reverse = True   # 기본: 최신순
+    if sort == "old":
+        reverse = False
 
-    # 4) 정렬 수행
-    if sort == "rate":
-        items.sort(key=lambda kv: get_rate(kv[1]), reverse=True)   # 별점 높은 순
-    else:
-        items.sort(key=lambda kv: get_created_at(kv[1]), reverse=True)  # 최신순
+    items.sort(key=lambda kv: get_created_at(kv[1]), reverse=reverse)
 
-    # 5) 페이지 슬라이스
+    # 4) 페이지 슬라이스
     start_idx = (page - 1) * per_page
     end_idx = start_idx + per_page
     page_items = items[start_idx:end_idx]
 
-    # 6) 템플릿에서 쓰기 쉽게 리스트로 변환
+    # 5) 템플릿에서 쓰기 쉽게 리스트로 변환
     reviews = []
     for key, info in page_items:
         obj = info.copy()
-        obj['id'] = key   # 상세조회에 사용 가능
+        obj["id"] = key   # 상세조회에 사용
         reviews.append(obj)
 
-    # 7) 총 페이지 수 (검색 결과 기준)
+    # 6) 총 페이지 수 (검색 결과 기준)
     page_count = (total + per_page - 1) // per_page if total > 0 else 1
 
     return render_template(
@@ -241,8 +242,8 @@ def view_review():
         page=page,
         page_count=page_count,
         total=total,         # 검색 결과 개수
-        total_all=total_all, # 전체 리뷰 개수(필요하면 헤더에 사용)
-        sort=sort,
+        total_all=total_all, # 전체 리뷰 개수 (필요하면 상단에 사용)
+        sort=sort,           # 🔥 템플릿에서 지금 정렬상태 알 수 있게 넘겨줌
         q=q,                 # 검색창에 기존 검색어 유지용
     )
 
@@ -284,8 +285,16 @@ def reg_review():
         img_filename = image_file.filename
         image_file.save(f"static/images/{img_filename}")
 
-    # DB에 리뷰 저장
-    DB.reg_review(data, img_filename)
+     # 세션에서 작성자 이름 만들기
+    first = session.get('first_name', '')
+    last = session.get('last_name', '')
+    if first or last:
+        writer = f"{last}{first}".strip()
+    else:
+        writer = "익명"
+
+    # DB에 리뷰 저장 (작성자 같이 넘김)
+    DB.reg_review(data, img_filename, writer)
 
     # 저장 후 전체 리뷰 화면으로 이동 
     return redirect(url_for('view_review'))
