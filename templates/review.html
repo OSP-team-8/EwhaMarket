@@ -19,21 +19,16 @@
             <button class="search__btn" type="submit" aria-label="검색">⌕</button>
         </form>
         <div class="sort-group">
-            <a href="{{ url_for('view_review',
-                                sort='new',
-                                q=request.args.get('q',''),
-                                page=1) }}"
-            class="sort {% if sort=='new' or sort=='date' %}active{% endif %}">
+            <a href="{{ url_for('view_review', sort='new', q=request.args.get('q',''), page=page) }}"
+                class="sort {% if sort == 'new' %}active{% endif %}">
                 최신순
             </a>
 
-            <a href="{{ url_for('view_review',
-                                sort='old',
-                                q=request.args.get('q',''),
-                                page=1) }}"
-            class="sort {% if sort=='old' %}active{% endif %}">
+            <a href="{{ url_for('view_review', sort='old', q=request.args.get('q',''), page=page) }}"
+                class="sort {% if sort == 'old' %}active{% endif %}">
                 오래된순
             </a>
+
         </div>
     </div>
 
@@ -58,7 +53,13 @@
 
     <nav class="pagination" aria-label="페이지네비게이션">
         {% if page > 1 %}
-            <a class="page-btn" href="{{ url_for('view_review', page=page-1) }}">〈 이전</a>
+            <a class="page-btn"
+            href="{{ url_for('view_review',
+                                page=page-1,
+                                sort=sort,
+                                q=request.args.get('q','')) }}">
+                〈 이전
+            </a>
         {% else %}
             <span class="page-btn">〈 이전</span>
         {% endif %}
@@ -67,15 +68,28 @@
             {% if p == page %}
                 <span class="page is-active">{{ p }}</span>
             {% else %}
-                <a class="page" href="{{ url_for('view_review', page=p) }}">{{ p }}</a>
+                <a class="page"
+                href="{{ url_for('view_review',
+                                    page=p,
+                                    sort=sort,
+                                    q=request.args.get('q','')) }}">
+                    {{ p }}
+                </a>
             {% endif %}
         {% endfor %}
 
         {% if page < page_count %}
-            <a class="page-btn" href="{{ url_for('view_review', page=page+1) }}">다음 〉</a>
+            <a class="page-btn"
+            href="{{ url_for('view_review',
+                                page=page+1,
+                                sort=sort,
+                                q=request.args.get('q','')) }}">
+                다음 〉
+            </a>
         {% else %}
             <span class="page-btn">다음 〉</span>
         {% endif %}
     </nav>
+
 </div>
 {% endblock section %}
