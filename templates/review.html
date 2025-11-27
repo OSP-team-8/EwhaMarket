@@ -18,12 +18,25 @@
             />
             <button class="search__btn" type="submit" aria-label="검색">⌕</button>
         </form>
+        <div class="sort-group">
+            <a href="{{ url_for('view_review',
+                                sort='new',
+                                q=request.args.get('q',''),
+                                page=1) }}"
+            class="sort {% if sort=='new' or sort=='date' %}active{% endif %}">
+                최신순
+            </a>
 
-        <a class="sort">최신순</a>
-        <a class="sort">오래된순</a>
-</div>
+            <a href="{{ url_for('view_review',
+                                sort='old',
+                                q=request.args.get('q',''),
+                                page=1) }}"
+            class="sort {% if sort=='old' %}active{% endif %}">
+                오래된순
+            </a>
+        </div>
+    </div>
 
-    <!-- ✅ 실제 리뷰 카드들 -->
     <div class="review_container">
         {% if reviews|length == 0 %}
             <p>등록된 리뷰가 없습니다.</p>
@@ -36,7 +49,6 @@
                 {% if r.img_path %}
                     <img src="{{ url_for('static', filename='images/' ~ r.img_path) }}">
                 {% else %}
-                    <!-- 이미지 없을 때 기본 이미지 쓰고 싶으면 여기 수정 -->
                     <img src="{{ url_for('static', filename='images/공기청정기.png') }}">
                 {% endif %}
             </a>
@@ -44,7 +56,6 @@
         {% endfor %}
     </div>
 
-    <!-- ✅ 페이지네이션 -->
     <nav class="pagination" aria-label="페이지네비게이션">
         {% if page > 1 %}
             <a class="page-btn" href="{{ url_for('view_review', page=page-1) }}">〈 이전</a>
@@ -66,4 +77,5 @@
             <span class="page-btn">다음 〉</span>
         {% endif %}
     </nav>
+</div>
 {% endblock section %}

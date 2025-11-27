@@ -98,13 +98,23 @@ form {
 }
 
 .sort {
+    font-size: 18px;
     color: #6D6767;
     margin-left: 2px;
+    border: none;
+    border-radius: 5px;
+    background-color: white;
+    text-decoration: none;
+    font-weight: 400;
+}
+.sort:hover{ 
+    color: #00462A;
+    font-weight: 600;
 }
 
-.sort _ .sort {
-    color: #6D6767;
-    margin-left: 2px;
+.sort-group{
+    display: flex;
+    gap: 8px;
 }
 
 ::placeholder {
@@ -185,7 +195,7 @@ form {
     .first_line {
         flex-direction: column;
         align-items: center;
-        gap: 12px;
+        gap: 30px;
     }
     .search_group {
         width: 100%;
@@ -193,5 +203,10 @@ form {
     #search {
         width: 100%;
         flex: 1;
+    }
+    .sort-group{
+        flex-direction: row;
+        justify-content: center;
+        margin-bottom: 10px;
     }
 }
