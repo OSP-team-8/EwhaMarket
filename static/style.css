@@ -216,7 +216,7 @@ footer{
   border-collapse: collapse;
   background: #f0f0f0;
   border-radius: var(--radius);
-  overflow: hidden; /* radius 보이게 */
+  overflow: hidden;
 }
 
 .wishlist-table tr{
@@ -227,11 +227,13 @@ footer{
   height: 50px;
   font-size: 15px;
   vertical-align: middle;
+  padding: 10px;
 }
 .wishlist-table td{
   height: 100px;
   font-size: 15px;
   vertical-align: middle;
+  padding: 0 10px;
 }
 
 .wishlist-img{
@@ -256,7 +258,8 @@ footer{
   align-items: center;
   justify-content: center;
   height: 100%;
-  margin: 25px;
+  margin-top: 5px;
+  margin-bottom: 5px;
 }
 
 .wishlist-img-placeholder {
