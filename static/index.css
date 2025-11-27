@@ -39,6 +39,14 @@ body, ul {
     gap: 25px;
 }
 
+#login_user{
+    color: white;
+    font-size: 20px;
+    font-family: Inter;
+    font-weight: 500;
+    text-decoration: none;
+}
+
 .navbar__menu li a {
     color: white;
     font-size: 20px;

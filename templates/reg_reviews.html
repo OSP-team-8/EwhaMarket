@@ -20,20 +20,33 @@
         <label for="star" class="label_name">별점</label>
         <div class="star_rating">
             <input type="radio" name="rating" id="star5" value="5">
-            <label for="star5">☆</label>
+            <label for="star5">★</label>
             <input type="radio" name="rating" id="star4" value="4">
-            <label for="star4">☆</label>
+            <label for="star4">★</label>
             <input type="radio" name="rating" id="star3" value="3">
-            <label for="star3">☆</label>
+            <label for="star3">★</label>
             <input type="radio" name="rating" id="star2" value="2">
-            <label for="star2">☆</label>
+            <label for="star2">★</label>
             <input type="radio" name="rating" id="star1" value="1">
-            <label for="star1">☆</label>
+            <label for="star1">★</label>
         </div>
         
         <label id="star_score">0 / 5 점</label>
         
     </div>
+
+    <script>
+        const ratingInputs = document.querySelectorAll('input[name="rating"]');
+        const scoreLabel = document.getElementById('star_score');
+
+        ratingInputs.forEach(input => {
+            input.addEventListener('change', function () {
+                scoreLabel.textContent = `${this.value} / 5 점`;
+            });
+        });
+    </script>
+
+
     <div class="form_line align_top">
         <label for="review_content" class="label_name">내용</label>
         <textarea name="review_content" id="review_content" required></textarea>

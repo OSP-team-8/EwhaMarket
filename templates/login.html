@@ -18,8 +18,9 @@
       </form>
 
       <div class="login-divider"><span>회원가입</span></div>
-
-      <a href="{{ url_for('view_signup') }}" class="btn btn-ewha login-email-btn">이메일 가입</a>
+      <div class="login-card">
+        <a href="{{ url_for('view_signup') }}" class="btn btn-ewha login-email-btn">이메일 가입</a>
+      </div>
     </div>
   </section>
 {% endblock section %}
