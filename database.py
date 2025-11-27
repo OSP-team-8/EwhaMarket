@@ -15,11 +15,6 @@ class DBhandler:
     # 내부 헬퍼: Firebase key로 쓸 user id 정리
     # -----------------------------
     def _user_key(self, user_id: str) -> str:
-        """
-        Firebase RTDB 키로 사용할 수 있도록 user_id를 안전하게 변환
-        - . $ # [ ] / 는 사용할 수 없음
-        - 여기서는 이메일의 '.' 만 간단히 ',' 로 치환
-        """
         return user_id.replace('.', ',')
 
     # -----------------------------

@@ -67,9 +67,13 @@
 
   <!-- 판매자 ID -->
   <div class="form_line">
-    <label for="seller" class="label_name">판매자</label>
-    <input type="text" name="seller" id="seller" class="text_block" required>
-  </div>
+    <label class="label_name">판매자</label>
+    <input
+      type="text"
+      class="text_block"
+      value="{{ session.get('last_name','') }}{{ session.get('first_name','') }}"
+      readonly>
+</div>
 
   <!-- 전화번호 -->
   <div class="form_line">

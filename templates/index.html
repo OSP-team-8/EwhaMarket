@@ -24,7 +24,7 @@
             <li><a href="/reg_reviews" class="{{ 'active' if request.path == '/reg_reviews' else ''}}">리뷰등록</a></li>
 
             {% if session.get('id') %}
-                <li>{{ session.get('first_name','') }}{{ session.get('last_name','') }} 님</li>
+                <li>{{ session.get('last_name','') }}{{ session.get('first_name','') }} 님</li>
                 <li><a href="{{ url_for('logout_user') }}">로그아웃</a></li>
             {% else %}
                 <li><a href="{{ url_for('view_login') }}">로그인</a></li>

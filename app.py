@@ -30,6 +30,8 @@ def find_product(pid): #
 @application.route("/list")
 def view_list():
     q = request.args.get("q", "", type = str).strip()
+    
+    sort = request.args.get("sort", "lastes")
 
     page = request.args.get("page", 1, type=int)
     if page < 1:
@@ -64,8 +66,11 @@ def view_list():
             return float(info.get("created_at", 0))
         except (TypeError, ValueError):
             return 0.0
-        
-    items.sort(key=lambda kv: get_created_at(kv[1]), reverse = True)
+
+    if sort =="old":
+        items.sort(key=lambda kv: get_created_at(kv[1]), reverse= False) 
+    else :
+        items.sort(key=lambda kv: get_created_at(kv[1]), reverse = True)
 
     #paging
     start_idx = (page -1) * per_page
@@ -82,10 +87,10 @@ def view_list():
         thumb_path = f"images/{img_filename}" if img_filename else None
 
         products.append({
-            "id": item_id,                     # URL 파라미터용
+            "id": item_id,                    
             "name": info.get("name", item_id),
-            "thumb": thumb_path,              # url_for('static', filename=p.thumb)
-            "price": info.get("price", 0),    # 나중에 목록에서 가격 쓰고 싶으면 사용
+            "thumb": thumb_path,             
+            "price": info.get("price", 0),    
             "status": info.get("status", ""),
             "region": info.get("region", ""),
             "liked": (item_id in liked_ids),
@@ -98,6 +103,7 @@ def view_list():
         products = products,
         page = page,
         page_count = page_count,
+        sort = sort,
     )
 
 @application.route("/wish/<pid>", methods = ['POST'])
@@ -397,7 +403,41 @@ def view_wishlist():
 
 @application.route("/submit_item", methods=['POST'])
 def reg_item_submit():
-    data = request.form
+
+    #로그인 여부 체크
+    user_id = session.get('id')
+    if not user_id:
+        flash("로그인 후 상품을 등록할 수 있습니다.")
+        return redirect(url_for('view_login'))
+    
+    #로그인한 사용자 정보 가져오기
+    user = DB.get_user(user_id)
+    if not user:
+        flash("사용자 정보를 찾을 수 없습니다.")
+        return redirect(url_for('view_login'))
+    
+    form = request.form
+
+    #판매자 이름 세팅
+    last_name = session.get('last_name','')
+    first_name = session.get('first_name','')
+    seller_name = (last_name + first_name).strip() or user_id
+    
+    data = {
+        "name":   form.get("name", ""),
+        "price":  form.get("price", ""),
+        "status": form.get("status", ""),
+        "region": form.get("region", ""),
+        "addr":   form.get("addr", ""),      # 상세 주소
+        "desc":   form.get("desc", ""),
+
+        "phone":  form.get("phone", ""),
+        "seller":  seller_name,              # 판매자 = 로그인한 유저 이름
+        "email":   user_id,    
+
+        "category": form.get("category", ""),
+        "card":     form.get("card", ""),
+    }
 
     #이미지 파일 처리
     image_file = request.files.get("file")
@@ -409,5 +449,6 @@ def reg_item_submit():
     DB.insert_item(data['name'], data, img_filename)
     
     return redirect(url_for("view_list"))
+
 if __name__ == "__main__":
     application.run(host="0.0.0.0")
