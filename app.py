@@ -370,7 +370,7 @@ def view_wishlist():
     page_items = wish_items[start_idx:end_idx]
 
     items = []
-    for item_id, info in wish_items:
+    for item_id, info in page_items: 
         img_filename = info.get("img_path") or ""
         thumb_path = f"images/{img_filename}" if img_filename else None
 
@@ -391,7 +391,7 @@ def view_wishlist():
     return render_template("wishlist.html", 
                            items = items,
                            page = page,
-                           page_count = page,
+                           page_count=page_count, 
                            total = total,
                            )
 

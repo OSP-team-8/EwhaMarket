@@ -23,10 +23,28 @@
         value="{{ request.args.get('q','') }}"
         aria-label="검색어"
       />
+      <!-- 검색 시에도 현재 정렬 기준 유지되도록 hidden으로 전달 -->
+      <input type="hidden" name="sort" value="{{ sort or 'latest' }}">
       <button class="search__btn" type="submit" aria-label="검색">⌕</button>
     </form>
 
-    <a id="latest">최신순</a>
+    <div class="sort_group">
+      <a id="latest"
+         class="sort-link{% if sort != 'old' %} is-active{% endif %}"
+         href="{{ url_for('view_list',
+                          sort='latest',
+                          q=request.args.get('q','')) }}">
+        최신순
+      </a>
+      <span class="sort-divider">|</span>
+      <a id="oldest"
+         class="sort-link{% if sort == 'old' %} is-active{% endif %}"
+         href="{{ url_for('view_list',
+                          sort='old',
+                          q=request.args.get('q','')) }}">
+        오래된 순
+      </a>
+    </div>
   </div>
 
   <!-- 상품 카드 그리드 -->
@@ -65,14 +83,52 @@
     {% endif %}
   </div>
 
-  <!-- 페이지 네비게이션 (리뷰와 동일) -->
-  <nav class="pagination" aria-label="페이지네비게이션">
-    <a class="page-btn" href="#">〈 이전</a>
-    <a class="page is-active" href="#">1</a>
-    <a class="page" href="#">2</a>
-    <a class="page" href="#">3</a>
-    <a class="page-btn" href="#">다음 〉</a>
+    <!-- 페이지 네비게이션 (백엔드 연동 버전) -->
+    <nav class="pagination" aria-label="페이지네비게이션">
+    {# 이전 버튼 #}
+    {% if page > 1 %}
+      <a class="page-btn"
+         href="{{ url_for('view_list',
+                          page=page-1,
+                          q=request.args.get('q', ''),
+                          sort=sort) }}">
+        〈 이전
+      </a>
+    {% else %}
+      <span class="page-btn">〈 이전</span>
+    {% endif %}
+
+    {# 페이지 번호들 #}
+    {% for p in range(1, page_count + 1) %}
+      {% if p == page %}
+        <span class="page is-active">{{ p }}</span>
+      {% else %}
+        <a class="page"
+           href="{{ url_for('view_list',
+                            page=p,
+                            q=request.args.get('q',''),
+                            sort=sort) }}">
+          {{ p }}
+        </a>
+      {% endif %}
+    {% endfor %}
+
+    {# 다음 버튼 #}
+    {% if page < page_count %}
+      <a class="page-btn"
+         href="{{ url_for('view_list',
+                          page=page+1,
+                          q=request.args.get('q',''),
+                          sort=sort) }}">
+        다음 〉
+      </a>
+    {% else %}
+      <span class="page-btn">다음 〉</span>
+    {% endif %}
   </nav>
+
+      
+
 </div>
 
 {% endblock section %}
