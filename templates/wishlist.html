@@ -70,33 +70,36 @@
     </tbody>
   </table>
 
-  {# 🔹 페이징 네비게이션 #}
   {% if page_count %}
-  <nav class="wishlist-page" aria-label="페이지 네비게이션">
-    {# 이전 버튼 #}
-    {% if page > 1 %}
-      <a href="{{ url_for('view_wishlist', page=page-1) }}">&lt; 이전</a>
-    {% else %}
-      <span class="page disabled">&lt; 이전</span>
-    {% endif %}
-
-    {# 페이지 번호들 #}
-    {% for p in range(1, page_count + 1) %}
-      {% if p == page %}
-        <a href="{{ url_for('view_wishlist', page=p) }}" class="page active">{{ p }}</a>
-      {% else %}
-        <a href="{{ url_for('view_wishlist', page=p) }}" class="page">{{ p }}</a>
-      {% endif %}
-    {% endfor %}
-
-    {# 다음 버튼 #}
-    {% if page < page_count %}
-      <a href="{{ url_for('view_wishlist', page=page+1) }}">다음 &gt;</a>
-    {% else %}
-      <span class="page disabled">다음 &gt;</span>
-    {% endif %}
-  </nav>
+<nav class="pagination" aria-label="페이지 네비게이션">
+  
+  {# 이전 버튼 #}
+  {% if page > 1 %}
+    <a href="{{ url_for('view_wishlist', page=page-1) }}" class="page-btn">&lt; 이전</a>
+  {% else %}
+    <span class="page-btn">&lt; 이전</span>
   {% endif %}
+
+  {# 페이지 번호들 #}
+  {% for p in range(1, page_count + 1) %}
+    <a href="{{ url_for('view_wishlist', page=p) }}"
+      class="page{% if p == page %} is-active{% endif %}">
+      {{ p }}
+    </a>
+  {% endfor %}
+
+  {# 다음 버튼 #}
+  {% if page < page_count %}
+    <a href="{{ url_for('view_wishlist', page=page+1) }}" class="page-btn">다음 &gt;</a>
+  {% else %}
+    <span class="page-btn">다음 &gt;</span>
+  {% endif %}
+
+</nav>
+{% endif %}
+
+
+  
 
 </section>
 {% endblock section %}
