@@ -336,16 +336,16 @@ footer{
   background: var(--ewha-green-dark);
 }
 
-.wishlist-page{
+/* .wishlist-page{
   margin-top: 20px;
   display:flex;
   justify-content:center;
   gap:10px;
   align-items:center;
-}
+} */
 
 /* 잘려 있던 rule 정상화 & 가독성 향상 */
-.wishlist-page .page{
+/* .wishlist-page .page{
   padding: 6px 12px;
   border-radius: var(--radius);
   color: var(--ewha-green);
@@ -361,4 +361,30 @@ footer{
   background: var(--ewha-green);
   color: #fff;
   border-color: var(--ewha-green);
+} */
+
+/* 페이지 네비게이션 */
+.pagination {
+  margin-top: 26px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
 }
+
+.page,
+.page-btn {
+  text-decoration: none;
+  color: var(--ewha-green);              /* ⬅ 여기 */
+  border: 1px solid var(--ewha-green);   /* ⬅ 여기 */
+  padding: 8px 12px;
+  border-radius: 10px;
+  font-size: 14px;
+  display: inline-block;                 /* 버튼처럼 보이게 (옵션) */
+}
+
+.page.is-active {
+  background: var(--ewha-green);         /* ⬅ 여기 */
+  color: var(--white);
+}
+
