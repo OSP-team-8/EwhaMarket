@@ -4,7 +4,7 @@
 
 <div class="container">
     <div class="first_line">
-        <label id="reviews_all">상품 리뷰 | {{ reviews|length }}개</label>
+        <label id="reviews_all">상품 리뷰 | {{ total_all }}개</label>
 
         <form class="search_group" method="get" action="{{ url_for('view_review') }}">
             <label for="search">검색 | </label>
