@@ -2,20 +2,36 @@
 {% block section %}
 <link rel="stylesheet" href="{{ url_for('static', filename='review.css') }}">
 
-<form method="get">
+<div class="container">
     <div class="first_line">
-        <label id="review_all">상품 리뷰 | {{ total }}개</label>
+        <label id="reviews_all">상품 리뷰 | {{ total_all }}개</label>
+
+        <form class="search_group" method="get" action="{{ url_for('view_review') }}">
+            <label for="search">검색 | </label>
+            <input
+            id="search"
+            type="search"
+            name="q"
+            placeholder="검색어를 입력하세요"
+            value="{{ request.args.get('q','') }}"
+            aria-label="검색어"
+            />
+            <button class="search__btn" type="submit" aria-label="검색">⌕</button>
+        </form>
+        <div class="sort-group">
+            <a href="{{ url_for('view_review', sort='new', q=request.args.get('q',''), page=page) }}"
+                class="sort {% if sort == 'new' %}active{% endif %}">
+                최신순
+            </a>
+
+            <a href="{{ url_for('view_review', sort='old', q=request.args.get('q',''), page=page) }}"
+                class="sort {% if sort == 'old' %}active{% endif %}">
+                오래된순
+            </a>
+
+        </div>
     </div>
 
-    <div class="search_group">
-        <label for="search">검색</label>
-        <input type="search" name="q" id="search" placeholder="검색어를 입력하세요">
-        <button class="search__btn" type="submit">검색</button>
-    </div>
-</form>
-
-
-    <!-- ✅ 실제 리뷰 카드들 -->
     <div class="review_container">
         {% if reviews|length == 0 %}
             <p>등록된 리뷰가 없습니다.</p>
@@ -28,7 +44,6 @@
                 {% if r.img_path %}
                     <img src="{{ url_for('static', filename='images/' ~ r.img_path) }}">
                 {% else %}
-                    <!-- 이미지 없을 때 기본 이미지 쓰고 싶으면 여기 수정 -->
                     <img src="{{ url_for('static', filename='images/공기청정기.png') }}">
                 {% endif %}
             </a>
@@ -36,28 +51,48 @@
         {% endfor %}
     </div>
 
-    <!-- ✅ 페이지네이션 -->
     <nav class="pagination" aria-label="페이지네비게이션">
-        {% if page > 1 %}
-            <a class="page-btn" href="{{ url_for('view_review', page=page-1) }}">〈 이전</a>
+    {# 이전 버튼 #}
+    {% if page > 1 %}
+        <a class="page-btn"
+           href="{{ url_for('view_review',
+                            page=page-1,
+                            q=request.args.get('q',''),
+                            sort=sort) }}">
+            〈 이전
+        </a>
+    {% else %}
+        <span class="page-btn">〈 이전</span>
+    {% endif %}
+
+    {# 번호 버튼 #}
+    {% for p in range(1, page_count + 1) %}
+        {% if p == page %}
+            <span class="page is-active">{{ p }}</span>
         {% else %}
-            <span class="page-btn">〈 이전</span>
+            <a class="page"
+               href="{{ url_for('view_review',
+                                page=p,
+                                q=request.args.get('q',''),
+                                sort=sort) }}">
+                {{ p }}
+            </a>
         {% endif %}
+    {% endfor %}
 
-        {% for p in range(1, page_count + 1) %}
-            {% if p == page %}
-                <span class="page is-active">{{ p }}</span>
-            {% else %}
-                <a class="page" href="{{ url_for('view_review', page=p) }}">{{ p }}</a>
-            {% endif %}
-        {% endfor %}
+    {# 다음 버튼 #}
+    {% if page < page_count %}
+        <a class="page-btn"
+           href="{{ url_for('view_review',
+                            page=page+1,
+                            q=request.args.get('q',''),
+                            sort=sort) }}">
+            다음 〉
+        </a>
+    {% else %}
+        <span class="page-btn">다음 〉</span>
+    {% endif %}
+</nav>
 
-        {% if page < page_count %}
-            <a class="page-btn" href="{{ url_for('view_review', page=page+1) }}">다음 〉</a>
-        {% else %}
-            <span class="page-btn">다음 〉</span>
-        {% endif %}
-    </nav>
-
-</form>
+</div>
 {% endblock section %}
