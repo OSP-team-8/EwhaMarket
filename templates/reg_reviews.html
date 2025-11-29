@@ -10,7 +10,7 @@
     <div class="form_line">
         <label for="review_item" class="label_name">상품명</label>
         <input type="text" name="review_item" class="text_block" id="review_item" value="{{ name or '' }}" 
-        required> <!-- 이유진 수정 => 상품 상세에서 넘어올 때 name 변수 채워지도록 -->
+        required>
     </div> 
     <div class="form_line">
         <label for="review_title" class="label_name">제목</label>
@@ -57,8 +57,12 @@
     </div>
     <div class="button">
         <button type="submit"id="submit">등록</button>
-        <button type="button" id="cancel">취소</button>  <!--이유진 수정 => 버튼 type 추가 -->
+        <button type="button" id="cancel">취소</button>
     </div>
 </form>
-
+<script>
+    document.getElementById("cancel").addEventListener("click", function () {
+        window.location.href = "{{ url_for('view_review') }}";
+    });
+</script>
 {% endblock section %}
