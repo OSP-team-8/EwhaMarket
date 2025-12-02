@@ -36,7 +36,7 @@
                           q=request.args.get('q','')) }}">
         최신순
       </a>
-      <span class="sort-divider">|</span>
+      <!-- <span class="sort-divider">|</span>  -->
       <a id="oldest"
          class="sort-link{% if sort == 'old' %} is-active{% endif %}"
          href="{{ url_for('view_list',
