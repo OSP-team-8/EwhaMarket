@@ -9,9 +9,9 @@
 {% block section %}
 <div class="container">
 
-  <!-- 리뷰와 동일한 상단 라인 구조/클래스 -->
+  <!-- 리뷰와 동일한 상단 라인 구조/클래스 {{ products|length }} -->
   <div class="first_line">
-    <label id="items_all">상품 조회 | {{ products|length }}개</label>
+    <label id="items_all">상품 조회 | {{ total }}개</label>
 
     <form class="search_group" method="get" action="{{ url_for('view_list') }}">
       <label for="search">검색 | </label>
@@ -36,7 +36,7 @@
                           q=request.args.get('q','')) }}">
         최신순
       </a>
-      <span class="sort-divider">|</span>
+      <!-- <span class="sort-divider">|</span>  -->
       <a id="oldest"
          class="sort-link{% if sort == 'old' %} is-active{% endif %}"
          href="{{ url_for('view_list',
