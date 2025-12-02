@@ -104,6 +104,7 @@ def view_list():
         page = page,
         page_count = page_count,
         sort = sort,
+        total = total,
     )
 
 @application.route("/wish/<pid>", methods = ['POST'])
