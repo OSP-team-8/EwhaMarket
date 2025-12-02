@@ -22,7 +22,7 @@
             <li><a href="/reg_items" class="{{ 'active' if request.path == '/reg_items' else ''}}">상품등록</a></li>
             <li><a href="/review"class="{{ 'active' if request.path.startswith('/review') or request.path.startswith('/review_detail') else '' }}">리뷰조회</a></li>
             <li><a href="/reg_reviews" class="{{ 'active' if request.endpoint in ['reg_review_init', 'reg_reviews_legacy'] else '' }}">리뷰등록</a></li>
-            <li><a href="/wishlist" class="{{ 'active' if request.path == '/wishlist' else ''}}">북마크</a></li>
+            <li><a href="/wishlist" class="{{ 'active' if request.endpoint == 'view_wishlist' else '' }}">북마크</a></li>
                         
             {% if session.get('id') %}
                 <li id="login_user">{{ session.get('last_name','') }}{{ session.get('first_name','') }} 님</li>
@@ -43,5 +43,17 @@
 
     {% endblock section %}
 </section>
+
+
+{% with messages = get_flashed_messages() %}
+    {% if messages %}
+        <script>
+        {% for msg in messages %}
+            alert("{{ msg }}");
+        {% endfor %}
+        </script>
+    {% endif %}
+{% endwith %}
+
  </body>
  </html>
