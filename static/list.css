@@ -38,7 +38,33 @@ html, body { margin: 0; padding: 0; font-family: Inter, sans-serif; }
   margin-bottom: 18px;
 }
 
+/* 공통 스타일 */
+.sort-link {
+  font-size: 18px;
+  color: #6D6767;
+  margin-left: 2px;
+  border: none;
+  border-radius: 5px;
+  background-color: white;
+  text-decoration: none;
+  font-weight: 400;
+}
 
+/* hover + 현재 선택된 정렬(is-active) */
+.sort-link:hover,
+.sort-link.is-active {
+  color: #00462A;
+  font-weight: 600;
+}
+
+/* 정렬 그룹 레이아웃 */
+.sort_group {
+  display: flex;
+  gap: 8px;
+}
+
+
+/* 
 #latest, #oldest {
   font-size: 18px;
     color: #6D6767;
@@ -50,7 +76,8 @@ html, body { margin: 0; padding: 0; font-family: Inter, sans-serif; }
     font-weight: 400;
 }
 
-#latest:hover, #oldest:hover{
+#latest:hover, #oldest:hover,
+#latest.active, #oldest.active{
     color: #00462A;
     font-weight: 600;
 }
@@ -58,7 +85,7 @@ html, body { margin: 0; padding: 0; font-family: Inter, sans-serif; }
 .sort-group{
     display: flex;
     gap: 8px;
-}
+} */
 
 
 ::placeholder {
