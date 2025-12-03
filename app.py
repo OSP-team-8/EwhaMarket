@@ -117,10 +117,10 @@ def toggle_wish(pid):
 
     if pid in liked_ids:
         DB.remove_wish(userId, pid)
-        flash("찜이 취소되었습니다.")
+        flash("북마크가 취소되었습니다.")
     else: 
         DB.add_wish(userId, pid)
-        flash("찜 목록에 추가되었습니다.")
+        flash("북마크에 추가되었습니다.")
 
     next_url = request.referrer or url_for('view_list')
     return redirect(next_url)
@@ -336,7 +336,7 @@ def login_user():
             session['last_name'] = user['last_name']
         return redirect(url_for('view_list'))
     else:
-        flash("Wrong ID or PW!")
+        flash("아이디 혹은 비밀번호가 일치하지 않습니다.")
         return render_template("login.html")
 
     
