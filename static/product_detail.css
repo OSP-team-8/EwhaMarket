@@ -1,15 +1,25 @@
-/* ===== PAGE: product_detail (1200px 통일 버전) ===== */
-:root{
-  --green:#00462A;
-  --green-2:#00642A;
+/* ============================================
+   상품 상세 페이지 CSS (product_detail.html 전용)
+   - 좌측: 대표사진
+   - 우측: 상품 정보 / 찜 / 액션 버튼
+   - 전체 폭: max 1200px 기준
+   ============================================ */
 
+:root{
+  /* 공통 색상 변수 */
+  --green:#00462A;   /* 메인 진한 초록 */
+  --green-2:#00642A; /* 보조 초록 (테두리 등) */
+
+  /* 라벨/값 박스 폭 & 간격 */
   --label-w:120px;
   --gap:10px;
   --value-w:530px;
 
+  /* 대표사진 라벨 높이 */
   --photo-label-h:50px;
 }
 
+/* 페이지 상단 제목 영역: "상품 조회 상세" */
 .page-title{
   color: black;
   font-size: 25px;
@@ -24,78 +34,159 @@
   margin: 30px auto;
 }
 
-/* 레이아웃: 좌/우 2박스 상단 정렬 */
+/* 메인 레이아웃: 좌/우 2박스 그리드
+   - 왼쪽: 이미지
+   - 오른쪽: 정보 박스
+*/
 .detail{
   display:grid;
   grid-template-columns:466px 1fr; /* 좌측 이미지 너비 기준 */
   gap:32px;
-  align-items:start;              /* ← 두 박스 top 정렬 */
+  align-items:start;              /* 두 박스를 위쪽 기준 정렬 */
   max-width:1200px;
   margin:0 auto;
   padding:0 16px;
 }
 
-/* 공통 박스 래퍼 */
-.detail__box{ display:flex; flex-direction:column; }
+/* 공통 박스 래퍼 (좌/우 영역 공통) */
+.detail__box{
+  display:flex;
+  flex-direction:column;
+}
 
-/* 공통 행/박스 */
+/* 공통 정보 행: 라벨 + 값 2열 구조 */
 .detail .row{
-  display:flex; align-items:flex-start; gap:var(--gap); margin-bottom:10px;
-}
-.detail .label-box{
-  width:var(--label-w); height:50px; flex-shrink:0;
-  background:var(--green); color:#fff;
-  display:flex; align-items:center; justify-content:center;
-  border-radius:10px; font-weight:700;
-}
-.detail .value-box{
-  width:var(--value-w); height:50px; flex-shrink:0;
-  border:1px solid var(--green-2); background:#fff;
-  display:flex; align-items:center; padding:0 12px;
-  border-radius:10px;
-}
-
-/* [LEFT] 대표사진 */
-.label-photo{
-  height:var(--photo-label-h);
-  display:flex; align-items:center; justify-content:center;
+  display:flex;
+  align-items:flex-start;
+  gap:var(--gap);
   margin-bottom:10px;
 }
-.detail__img{
-  width:466px; height:399px; flex-shrink:0;
-  border:1px solid #000; object-fit:cover; background:#fff;
+
+/* 왼쪽 라벨 박스 스타일 */
+.detail .label-box{
+  width:var(--label-w);
+  height:50px;
+  flex-shrink:0;
+  background:var(--green);
+  color:#fff;
+  display:flex;
+  align-items:center;
+  justify-content:center;
   border-radius:10px;
+  font-weight:700;
 }
-.detail__img--empty{
-  display:flex; align-items:center; justify-content:center; color:#777; font-size:14px;
-  width:466px; height:399px; border:1px solid #000; background:#fff;
+
+/* 오른쪽 값 박스 스타일 */
+.detail .value-box{
+  width:var(--value-w);
+  height:50px;
+  flex-shrink:0;
+  border:1px solid var(--green-2);
+  background:#fff;
+  display:flex;
+  align-items:center;
+  padding:0 12px;
   border-radius:10px;
 }
 
-/* [RIGHT] 상단 찜하기 바: 라벨 폭만큼 들여쓰기 */
-.detail__box--right{ /* 이전의 margin-top 보정 삭제! */ }
+/* ========================= */
+/* [LEFT] 대표사진 영역      */
+/* ========================= */
+
+/* "대표사진" 라벨 박스 */
+.label-photo{
+  height:var(--photo-label-h);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  margin-bottom:10px;
+}
+
+/* 실제 대표 이미지 박스 */
+.detail__img{
+  width:466px;
+  height:399px;
+  flex-shrink:0;
+  border:1px solid #000;
+  object-fit:cover;    /* 이미지 비율 유지하면서 영역 채우기 */
+  background:#fff;
+  border-radius:10px;
+}
+
+/* 대표 이미지가 없을 때 빈 박스 스타일 */
+.detail__img--empty{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:#777;
+  font-size:14px;
+  width:466px;
+  height:399px;
+  border:1px solid #000;
+  background:#fff;
+  border-radius:10px;
+}
+
+/* ========================= */
+/* [RIGHT] 상단 찜하기 바    */
+/* ========================= */
+
+/* 오른쪽 박스 기본: 별도 margin-top 조정 제거 (디자인 통일 목적) */
+.detail__box--right{
+  /* margin-top 보정 없음 (좌측과 수평 정렬) */
+}
+
+/* 우측 상단 찜 영역
+   - 라벨 박스 폭만큼 들여쓰기 해서 값 박스와 라인 맞춤
+*/
 .detail__box--right .right-bar{
   margin-left: calc(var(--label-w) + var(--gap));
   width: var(--value-w);
-  display:flex; justify-content:flex-end; align-items:center;
+  display:flex;
+  justify-content:flex-end;
+  align-items:center;
   margin-bottom:8px;
 }
 
-/* 찜하기 버튼 */
-.wish{ display:flex; justify-content: flex-end; align-items: center; gap:8px; white-space:nowrap; font-size:18px; line-height:1; }
-.heart{ background:transparent; border:0; cursor:pointer; font-size:26px; color:red; line-height:1; }
-
-/* [RIGHT] 목록으로 버튼 */
-.actions {
-  display: flex;
+/* "찜하기 | ♥" 텍스트/버튼 묶음 */
+.wish{
+  display:flex;
   justify-content: flex-end;
   align-items: center;
-  gap: 12px;           /* 버튼 사이 여백 */
+  gap:8px;
+  white-space:nowrap;
+  font-size:18px;
+  line-height:1;
+}
+
+/* 찜 하트 버튼 스타일
+   - 서버에서 liked 여부에 따라 is-liked 클래스 추가
+*/
+.heart{
+  background:transparent;
+  border:0;
+  cursor:pointer;
+  font-size:26px;
+  color:red;
+  line-height:1;
+}
+
+/* ========================= */
+/* [RIGHT] 하단 액션 버튼들  */
+/* ========================= */
+
+/* 액션 버튼 영역 (리뷰 등록 / 목록으로 돌아가기) */
+.actions {
+  display: flex;
+  justify-content: flex-end;  /* 오른쪽 정렬 */
+  align-items: center;
+  gap: 12px;                  /* 버튼 사이 간격 */
   max-width: 1200px;
   padding: 0 16px;
   margin-top: 16px;
 }
 
+/* "목록으로 돌아가기" 버튼 */
 .back-btn {
   display: flex;
   justify-content: center;
@@ -112,15 +203,19 @@
   text-decoration: none;
 }
 
-.back-btn:hover{ filter:brightness(0.95); }
+/* hover 시 살짝 어두워지는 효과 */
+.back-btn:hover{
+  filter:brightness(0.95);
+}
 
+/* "리뷰 등록" 버튼 */
 .review-btn {
   display: flex;
   justify-content: center;
   align-items: center;
   width: 180px;
   height: 50px;
-  background: var(--green);          /* 진한 초록 배경 */
+  background: var(--green);   /* 진한 초록 배경 */
   border: 2px solid var(--green);
   border-radius: 10px;
   color: #fff;
@@ -130,18 +225,46 @@
   text-decoration: none;
 }
 
+/* hover 시 살짝 밝아지는 효과 */
 .review-btn:hover {
   filter: brightness(1.05);
 }
 
+/* ========================= */
+/*       반응형 레이아웃     */
+/* ========================= */
 
-
-/* 반응형 */
+/* 화면이 좁아지면 좌/우 1열로 쌓이도록 처리 */
 @media (max-width:980px){
-  .detail{ grid-template-columns:1fr; }
-  .detail__img{ width:100%; height:auto; max-height:420px; }
-  .detail__img--empty{ width:100%; height:260px; }
-  .detail .value-box{ width:100%; }
-  .detail__box--right .right-bar{ margin-left:0; width:100%; }
-  .actions{ margin-left:0; width:100%; justify-content:flex-end; }
+  .detail{
+    grid-template-columns:1fr;
+  }
+
+  /* 이미지 영역: 가로폭 100%, 세로는 비율에 따라 자동 */
+  .detail__img{
+    width:100%;
+    height:auto;
+    max-height:420px;
+  }
+
+  .detail__img--empty{
+    width:100%;
+    height:260px;
+  }
+
+  .detail .value-box{
+    width:100%;
+  }
+
+  /* 찜 영역 & 버튼 영역도 전체 폭 사용 */
+  .detail__box--right .right-bar{
+    margin-left:0;
+    width:100%;
+  }
+
+  .actions{
+    margin-left:0;
+    width:100%;
+    justify-content:flex-end;
+  }
 }
