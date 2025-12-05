@@ -2,27 +2,34 @@
 
 {% block head %}
   <title>상품 등록 | 이화 마켓</title>
+  <!-- 상품 등록 페이지 전용 CSS -->
   <link rel="stylesheet" href="{{ url_for('static', filename='reg_items.css') }}">
 {% endblock head %}
 
 {% block section %}
+<!--
+  상품 등록 폼
+  - method="post" + enctype="multipart/form-data" : 파일 업로드(사진) 포함
+  - action="/submit_item" : 백엔드에서 상품 저장 처리
+-->
 <form class="reg-form" method="post" enctype="multipart/form-data" action="/submit_item">
   
+  <!-- 페이지 제목 -->
   <label id="register_items">상품 등록</label><br><br>
 
-  <!-- 상품명 -->
+  <!-- 상품명 입력 -->
   <div class="form_line">
     <label for="name" class="label_name">상품명</label>
     <input type="text" name="name" id="name" class="text_block" required>
   </div>
 
-  <!-- 가격 -->
+  <!-- 가격 입력 (단순 텍스트, 서버에서 숫자로 처리 가능) -->
   <div class="form_line">
     <label for="price" class="label_name">가격</label>
     <input type="text" name="price" id="price" class="text_block" required>
   </div>
 
-  <!-- 상태 (드롭다운) -->
+  <!-- 상태 (드롭다운 선택) -->
   <div class="form_line">
     <label for="status" class="label_name">상태</label>
     <select id="status" name="status" class="text_block select-short" required>
@@ -32,10 +39,11 @@
     </select>
   </div>
 
-  <!-- 지역 (드롭다운 + 상세주소) -->
+  <!-- 지역 (시/도 선택 + 상세 주소 텍스트) -->
   <div class="form_line">
     <label for="region" class="label_name">지역</label>
     <div class="inline_group">
+      <!-- 시/도 선택 -->
       <select id="region" name="region" class="text_block select-short" required>
         <option value="서울특별시" selected>서울특별자치시</option>
         <option value="경기도">경기도</option>
@@ -55,17 +63,18 @@
         <option value="경상남도">경상남도</option>
         <option value="제주특별자치도">제주특별자치도</option>
       </select>
+      <!-- 상세 주소 (자유 입력) -->
       <input type="text" name="addr" id="addr" class="text_block addr-flex" placeholder="상세 주소">
     </div>
   </div>
 
-  <!-- 설명 -->
+  <!-- 상품 설명 (멀티라인 입력) -->
   <div class="form_line align_top">
     <label for="desc" class="label_name">설명</label>
     <textarea name="desc" id="desc" required></textarea>
   </div>
 
-  <!-- 판매자 ID -->
+  <!-- 판매자 이름 (세션에서 가져온 값, 수정 불가 / readonly) -->
   <div class="form_line">
     <label class="label_name">판매자</label>
     <input
@@ -73,32 +82,30 @@
       class="text_block"
       value="{{ session.get('last_name','') }}{{ session.get('first_name','') }}"
       readonly>
-</div>
+  </div>
 
-  <!-- 전화번호 -->
+  <!-- 판매자 연락처 (전화번호) -->
   <div class="form_line">
     <label for="phone" class="label_name">전화</label>
     <input type="text" name="phone" id="phone" class="text_block">
   </div>
 
-  <!-- 사진 업로드 -->
+  <!-- 상품 사진 업로드 (단일 파일) -->
   <div class="form_line">
     <label for="image_file" class="label_name">사진</label>
     <input type="file" id="image_file" name="file"><br>
   </div>
 
+  <!-- 폼 하단 버튼: 등록 / 취소 -->
   <div class="button">
+    <!-- 등록: 폼 제출 -->
     <button type="submit" id="submit">등록</button>
+    <!-- 취소: 브라우저 뒤로가기 -->
     <button type="button" id="cancel" onclick="history.back()">취소</button>
   </div>
 
-  <!-- 기존 hidden 유지 -->
+  <!-- 고정값 hidden 필드 (카테고리, 카드 결제 가능 여부 등) -->
   <input type="hidden" name="category" value="ETC">
   <input type="hidden" name="card" value="Y">
 </form>
 {% endblock section %}
-
-
-
-
-

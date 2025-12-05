@@ -2,35 +2,41 @@
 
 {% block head %}
   <title>상품 조회 상세 | 이화 마켓</title>
+  <!-- 상품 상세 페이지 전용 CSS (캐시 방지를 위해 random query string 추가) -->
   <link rel="stylesheet"
         href="{{ url_for('static', filename='product_detail.css') }}?v={{ range(1,999999)|random }}">
 {% endblock head %}
 
 {% block section %}
+<!-- 페이지 제목 -->
 <h2 class="page-title">상품 조회 상세</h2>
 
 <div class="detail">
-  <!-- [BOX-LEFT] 대표사진 묶음 -->
+  <!-- [BOX-LEFT] 대표사진 영역 -->
   <section class="detail__box detail__box--left">
     <div class="label-box label-photo">대표사진</div>
 
     {% if product.thumb %}
+      <!-- 상품 썸네일이 있는 경우: 이미지 출력 -->
       <img class="detail__img"
            src="{{ url_for('static', filename=product.thumb) }}"
            alt="{{ product.name }}">
     {% else %}
+      <!-- 상품 썸네일이 없는 경우: 기본 placeholder 박스 -->
       <div class="detail__img detail__img--empty">이미지 없음</div>
     {% endif %}
   </section>
 
-  <!-- [BOX-RIGHT] 정보/찜/목록 묶음 -->
+  <!-- [BOX-RIGHT] 상품 정보 + 찜 버튼 + 액션(목록, 리뷰등록) 영역 -->
   <section class="detail__box detail__box--right">
-    <!-- 상단 찜하기 바 -->
+    <!-- 상단 찜하기 바 (오른쪽 정렬) -->
     <div class="right-bar">
       <div class="wish">
         <span>찜하기</span> |
 
-        <!-- 찜하기 폼 -->
+        <!-- 찜하기 토글 폼
+             - POST /toggle_wish
+             - 서버에서 liked 여부에 따라 하트(♥/♡)와 is-liked 클래스 제어 -->
         <form method="post"
               action="{{ url_for('toggle_wish', pid=product.id) }}"
               style="display:inline;">
@@ -41,11 +47,10 @@
             {{ '♥' if liked else '♡' }}
           </button>
         </form>
-
       </div>
     </div>
 
-    <!-- 정보 행들 -->
+    <!-- 상품 기본 정보 행들 (공통: .row + .label-box + .value-box) -->
     <div class="row row--name">
       <div class="label-box">상품명</div>
       <div class="value-box">{{ product.name }}</div>
@@ -53,11 +58,13 @@
 
     <div class="row">
       <div class="label-box">가격</div>
+      <!-- 가격은 1,000 단위 콤마 포맷 후 "원" 표시 -->
       <div class="value-box">{{ "{:,}".format(product.price) }}원</div>
     </div>
 
     <div class="row">
       <div class="label-box">상태</div>
+      <!-- 값이 없을 경우 "-" 로 대체 -->
       <div class="value-box">{{ product.status or "-" }}</div>
     </div>
 
@@ -81,17 +88,17 @@
       <div class="value-box">{{ product.region or "-" }}</div>
     </div>
 
-        <!-- 목록 / 리뷰 등록 버튼 (오른쪽 정렬) -->
+    <!-- 하단 액션 버튼 영역: 리뷰 등록 / 목록으로 돌아가기 -->
     <div class="actions">
-      <!-- 리뷰 등록 버튼: 현재 상품명을 가지고 리뷰 작성 페이지로 이동 -->
+      <!-- 현재 상품명을 쿼리 파라미터로 넘겨 리뷰 작성 초기화 -->
       <a class="review-btn"
          href="{{ url_for('reg_review_init', name=product.name) }}">
         리뷰 등록
       </a>
 
-      <!-- 목록으로 돌아가기 버튼 -->
+      <!-- 상품 목록 페이지로 이동 -->
       <a class="back-btn"
-        href="{{ url_for('view_list') }}">
+         href="{{ url_for('view_list') }}">
         목록으로 돌아가기
       </a>
     </div>
