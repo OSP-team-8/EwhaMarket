@@ -1,10 +1,20 @@
+/* ============================================
+   상품 등록 페이지 CSS (reg_items.html 전용)
+   - 공통 폼 레이아웃
+   - 입력 필드/라벨 디자인
+   - 파일 업로드 버튼 스타일
+   ============================================ */
 
 :root{
+  /* 메인 컬러 팔레트 */
   --green: #00462A;
   --green-2: #00642A;
 }
 
-
+/* 폼 전체 공통 스타일
+   - .reg-form: 상품 등록 페이지 폼
+   - form: 혹시 다른 폼에도 공통 적용 (현재 구조에서는 reg-form만 사용)
+*/
 .reg-form,
 form {
   font-size: 20px;
@@ -15,6 +25,7 @@ form {
   max-width: 1200px;
 }
 
+/* 상단 "상품 등록" 타이틀 */
 #register_items{
   color: black;
   font-size: 25px;
@@ -23,6 +34,7 @@ form {
   word-wrap: break-word;
 }
 
+/* 왼쪽 라벨 박스 (상품명/가격/상태/지역/설명/판매자/전화/사진 등) */
 .label_name {
   color: white;
   font-size: 20px;
@@ -41,15 +53,19 @@ form {
   flex-shrink: 0;
 }
 
-
+/* 각 입력 행: 라벨 + 입력 필드 가로 정렬 */
 .form_line {
   display: flex;
   align-items: center;
   margin-bottom: 10px;
 }
-.form_line.align_top { align-items: flex-start; }
 
+/* 설명(textarea) 같이 위쪽 정렬 필요한 경우 사용 */
+.form_line.align_top { 
+  align-items: flex-start; 
+}
 
+/* 공통 텍스트 입력/셀렉트 박스 스타일 */
 .text_block {
   color: black;
   font-size: 20px;
@@ -61,15 +77,17 @@ form {
   box-sizing: border-box;
   padding: 10px 10px;
   border-radius: 10px;
-  flex: 1;              
-  min-width: 0;         
+  flex: 1;              /* 남은 공간 채우기 */
+  min-width: 0;         /* flex 안에서 너비 계산 안정화 */
 }
 
+/* 셀렉트 박스는 브라우저 기본 appearance 를 남기되 패딩만 조정 */
 select.text_block {
   appearance: auto;
   padding: 0 10px;
 }
 
+/* 설명 입력용 textarea */
 textarea {
   color: black;
   font-size: 20px;
@@ -83,9 +101,10 @@ textarea {
   box-sizing: border-box;
   border-radius: 10px;
   padding: 10px;
-  resize: vertical;
+  resize: vertical;  /* 사용자가 높이 조절 가능 */
 }
 
+/* 하단 버튼 영역 (등록 / 취소) */
 .button {
   display: flex;
   justify-content: flex-end;
@@ -94,6 +113,7 @@ textarea {
   margin-top: 20px;
 }
 
+/* 등록/취소 버튼 공통 스타일 */
 #submit, #cancel {
   display: inline-flex;
   align-items: center;
@@ -109,17 +129,20 @@ textarea {
   border: 0;
 }
 
+/* "등록" 버튼 (초록 배경) */
 #submit {
   color: white;
   background: #00462A;
 }
 
+/* "취소" 버튼 (테두리만 초록) */
 #cancel {
   color: #00642A;
   background: white;
   border: 2px solid #00642A;
 }
 
+/* 지역 영역: 셀렉트 + 상세 주소를 한 줄에 배치 */
 .inline_group {
   display: flex;
   align-items: center;
@@ -127,23 +150,49 @@ textarea {
   flex: 1;
 }
 
-.select-short { width: 180px; flex: 0 0 180px; }
-.addr-flex   { flex: 1; }
-
-/* 반응형*/
-@media (max-width: 768px) {
-  .inline_group { flex-direction: column; align-items: stretch; }
-  .select-short { width: 100%; flex: 1 1 auto; }
-  .addr-flex    { width: 100%; }
+/* 시/도 셀렉트는 고정 폭 사용 */
+.select-short { 
+  width: 180px; 
+  flex: 0 0 180px; 
 }
 
-/* ===== 파일 업로드===== */
+/* 상세주소 입력은 나머지 공간 채우기 */
+.addr-flex   { 
+  flex: 1; 
+}
+
+/* ========= 반응형 레이아웃 ========= */
+@media (max-width: 768px) {
+  /* 모바일에서 지역 입력은 위아래로 쌓이게 */
+  .inline_group { 
+    flex-direction: column; 
+    align-items: stretch; 
+  }
+  .select-short { 
+    width: 100%; 
+    flex: 1 1 auto; 
+  }
+  .addr-flex    { 
+    width: 100%; 
+  }
+}
+
+/* ============================================
+   파일 업로드 스타일 (커스텀 버튼용)
+   - 현재는 #image_file 스타일 사용
+   - file_row / file_btn / file_name 은 확장용
+   ============================================ */
+
+/* 파일 업로드 행 레이아웃 */
 .file_row {
   display: flex;
   align-items: center;
   gap: 10px;
 }
 
+/* 커스텀 파일 업로드 버튼 래퍼
+   - 내부에 숨겨진 input[type="file"]를 포함할 때 사용
+*/
 .file_btn {
   position: relative;
   width: 250px;               
@@ -163,7 +212,7 @@ textarea {
   box-sizing: border-box;
 }
 
-/* 커스텀 버튼 내부의 네이티브 파일 인풋 숨김 */
+/* 커스텀 버튼 내부의 진짜 파일 인풋은 숨기기 */
 .file_btn input[type="file"] {
   position: absolute;
   inset: 0;
@@ -171,7 +220,7 @@ textarea {
   cursor: pointer;
 }
 
-/* 파일명 표시 */
+/* 선택된 파일명 표시용 텍스트 */
 .file_name {
   font-size: 16px;
   color: #666;
@@ -182,19 +231,24 @@ textarea {
 }
 
 /* 포커스/호버 상태 */
-.file_btn:hover { filter: brightness(0.98); }
+.file_btn:hover { 
+  filter: brightness(0.98); 
+}
 .file_btn:focus-within {
   outline: 2px solid #9ad1b1; 
   outline-offset: 2px;
 }
 
+/* 기본 파일 인풋(#image_file)에 대한 스타일
+   - 현재 HTML에서 실제로 사용되는 요소
+*/
 #image_file {
-    color: black;
-    background-color: #F2F2F2;
-    border: 4px solid #00642A;
-    width: 250px;
-    height: 40px;
-    font-size: 20px;
-    box-sizing: border-box;
-    border-radius: 10px;
+  color: black;
+  background-color: #F2F2F2;
+  border: 4px solid #00642A;
+  width: 250px;
+  height: 40px;
+  font-size: 20px;
+  box-sizing: border-box;
+  border-radius: 10px;
 }
