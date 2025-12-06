@@ -1,8 +1,10 @@
+/* 공통 초기화 */
 body, ul {
     margin: 0;
     padding: 0;
 }
 
+/* 네비게이션 바 */
 .navbar {
     display: flex;
     justify-content: space-between;
@@ -13,6 +15,7 @@ body, ul {
     box-sizing: border-box;
 }
 
+/* 네비게이션 바 로고 */
 .navbar__logo {
     display: flex;
     align-items: center;
@@ -33,18 +36,11 @@ body, ul {
     text-decoration: none;
 }
 
+/* 네비게이션 바 메뉴 */
 .navbar__menu {
     display: flex;
     list-style: none;
     gap: 25px;
-}
-
-#login_user{
-    color: white;
-    font-size: 20px;
-    font-family: Inter;
-    font-weight: 500;
-    text-decoration: none;
 }
 
 .navbar__menu li a {
@@ -60,7 +56,23 @@ body, ul {
   background:rgba(255,255,255,.15);
 }
 
-.navbar__toogleBtn{
+.navbar__menu li a.active {
+    background-color: white;
+    color: #00462A;
+    border-radius: 6px;
+}
+
+/* 사용자 이름 */
+#login_user{
+    color: white;
+    font-size: 20px;
+    font-family: Inter;
+    font-weight: 500;
+    text-decoration: none;
+}
+
+/* 모바일 토글 버튼 */
+.navbar__toggleBtn{
   display:none;          /* 데스크탑에선 숨김 */
   font-size:20px;
   padding:6px 10px;
@@ -71,35 +83,25 @@ body, ul {
   user-select:none;
 }
 
-#user {
-    text-decoration: underline;
-}
-
-.navbar__menu li a.active {
-    background-color: white;
-    color: #00462A;
-    border-radius: 6px;
-}
-
-
-/* ====== 반응형 (모바일 메뉴) ====== */
+/* 반응형 (모바일 메뉴) */
 @media (max-width: 768px){
   .navbar__menu{
-    position:absolute;
-    right:16px;
-    top:50px;
-    display:none;
-    flex-direction:column;
+    position: absolute;
+    right: 16px;
+    top: 50px;
+    z-index: 1000;
+    display: none;
+    flex-direction: column;
     align-items: center;
-    width:min(300px, 90vw);
-    gap:8px;
-    background: rgba(0, 100, 42, .9);
-    border-radius:12px;
-    box-shadow:0 8px 10px rgba(0,0,0,.12);
+    width: min(300px, 90vw);
+    gap: 8px;
+    background: #00462A;
+    border-radius: 12px;
+    box-shadow: 0 8px 10px rgba(0,0,0,.12);
     padding: 12px;
     box-sizing: border-box;
   }
   .navbar__menu li a { display: block; text-align: center;}
   .navbar__menu.active{ display:flex; }
-  .navbar__toogleBtn{ display:block; }
+  .navbar__toggleBtn{ display:block; }
 }

@@ -56,26 +56,6 @@ footer{
   padding:24px 0 40px;
 }
 
-/* ====== 반응형 (모바일 메뉴) ====== */
-@media (max-width: 768px){
-  .navbar__menu{
-    position:absolute;
-    right:16px;
-    top:58px;
-    display:none;
-    flex-direction:column;
-    width:min(260px, 86vw);
-    gap:8px;
-    background:var(--ewha-green);
-    padding:12px;
-    border-radius: var(--radius);
-    box-shadow:0 8px 20px rgba(0,0,0,.12);
-  }
-  .navbar__menu.active{ display:flex; }
-  .navbar__toogleBtn,
-  .navbar__toggleBtn{ display:block; }
-}
-
 /* =========================================================
    AUTH 통일(로그인/회원가입 공통 규칙 → 스타일 일관성 확보)
    ========================================================= */
