@@ -118,10 +118,10 @@ def toggle_wish(pid):
 
     if pid in liked_ids:
         DB.remove_wish(userId, pid)
-        flash("찜이 취소되었습니다.")
+        flash("북마크가 취소되었습니다.")
     else: 
         DB.add_wish(userId, pid)
-        flash("찜 목록에 추가되었습니다.")
+        flash("북마크에 추가되었습니다.")
 
     next_url = request.referrer or url_for('view_list')
     return redirect(next_url)
@@ -250,7 +250,7 @@ def view_review():
         page_count=page_count,
         total=total,         # 검색 결과 개수
         total_all=total_all, # 전체 리뷰 개수 (필요하면 상단에 사용)
-        sort=sort,           # 🔥 템플릿에서 지금 정렬상태 알 수 있게 넘겨줌
+        sort=sort,           # 템플릿에서 지금 정렬상태 알 수 있게 넘겨줌
         q=q,                 # 검색창에 기존 검색어 유지용
     )
 
@@ -265,6 +265,11 @@ def review_detail(review_id):
 
 @application.route("/reg_items")
 def reg_item():
+    # 로그인 안한 상태로 상품 등록 불가
+    if not session.get('id'):
+        flash("로그인 후 상품을 등록할 수 있습니다.")
+        return redirect(url_for('view_login'))
+    
     return render_template("reg_items.html")
 
 @application.route("/reg_reviews")
@@ -278,6 +283,12 @@ def reg_reviews_legacy():
 @application.route("/reg_review_init/<name>/")
 def reg_review_init(name):
     # name: 상품 이름 (상품 상세에서 넘어올 때만 채워짐)
+    
+    # 로그인 안한 상태로 리뷰 등록 불가
+    if not session.get('id'):
+        flash("로그인 후 리뷰을 등록할 수 있습니다.")
+        return redirect(url_for('view_login'))
+    
     return render_template("reg_reviews.html", name=name)
 
 
@@ -326,7 +337,7 @@ def login_user():
             session['last_name'] = user['last_name']
         return redirect(url_for('view_list'))
     else:
-        flash("Wrong ID or PW!")
+        flash("아이디 혹은 비밀번호가 일치하지 않습니다.")
         return render_template("login.html")
 
     

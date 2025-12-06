@@ -1,7 +1,7 @@
 // 모바일에서 햄버거 버튼으로 메뉴 열고닫기
 document.addEventListener('DOMContentLoaded', () => {
   const menu = document.querySelector('.navbar__menu');
-  const toggle = document.querySelector('.navbar__toogleBtn');
+  const toggle = document.querySelector('.navbar__toggleBtn');
 
   // 아이콘이 폰트어썸 없이도 보이도록 기본 문자 제공
   if (toggle && toggle.innerHTML.trim() === '') {

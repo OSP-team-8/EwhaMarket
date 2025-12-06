@@ -1,57 +1,82 @@
+<!-- 인덱스 레이아웃 적용 -->
 {% extends "index.html" %}
 
 {% block head %}
+    <!-- 리뷰 상세 전용 CSS 불러오기 -->
     <link rel="stylesheet" href="{{ url_for('static', filename='review_detail.css') }}">
 {% endblock head %}
 
 {% block section %}
 <div class="review_container">
-    <label id="page_title">상품 리뷰 상세</label>
+    <!-- 페이지 제목 -->
+    <div id="page_title">상품 리뷰 상세</label>
 
     <div class="review_top">
+
+        <!-- 리뷰 이미지 -->
         <div class="review_img">
             {% if review.img_path %}
                 <img src="{{ url_for('static', filename='images/' ~ review.img_path) }}">
             {% else %}
+                <!-- 등록된 이미지가 없으면 default 이미지 출력 -->
                 <img src="{{ url_for('static', filename='images/no_image.PNG') }}">
             {% endif %}
         </div>
+
+        <!-- 리뷰 정보 -->
         <div class="review_info">
+            <!-- 상품명 -->
             <div class="form_line">
                 <div class="label_name">상품명</div>
                 <div class="text_block">{{ review.item }}</div>
             </div>
+
+            <!-- 제목 -->
             <div class="form_line">
                 <div class="label_name">제목</div>
                 <div class="text_block">{{ review.title }}</div>
             </div>
+
+            <!-- 작성자 -->
             <div class="form_line">
                 <div class="label_name">작성자</div>
                 <div class="text_block">
                     {{ review.writer }}
                 </div>
             </div>
+
+            <!-- 별점 표시 -->
             <div class="form_line">
                 <div class="label_name">별점</div>
+
+                <!-- 별점 점수 가져오기 -->
                 {% set rating = review.rate|default(0)|int %}
+                
                 <div class="star_rating">
+                    <!-- 채워진 별 표시 -->
                     {% for i in range(rating) %}
                         <span class="star filled">★</span>
                     {% endfor %}
+
+                    <!-- 빈 별 표시 -->
                     {% for i in range(5 - rating) %}
                         <span class="star empty">☆</span>
                     {% endfor %}
                 </div>
+
+                <!-- 별점 점수 텍스트 표시-->
                 <div id="star_score">{{ rating }} / 5 점</div>
             </div>  
         </div>
     </div>
 
+    <!-- 리뷰 본문 내용 -->
     <div class="form_line align_top">
         <div class="label_name">내용</div>
         <div id="review_content">{{ review.review }}</div>
     </div>
 
+    <!-- 뒤로가기 버튼: 리뷰 전체 조회 화면으로 넘어감 -->
     <div class="btn_box">
         <div id="back"><a href="{{ url_for('view_review') }}">목록으로 돌아가기</a></div>
     </div>

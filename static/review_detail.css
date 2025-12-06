@@ -1,3 +1,4 @@
+/* 리뷰 전체 컨테이너 */
 .review_container {
     max-width: 1200px;
     font-size: 20px;
@@ -11,6 +12,7 @@
     box-sizing: border-box;
 }
 
+/* 페이지 제목 스타일 */
 #page_title {
     font-size: 25px;
     font-weight: 700;
@@ -19,12 +21,13 @@
     margin-bottom: 18px;
 }
 
+/* 리뷰 이미지 */
 .review_img {
     display: flex;
     justify-content: center;
     align-items: center;
     width: 400px;
-    aspect-ratio: 4 / 3;
+    aspect-ratio: 4 / 3; /* 이미지 고정 비율 유지 */
     flex-shrink: 0;
     border-radius: 10px;
     overflow: hidden;
@@ -41,6 +44,7 @@
     border: none;
 }
 
+/* 상단 전체 구조 */
 .review_top {
     display: flex;
     align-items: flex-start;
@@ -49,6 +53,7 @@
     justify-content: center;
 }
 
+/* 리뷰 정보 스타일 */
 .review_info {
     flex: 1;
     display: flex;
@@ -56,6 +61,18 @@
     justify-content: center;
 }
 
+/*각 정보를 둘러싸는 스타일 */
+.form_line {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.form_line.align_top {
+    align-items: flex-start;
+}
+
+/* 왼쪽에 위치한 라벨 스타일 */
 .label_name {
     color: white;
     font-size: 20px;
@@ -73,6 +90,7 @@
     border-radius: 10px;
 }
 
+/* 오른쪽에 위치한 텍스트 스타일 */
 .text_block {
     color: black;
     font-size: 20px;
@@ -88,16 +106,30 @@
     border-radius: 10px;
 }
 
-.form_line {
+/* 별점 표시 */
+.star_rating {
     display: flex;
-    align-items: center;
-    margin-bottom: 10px;
-}
-
-.form_line.align_top {
+    font-size: 30px;
+    gap: 6px;
+    margin-right: 14px;
     align-items: flex-start;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
 }
 
+/* 채워진/비워있는 별 색 */
+.star.filled { color: #FFC107; }
+.star.empty { color: #C9C9C9 }
+
+/* 별점 점수 스타일 */
+#star_score {
+    color: #000000;
+    font-size: 20px;
+    margin-left: 10px;
+}
+
+/* 리뷰 본문 내용 */
 #review_content {
     color: rgb(89, 51, 51);
     font-size: 20px;
@@ -114,6 +146,15 @@
     border-radius: 10px;
 }
 
+/* 버튼 박스 스타일 */
+.btn_box {
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
+    margin-top: 20px;
+}
+
+/* 뒤로가기 버튼 */
 #back {
     color: #04620A;
     font-size: 20px;
@@ -148,48 +189,7 @@
     color: #00462A;
 }
 
-.star_rating {
-    display: flex;
-    font-size: 30px;
-    gap: 6px;
-    margin-right: 14px;
-    align-items: flex-start;
-    border: none;
-    border-radius: 10px;
-    cursor: pointer;
-}
-
-.star.filled { color: #FFC107; }
-.star.empty { color: #C9C9C9 }
-
-.star_rating input {
-    display: none;
-}
-
-.star_rating label {
-    font-size: 30px;
-    color: #C9C9C9;
-}
-
-.star_rating input:checked ~ label {
-    color: #FFC107;
-}
-
-#star_score {
-    color: #000000;
-    font-size: 20px;
-    margin-left: 10px;
-}
-
-.btn_box {
-    display: flex;
-    justify-content: flex-end;
-    width: 100%;
-    margin-top: 20px;
-}
-
-
-/* ====== 반응형 (모바일 메뉴) ====== */
+/* 반응형 (모바일 메뉴) */
 @media (max-width: 768px) {
     .review_top {
         flex-direction: column;
