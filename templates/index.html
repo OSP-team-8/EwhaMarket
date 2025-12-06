@@ -1,32 +1,47 @@
 <!DOCTYPE html>
  <html lang="ko">
  <head>
+    <!-- 기본 메타 정보 -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- 인덱스 전용 CSS, 공통 JS 불러오기 -->
     <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">
     <script src="{{ url_for('static', filename='main.js') }}" defer></script>
     
+    <!-- 추가 head -->
     {% block head%}
     <title>Home</title>
     {% endblock head %}
     
  </head>
  <body>
+    <!-- 네비게이션 바 -->
     <nav class="navbar">
         <div class="navbar__logo">
             <img src="{{ url_for('static', filename='images/이화 로고.png') }}">
             <a>이화 마켓</a>
         </div> 
+
+        <!-- 메뉴 영역 -->
         <ul class="navbar__menu">
+            <!-- 상품 조회, 상품 상세 -->
             <li><a href="{{ url_for('view_list') }}" class="{{ 'active' if request.endpoint in ['view_list','product_detail'] else '' }}">상품조회</a></li>
+            <!-- 상품 등록 -->
             <li><a href="/reg_items" class="{{ 'active' if request.path == '/reg_items' else ''}}">상품등록</a></li>
+            <!-- 리뷰 조회, 리뷰 상세 -->
             <li><a href="/review"class="{{ 'active' if request.path.startswith('/review') or request.path.startswith('/review_detail') else '' }}">리뷰조회</a></li>
+            <!-- 리뷰 등록 -->
             <li><a href="/reg_reviews" class="{{ 'active' if request.endpoint in ['reg_review_init', 'reg_reviews_legacy'] else '' }}">리뷰등록</a></li>
-            <li><a href="/wishlist" class="{{ 'active' if request.path == '/wishlist' else ''}}">북마크</a></li>
-                        
+            <!-- 북마크 -->
+            <li><a href="/wishlist" class="{{ 'active' if request.endpoint == 'view_wishlist' else '' }}">북마크</a></li>
+               
+            <!-- 로그인 여부에 따른 상태 표시 -->
+             <!-- 로그인 시 사용자명, 로그아웃 표시 -->
             {% if session.get('id') %}
                 <li id="login_user">{{ session.get('last_name','') }}{{ session.get('first_name','') }} 님</li>
                 <li><a href="{{ url_for('logout_user') }}">로그아웃</a></li>
+            <!-- 비로그인 시 로그인 표시 -->
             {% else %}
                 <li><a href="{{ url_for('view_login') }}">로그인</a></li>
             {% endif %}
@@ -34,7 +49,8 @@
 
         </ul>
 
-        <a href="#" class="navbar__toogleBtn">
+        <!-- 모바일 화면의 햄버거 버튼 -->
+        <a href="#" class="navbar__toggleBtn">
             <i class="fas fa-bars"></i>
         </a>
     </nav>
@@ -43,5 +59,17 @@
 
     {% endblock section %}
 </section>
+
+<!-- flash 메시지 띄우기 (알림창) -->
+{% with messages = get_flashed_messages() %}
+    {% if messages %}
+        <script>
+        {% for msg in messages %}
+            alert("{{ msg }}");
+        {% endfor %}
+        </script>
+    {% endif %}
+{% endwith %}
+
  </body>
  </html>

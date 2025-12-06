@@ -1,29 +1,44 @@
+<!-- 인덱스 레이아웃 적용 -->
 {% extends "index.html" %}
 {% block section %}
+<!-- 리뷰 전체 조회 전용 CSS 불러오기 -->
 <link rel="stylesheet" href="{{ url_for('static', filename='review.css') }}">
 
 <div class="container">
-    <div class="first_line">
-        <label id="reviews_all">상품 리뷰 | {{ total_all }}개</label>
 
+    <!-- 상단: 리뷰 개수, 검색창, 정렬 -->
+    <div class="first_line">
+
+        <!-- 전체 리뷰 개수 -->
+        <div id="reviews_all">상품 리뷰 | {{ total_all }}개</div>
+
+        <!-- 검색창 -->
         <form class="search_group" method="get" action="{{ url_for('view_review') }}">
             <label for="search">검색 | </label>
+            
+            <!-- 검색 입력 -->
             <input
-            id="search"
-            type="search"
-            name="q"
-            placeholder="검색어를 입력하세요"
-            value="{{ request.args.get('q','') }}"
-            aria-label="검색어"
+                id="search"
+                type="search"
+                name="q"
+                placeholder="검색어를 입력하세요"
+                value="{{ request.args.get('q','') }}"
+                aria-label="검색어"
             />
+
+            <!-- 검색 버튼 -->
             <button class="search__btn" type="submit" aria-label="검색">⌕</button>
         </form>
+
+        <!-- 정렬: 최신순 / 오래된순 -->
         <div class="sort-group">
+            <!-- 최신순 정렬 -->
             <a href="{{ url_for('view_review', sort='new', q=request.args.get('q',''), page=page) }}"
                 class="sort {% if sort == 'new' %}active{% endif %}">
                 최신순
             </a>
 
+            <!-- 오래된순 정렬 -->
             <a href="{{ url_for('view_review', sort='old', q=request.args.get('q',''), page=page) }}"
                 class="sort {% if sort == 'old' %}active{% endif %}">
                 오래된순
@@ -32,18 +47,29 @@
         </div>
     </div>
 
+    <!-- 리뷰 카드 리스트 -->
     <div class="review_container">
+
+        <!-- 등록된 리뷰가 없는 경우 -->
         {% if reviews|length == 0 %}
             <p>등록된 리뷰가 없습니다.</p>
         {% endif %}
 
+        <!-- 리뷰 목록 -->
         {% for r in reviews %}
         <div class="review_set">
+
+            <!-- 리뷰 제목 -->
             <label class="review_title">{{ r.title }}</label>
-              <a href="{{ url_for('review_detail', review_id=r.id) }}" class="review_link">
+              
+            <!-- 리뷰 상세 페이지로 이동 -->
+            <a href="{{ url_for('review_detail', review_id=r.id) }}">
+                
+                <!-- 리뷰 이미지-->
                 {% if r.img_path %}
                     <img src="{{ url_for('static', filename='images/' ~ r.img_path) }}">
                 {% else %}
+                    <!-- 등록된 이미지가 없으면 default 이미지 출력 -->
                     <img src="{{ url_for('static', filename='images/no_image.PNG') }}">
                 {% endif %}
             </a>
@@ -51,7 +77,9 @@
         {% endfor %}
     </div>
 
+    <!-- 페이지네이션 (이전 / 번호 / 다음) -->
     <nav class="pagination" aria-label="페이지네비게이션">
+    
     {# 이전 버튼 #}
     {% if page > 1 %}
         <a class="page-btn"
