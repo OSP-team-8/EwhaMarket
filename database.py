@@ -96,6 +96,7 @@ class DBhandler:
         else:
             return False
 
+    # 회원가입 시 아이디 중복 여부 확인
     def user_duplicate_check(self, id_string):
         users = self.db.child("user").get()
         print("users###", users.val())
@@ -109,6 +110,7 @@ class DBhandler:
                 return False
             return True
 
+    # 로그인 인증
     def find_user(self, id_, pw_):
         users = self.db.child("user").get()
         for res in users.each():
@@ -117,6 +119,7 @@ class DBhandler:
                 return True
         return False
 
+    # 유저 정보 가져오기
     def get_user(self, id_):
         users = self.db.child("user").get()
 
@@ -133,7 +136,7 @@ class DBhandler:
         review_info = {
             "item": data['review_item'],          # 상품명
             "title": data['review_title'],        # 리뷰 제목
-            "rate": data.get('rating', ''),       # 별점 (문자열일 수도 있음)
+            "rate": data.get('rating', ''),       # 별점 
             "review": data['review_content'],     # 내용
             "img_path": img_path,                 # 이미지 파일명
             "created_at": time.time(),            # 리뷰 작성 시간
@@ -142,11 +145,13 @@ class DBhandler:
         # 제목을 key로 저장 
         self.db.child("review").child(data['review_title']).set(review_info)
         return True
-
+    
+    # 전체 리뷰 목록 조회
     def get_reviews(self):
         reviews = self.db.child("review").get().val()
         return reviews
 
+    # 특정 리뷰 하나 조회
     def get_review(self, review_id):
         data = self.db.child("review").child(review_id).get().val()
 
