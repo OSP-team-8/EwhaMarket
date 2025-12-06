@@ -80,8 +80,10 @@
                 src="{{ url_for('static', filename=p.thumb) }}"
                 alt="{{ p.name }}">
             {% else %}
-              <!-- 썸네일이 없는 경우 대체 영역 -->
-              <div class="card__image card__image--empty">이미지 없음</div>
+              <img
+                class="card__image"
+                src="{{ url_for('static', filename='images/no_image.PNG') }}"
+                alt="기본 이미지">
             {% endif %}
           </a>
         </article>
