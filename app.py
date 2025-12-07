@@ -181,19 +181,19 @@ def view_review():
     # 검색어
     q = request.args.get("q", "", type=str).strip()
 
-    # 페이지 번호 (1페이지부터)
+    # 페이지 번호
     page = request.args.get("page", 1, type=int)
     if page < 1:
         page = 1
 
     per_page = 6  # 한 페이지에 보여줄 리뷰 수
 
-    # 1) 전체 리뷰 가져오기
-    data = DB.get_reviews() or {}      # dict: {제목: 리뷰정보}
-    items = list(data.items())         # [(key, info), ...]
+    # 전체 리뷰 가져오기
+    data = DB.get_reviews() or {}      
+    items = list(data.items())         
     total_all = len(items)             # 전체 리뷰 개수
 
-    # 2) 검색 필터링
+    # 검색 필터링
     if q:
         q_lower = q.lower()
 
@@ -214,26 +214,26 @@ def view_review():
     # 검색 이후 개수
     total = len(items)
 
-    # 3) created_at 기준 정렬
+    # created_at 기준 정렬
     def get_created_at(info):
         try:
             return float(info.get("created_at", 0))
         except (TypeError, ValueError):
             return 0.0
 
-    # 최신순(new) = 내림차순, 오래된순(old) = 오름차순
+    # 최신순, 오래되 순 정렬
     reverse = True   # 기본: 최신순
     if sort == "old":
         reverse = False
 
     items.sort(key=lambda kv: get_created_at(kv[1]), reverse=reverse)
 
-    # 4) 페이지 슬라이스
+    # 페이지 슬라이스
     start_idx = (page - 1) * per_page
     end_idx = start_idx + per_page
     page_items = items[start_idx:end_idx]
 
-    # 5) 템플릿에서 쓰기 쉽게 리스트로 변환
+    # 리스트로 변환
     reviews = []
     for key, info in page_items:
         obj = info.copy()
@@ -249,7 +249,7 @@ def view_review():
         page=page,
         page_count=page_count,
         total=total,         # 검색 결과 개수
-        total_all=total_all, # 전체 리뷰 개수 (필요하면 상단에 사용)
+        total_all=total_all, # 전체 리뷰 개수 
         sort=sort,           # 템플릿에서 지금 정렬상태 알 수 있게 넘겨줌
         q=q,                 # 검색창에 기존 검색어 유지용
     )
@@ -258,9 +258,9 @@ def view_review():
 @application.route("/review_detail/<review_id>")
 def review_detail(review_id):
     review = DB.get_review(review_id)
-    if not review:
+    if not review: #조회된 리뷰 없을 시 
         abort(404)
-
+    #리뷰 데이터 존재 시 
     return render_template("review_detail.html", review=review)
 
 @application.route("/reg_items")
